@@ -9,15 +9,39 @@ Brainstorming → Plan → Develop → Review with persona-based feedback loops.
 ### 1. Install Superpowers (prerequisite)
 
 ```bash
-/plugin marketplace add obra/superpowers-marketplace
-/plugin install superpowers@superpowers-marketplace
+/plugin install superpowers@claude-plugins-official
 ```
 
 ### 2. Install dev-workflow
 
 ```bash
 /plugin marketplace add sangteak/dev-workflow
-/plugin install dev-workflow@dev-workflow
+/plugin install dev-workflow@sangteak-dev-workflow
+```
+
+### Alternative: Manual Installation
+
+마켓플레이스 설치가 동작하지 않을 경우:
+
+```bash
+git clone https://github.com/sangteak/dev-workflow.git
+# 프로젝트의 .claude/settings.json에 추가:
+```
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "dev-workflow": {
+      "source": {
+        "source": "local",
+        "directory": "/path/to/dev-workflow"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "dev-workflow@dev-workflow": true
+  }
+}
 ```
 
 ## Skills
@@ -72,4 +96,8 @@ tasks/
 
 버전 업데이트 시 `.claude-plugin/plugin.json` 의 `version` 필드를 변경한다.
 
-팀원은 `/plugin update dev-workflow` 로 최신 버전을 적용한다.
+팀원은 아래 명령어로 최신 버전을 적용한다:
+
+```bash
+/plugin update dev-workflow@sangteak-dev-workflow
+```
