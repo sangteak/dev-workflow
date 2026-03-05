@@ -1,0 +1,12 @@
+{
+  "name": "dev-workflow",
+  "description": "Structured development workflow: Brainstorming → Plan → Develop → Review with persona-based feedback loops",
+  "version": "1.0.0",
+  "author": {
+    "name": "sangteak"
+  },
+  "homepage": "https://github.com/sangteak/dev-workflow",
+  "repository": "https://github.com/sangteak/dev-workflow",
+  "license": "MIT",
+  "keywords": ["workflow", "brainstorming", "planning", "persona", "gamedev", "unreal"]
+}
