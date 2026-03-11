@@ -8,7 +8,7 @@
 
 **Tech Stack:** Claude Code Plugin (SKILL.md markdown files), Bash hooks
 
-**참조 설계 문서:** `docs/design/document-management-policy/document-management-policy.md`
+**참조 설계 문서:** `docs/design/dev-workflow/document-management-policy/document-management-policy.md`
 
 ---
 
