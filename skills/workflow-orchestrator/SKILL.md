@@ -20,13 +20,13 @@ At the start of EVERY session, execute in order:
    - 페르소나 확정 없이 다음 단계로 넘어가지 않는다
    - 예외: 동일 세션 내 브레인스토밍 완료 후 PLAN 전환 시 재실행 생략, PLAN 페르소나만 확정
 
-2. **Design Document Check** — `docs/design/` 디렉토리 탐색
+2. **HANDOFF & Design Document Check**
    - Not exists (동일 세션 내 브레인스토밍 완료 직후) → 생략
-   - Not exists (신규 세션) → "브레인스토밍 결과 문서가 없습니다. 설계 문서를 제공하시겠습니까, 아니면 바로 진행할까요?"
-   - Exists → 아래 우선순위로 복구 판단:
-     1. `HANDOFF.md` 존재 → invoke `dev-workflow:context-handling` skill
-     2. `phase*.md` 존재 → 가장 최근 phase 파일 감지, 다음 국면부터 이어서 진행 제안
-     3. `[기능명].md` 만 존재 → 설계 문서 로드 후 PLAN 진입
+   - Not exists (신규 세션) → 아래 순서로 탐색:
+     1. `docs/design/**/HANDOFF.md` glob 탐색 → 발견 시 invoke `dev-workflow:context-handling` skill (HANDOFF 목록 제시)
+     2. HANDOFF 없음 + `docs/design/[카테고리]/[기능명]/phase*.md` 존재 → 가장 최근 phase 파일 감지, 다음 국면부터 이어서 진행 제안
+     3. HANDOFF 없음 + `docs/design/[카테고리]/[기능명]/[기능명].md` 만 존재 → 설계 문서 로드 후 PLAN 진입
+     4. `docs/design/` 자체가 없음 → "설계 문서가 없습니다. 설계 문서를 제공하시겠습니까, 아니면 바로 진행할까요?"
 
 3. **Stage Detection** — 현재 워크플로우 단계 자동 감지
 
@@ -48,7 +48,7 @@ At the start of EVERY session, execute in order:
 → invoke `dev-workflow:brainstorming` skill
 
 ### PLAN
-- `docs/design/*.md` 존재 + 태스크 목록 미생성
+- `docs/design/[카테고리]/[기능명]/[기능명].md` 존재 + 태스크 목록(plan.md) 미생성
 - 사용자 메시지: 계획, plan, 설계, architecture, 구조, breakdown
 - Superpowers `writing-plans` 활성화 직전
 

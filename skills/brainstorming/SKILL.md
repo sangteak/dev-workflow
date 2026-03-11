@@ -1,13 +1,51 @@
 ---
 name: brainstorming
-description: Use when exploring requirements for a new feature or system. Runs 4 phases (Exploration → Discovery → Validation → Consolidation) and saves phase files at each transition.
+description: Use when exploring requirements for a new feature or system. Runs 5 phases (Category → Exploration → Discovery → Validation → Consolidation) and saves phase files at each transition.
 ---
 
 # Brainstorming Workflow
 
-브레인스토밍은 4개 국면을 순서대로 진행한다.
+브레인스토밍은 5개 국면을 순서대로 진행한다 (국면 0은 카테고리 결정).
 국면 전환은 Claude가 감지해서 제안하되, 강제하지 않는다.
 모든 브레인스토밍은 Claude Code에서 진행한다 (파일 생성 필요).
+
+**모든 파일 경로 규칙:** `docs/design/[카테고리]/[기능명]/`
+
+---
+
+## 국면 0: 카테고리 결정
+
+브레인스토밍 시작 전, 기능이 속할 카테고리를 결정한다.
+issues/ 서브 워크플로우에서는 부모 카테고리를 상속하므로 이 국면을 생략한다.
+
+**절차:**
+1. 사용자의 요구사항을 분석하여 적합한 카테고리를 추천한다
+2. 기존 카테고리 조회: `docs/design/` 하위 1depth 디렉토리를 스캔한다
+3. 추천 결과를 제시한다:
+
+**추천이 명확한 경우:**
+```
+📂 카테고리 추천: [카테고리명]
+   기존 카테고리에서 [근거]와 일치합니다.
+   이 카테고리로 진행할까요?
+```
+
+**추천이 모호한 경우:**
+```
+📂 기존 카테고리 목록:
+  1. [카테고리A] — [소속 기능 수]개 기능
+  2. [카테고리B] — [소속 기능 수]개 기능
+  3. ✨ 새 카테고리 생성
+
+어떤 카테고리에 속할까요?
+```
+
+**신규 카테고리 생성 시:**
+- 도메인/시스템 단위인지 확인하는 질의응답 진행
+- 소문자 kebab-case로 네이밍
+- 확정 후 디렉토리 생성
+
+4. 카테고리 확정 후 국면 1로 진행한다
 
 ---
 
@@ -28,7 +66,7 @@ description: Use when exploring requirements for a new feature or system. Runs 4
   "추가로 논의할 요구사항이 있으신가요, 아니면 다음 단계로 넘어갈까요?"
 
 **전환 확정 시 즉시:**
-`docs/design/[기능명]/phase1_exploration.md` 생성 — 이후 절대 수정하지 않는다.
+`docs/design/[카테고리]/[기능명]/phase1_exploration.md` 생성 — 이후 절대 수정하지 않는다.
 
 포함 내용:
 - 탐색된 요구사항 전체 목록 (확정/미확정 구분 없이 언급된 모든 것)
@@ -70,7 +108,7 @@ description: Use when exploring requirements for a new feature or system. Runs 4
 전환 제안: "요구사항이 구체화되었습니다. TD를 불러서 기술적 실현 가능성을 검토할까요? [국면 3: 검증]"
 
 **전환 확정 시 즉시:**
-`docs/design/[기능명]/phase2_discovery.md` 생성 — 이후 절대 수정하지 않는다.
+`docs/design/[카테고리]/[기능명]/phase2_discovery.md` 생성 — 이후 절대 수정하지 않는다.
 
 포함 내용:
 - 국면 2에서 새로 발견된 미정의 영역 목록
@@ -108,7 +146,7 @@ description: Use when exploring requirements for a new feature or system. Runs 4
 전환 제안: "기술 검토까지 완료되었습니다. 지금까지의 논의를 설계 문서로 정리할까요? [국면 4: 정리]"
 
 **전환 확정 시 즉시:**
-`docs/design/[기능명]/phase3_validation.md` 생성 — 이후 절대 수정하지 않는다.
+`docs/design/[카테고리]/[기능명]/phase3_validation.md` 생성 — 이후 절대 수정하지 않는다.
 
 포함 내용:
 - TD가 검토한 각 요구사항별 판단 결과 및 리스크 수준
@@ -125,42 +163,140 @@ description: Use when exploring requirements for a new feature or system. Runs 4
 - Claude가 전체 대화 기반으로 설계 문서 초안을 자동 생성한다
 - 생성 후 사용자 확인을 받는다
 - 수정 요청 시 반영 후 재확인한다
-- 확정 시 `docs/design/[기능명]/[기능명].md` 파일을 직접 생성한다
-  - `docs/design/[기능명]/` 디렉토리는 phase1 생성 시점에 이미 존재
+- 확정 시 `docs/design/[카테고리]/[기능명]/[기능명].md` 파일을 직접 생성한다
+  - `docs/design/[카테고리]/[기능명]/` 디렉토리는 phase1 생성 시점에 이미 존재
 - 파일 생성 완료 후 PLAN 단계로 연속 진행을 제안한다:
-  "설계 문서가 `docs/design/[기능명]/[기능명].md`에 저장되었습니다.
+  "설계 문서가 `docs/design/[카테고리]/[기능명]/[기능명].md`에 저장되었습니다.
    PLAN 단계로 바로 진행할까요?"
 - PLAN 진행 시 Persona Resolution은 PLAN 페르소나만 새로 확정한다
 
-**디렉토리 최종 구조:**
+**디렉토리 구조:**
 ```
-docs/design/[기능명]/
+docs/design/[카테고리]/[기능명]/
 ├── phase1_exploration.md    ← 국면 1 완료 시 생성, 불변
 ├── phase2_discovery.md      ← 국면 2 완료 시 생성, 불변
 ├── phase3_validation.md     ← 국면 3 완료 시 생성, 불변
-└── [기능명].md              ← 국면 4 확정 시 생성, 최종 설계 문서
+├── [기능명].md              ← 국면 4 확정 시 생성, 최종 설계 문서
+├── plan.md                  ← PLAN 단계에서 생성
+├── HANDOFF.md               ← 미완료 시 존재
+├── issues/                  ← 서브 문제 발생 시
+│   └── [문제명]/
+└── _archive/                ← 개발 완료 후
 ```
 
 **표준 설계 문서 포맷:**
 ```markdown
 ---
 feature: [기능명]
+category: [카테고리명]
 status: ready-for-plan
 created: [날짜]
+last-updated: [날짜]
+dependencies:
+  - [선행 기능명]
+affects:
+  - [영향받는 컴포넌트명]
 ---
 
-## CONFIRMED_REQUIREMENTS
-- ...
+# [기능명] 설계 문서
 
-## OPEN_QUESTIONS
-- ...
+> 한 줄 요약: [이 기능이 해결하는 문제]
 
-## TECHNICAL_GUIDELINES
-- ...
+## 1. 배경과 동기
+- [이 기능이 필요한 이유]
 
-## PERSONAS_USED
-- [목록]
+## 2. 목표와 비목표
+### 목표
+- GOAL-001: [구체적 목표]
+### 비목표
+- [명시적으로 범위에서 제외한 것과 그 이유]
 
-## DECISIONS
-- Q: [질문] → A: [결정]
+## 3. 확정된 요구사항
+- REQ-001: [명세] — 우선순위: HIGH
+- REQ-002: [명세] — 우선순위: MEDIUM
+
+## 4. 설계 개요
+- [아키텍처/구조 설명]
+- [주요 컴포넌트 간 관계]
+
+## 5. 의존성 맵
+| 컴포넌트 | 의존 대상 | 영향받는 컴포넌트 |
+|----------|-----------|------------------|
+
+## 6. 기술 결정 및 대안 검토
+| 결정 사항 | 선택 | 근거 | 검토한 대안 | 기각 사유 |
+|-----------|------|------|-------------|-----------|
+
+## 7. 제약조건과 가정
+- [설계 당시의 기술적 제약]
+- [환경에 대한 전제]
+
+## 8. 기술 가이드라인
+- [구현 시 준수해야 할 기술적 방향]
+
+## 9. 구현 결과 및 일탈 사항
+> 구현 완료 후 작성
+
+## 10. 변경 이력
+| 날짜 | 변경 내용 | 영향 범위 | 상태 |
+|------|-----------|-----------|------|
+```
+
+---
+
+## issues/ 서브 워크플로우 (hotfix 전략)
+
+개발 중 설계 보완이 필요한 서브 문제가 발생하면 issues/ 디렉토리에서 격리 처리한다.
+git hotfix 브랜치와 동일한 전략이다.
+
+### 진입 조건
+
+사용자가 설계 논의가 필요하다고 판단하여 명시적으로 요청한 경우에만 진입한다.
+Claude가 자동으로 issues/를 생성하지 않는다.
+
+### 진입 절차
+
+1. 부모 기능 디렉토리 확인: `docs/design/[카테고리]/[기능명]/`
+2. 이슈 디렉토리 생성: `docs/design/[카테고리]/[기능명]/issues/[문제명]/`
+3. 국면 0(카테고리 결정)은 생략 — 부모 카테고리를 상속한다
+4. 정규 4단계(국면 1~4) 브레인스토밍을 진행한다
+5. phase 파일 및 설계 문서를 issues/[문제명]/ 하위에 생성한다
+
+### 이슈 디렉토리 구조
+
+```
+docs/design/[카테고리]/[기능명]/issues/[문제명]/
+├── phase1_exploration.md
+├── phase2_discovery.md
+├── phase3_validation.md
+├── [문제명].md              ← 이슈 설계 문서
+└── HANDOFF.md               ← 이슈 미완료 시
+```
+
+### 완료 후 통합
+
+이슈 해결이 완료되면 `dev-workflow:document-consolidation` 스킬의
+consolidate-issue 모드를 사용하여 부모 design 문서에 통합한다.
+통합은 "원래 하나였던 것처럼" 자연스럽게 병합한다 (참조 링크 아님).
+통합 후 issues/[문제명]/ 디렉토리를 삭제한다.
+
+### 중첩 금지
+
+issues/ 내에서 추가 문제 발견 시:
+- 같은 맥락 확장 → 현재 이슈의 phase를 리셋하여 재진행
+  - 기존 phase 파일 삭제, 유효 결정사항을 새 Phase 1 컨텍스트로 이월
+- 새로운 기능 필요 → 별도 기능 디렉토리로 격상 (feature 브랜치 전략)
+- 무관한 문제 → 메모 후 별도 세션에서 처리
+
+### 개발 중 문제 판단 플로우
+
+```
+테스트 중 문제 발생
+  │
+  ├─ 코드 수정만으로 해결? → 즉시 수정 (commit)
+  │
+  └─ 설계 논의 필요?
+       ├─ 현재 기능의 설계? → issues/ (hotfix)
+       ├─ 새로운 기능 필요? → 별도 기능 디렉토리 (feature)
+       └─ 현재 기능과 무관? → 메모 후 별도 세션
 ```
