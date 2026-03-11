@@ -56,7 +56,7 @@ git clone https://github.com/sangteak/dev-workflow.git
 |---|---|
 | `workflow-orchestrator` | Session start protocol, stage detection, Superpowers delegation |
 | `persona-resolution` | Persona confirmation at session start |
-| `brainstorming` | 5-phase brainstorming (Category → Exploration → Discovery → Validation → Consolidation) |
+| `brainstorming` | 5-phase brainstorming with persona feedback loops (Category → Exploration → Discovery → Validation → Consolidation) |
 | `plan-stage` | Feasibility Assessment, OPEN_QUESTIONS processing, persona feedback loop |
 | `context-handling` | HANDOFF.md creation and recovery |
 | `development-principles` | Core development philosophy, self-improvement loop |
