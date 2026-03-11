@@ -78,6 +78,8 @@ PLAN (dev-workflow)
   설계 방향 수립
         ↓ Superpowers writing-plans
 DEVELOP (Superpowers subagent-driven-development)
+  git-mode:    worktree + subagent-driven-development
+  no-git-mode: worktree 스킵, 파일 기반 체크포인트
         ↓
 REVIEW (Superpowers requesting-code-review)
 ```
