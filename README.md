@@ -19,6 +19,12 @@ Brainstorming → Plan → Develop → Review with persona-based feedback loops.
 /plugin install dev-workflow@sangteak-dev-workflow
 ```
 
+### 3. Update
+
+```bash
+/plugin update dev-workflow@sangteak-dev-workflow
+```
+
 ### Alternative: Manual Installation
 
 마켓플레이스 설치가 동작하지 않을 경우:
@@ -50,15 +56,17 @@ git clone https://github.com/sangteak/dev-workflow.git
 |---|---|
 | `workflow-orchestrator` | Session start protocol, stage detection, Superpowers delegation |
 | `persona-resolution` | Persona confirmation at session start |
-| `brainstorming` | 4-phase brainstorming (Exploration → Discovery → Validation → Consolidation) |
+| `brainstorming` | 5-phase brainstorming (Category → Exploration → Discovery → Validation → Consolidation) |
 | `plan-stage` | Feasibility Assessment, OPEN_QUESTIONS processing, persona feedback loop |
 | `context-handling` | HANDOFF.md creation and recovery |
 | `development-principles` | Core development philosophy, self-improvement loop |
+| `document-consolidation` | Design document consolidation and archival workflow |
 
 ## Workflow Overview
 
 ```
 BRAINSTORM (dev-workflow)
+  Phase 0: Category     → 카테고리 결정
   Phase 1: Exploration  → phase1_exploration.md
   Phase 2: Discovery    → phase2_discovery.md
   Phase 3: Validation   → phase3_validation.md
@@ -77,12 +85,16 @@ REVIEW (Superpowers requesting-code-review)
 ## File Structure per Feature
 
 ```
-docs/design/[feature]/
+docs/design/[category]/[feature]/
 ├── phase1_exploration.md   ← Phase 1 완료 시, 불변
 ├── phase2_discovery.md     ← Phase 2 완료 시, 불변
 ├── phase3_validation.md    ← Phase 3 완료 시, 불변
 ├── [feature].md            ← 최종 설계 문서
-└── HANDOFF.md              ← 세션 중단 시 임시 파일 (국면 완료 시 삭제)
+├── plan.md                 ← PLAN 단계에서 생성
+├── HANDOFF.md              ← 세션 중단 시 임시 파일 (국면 완료 시 삭제)
+├── issues/                 ← 서브 문제 발생 시
+│   └── [issue-name]/
+└── _archive/               ← 개발 완료 후
 
 .claude/
 └── personas.md             ← 프로젝트별 페르소나 오버라이드 (선택)
@@ -92,12 +104,3 @@ tasks/
 └── todo.md                 ← Superpowers writing-plans 산출물
 ```
 
-## Versioning
-
-버전 업데이트 시 `.claude-plugin/plugin.json` 의 `version` 필드를 변경한다.
-
-팀원은 아래 명령어로 최신 버전을 적용한다:
-
-```bash
-/plugin update dev-workflow@sangteak-dev-workflow
-```
