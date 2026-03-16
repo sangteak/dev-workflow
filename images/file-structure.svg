@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 460" fill="none">
+  <defs>
+    <linearGradient id="bg4" x1="0" y1="0" x2="720" y2="460">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="720" height="460" rx="16" fill="url(#bg4)"/>
+
+  <!-- Title -->
+  <text x="360" y="38" text-anchor="middle" fill="#e2e8f0" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">설계 문서 구조</text>
+  <text x="360" y="58" text-anchor="middle" fill="#64748b" font-family="Segoe UI, Arial, sans-serif" font-size="12">각 기능은 docs/design/ 아래에 구조화된 문서 트리를 생성합니다</text>
+
+  <!-- Left: Active Development -->
+  <rect x="30" y="80" width="320" height="350" rx="12" fill="rgba(59,130,246,0.06)" stroke="#3b82f6" stroke-width="1"/>
+  <text x="190" y="104" text-anchor="middle" fill="#60a5fa" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">개발 중</text>
+
+  <!-- Tree structure - active -->
+  <text x="50" y="136" fill="#f59e0b" font-family="Consolas, monospace" font-size="12">docs/design/</text>
+  <text x="50" y="158" fill="#64748b" font-family="Consolas, monospace" font-size="12">  [카테고리]/</text>
+  <text x="50" y="180" fill="#64748b" font-family="Consolas, monospace" font-size="12">    [기능명]/</text>
+
+  <!-- Phase files -->
+  <text x="70" y="208" fill="#fbbf24" font-family="Consolas, monospace" font-size="11">phase1_exploration.md</text>
+  <rect x="252" y="196" width="80" height="18" rx="4" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="0.5"/>
+  <text x="292" y="209" text-anchor="middle" fill="#f59e0b" font-family="Segoe UI, Arial, sans-serif" font-size="9">불변</text>
+
+  <text x="70" y="230" fill="#fbbf24" font-family="Consolas, monospace" font-size="11">phase2_discovery.md</text>
+  <rect x="252" y="218" width="80" height="18" rx="4" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="0.5"/>
+  <text x="292" y="231" text-anchor="middle" fill="#f59e0b" font-family="Segoe UI, Arial, sans-serif" font-size="9">불변</text>
+
+  <text x="70" y="252" fill="#fbbf24" font-family="Consolas, monospace" font-size="11">phase3_validation.md</text>
+  <rect x="252" y="240" width="80" height="18" rx="4" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="0.5"/>
+  <text x="292" y="253" text-anchor="middle" fill="#f59e0b" font-family="Segoe UI, Arial, sans-serif" font-size="9">불변</text>
+
+  <!-- Design doc -->
+  <text x="70" y="282" fill="#34d399" font-family="Consolas, monospace" font-size="11">[기능명].md</text>
+  <rect x="172" y="270" width="72" height="18" rx="4" fill="rgba(16,185,129,0.2)" stroke="#10b981" stroke-width="0.5"/>
+  <text x="208" y="283" text-anchor="middle" fill="#10b981" font-family="Segoe UI, Arial, sans-serif" font-size="9">최종 문서</text>
+
+  <!-- Plan -->
+  <text x="70" y="304" fill="#60a5fa" font-family="Consolas, monospace" font-size="11">plan.md</text>
+  <rect x="144" y="292" width="64" height="18" rx="4" fill="rgba(59,130,246,0.15)" stroke="#3b82f6" stroke-width="0.5"/>
+  <text x="176" y="305" text-anchor="middle" fill="#3b82f6" font-family="Segoe UI, Arial, sans-serif" font-size="9">태스크</text>
+
+  <!-- HANDOFF -->
+  <text x="70" y="326" fill="#f472b6" font-family="Consolas, monospace" font-size="11">HANDOFF.md</text>
+  <rect x="170" y="314" width="80" height="18" rx="4" fill="rgba(236,72,153,0.15)" stroke="#ec4899" stroke-width="0.5"/>
+  <text x="210" y="327" text-anchor="middle" fill="#ec4899" font-family="Segoe UI, Arial, sans-serif" font-size="9">임시 파일</text>
+
+  <!-- Issues -->
+  <text x="70" y="348" fill="#64748b" font-family="Consolas, monospace" font-size="11">issues/</text>
+  <text x="70" y="368" fill="#64748b" font-family="Consolas, monospace" font-size="11">  [이슈명]/</text>
+  <rect x="172" y="356" width="72" height="18" rx="4" fill="rgba(100,116,139,0.15)" stroke="#64748b" stroke-width="0.5"/>
+  <text x="208" y="369" text-anchor="middle" fill="#64748b" font-family="Segoe UI, Arial, sans-serif" font-size="9">선택사항</text>
+
+  <!-- Archive empty -->
+  <text x="70" y="398" fill="#475569" font-family="Consolas, monospace" font-size="11">_archive/</text>
+  <rect x="152" y="386" width="64" height="18" rx="4" fill="rgba(71,85,105,0.15)" stroke="#475569" stroke-width="0.5"/>
+  <text x="184" y="399" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="9">비어있음</text>
+
+  <!-- Arrow -->
+  <line x1="366" y1="255" x2="384" y2="255" stroke="#64748b" stroke-width="2.5" stroke-dasharray="6 3"/>
+  <polygon points="384,249 396,255 384,261" fill="#64748b"/>
+
+  <!-- Right: After Completion -->
+  <rect x="400" y="80" width="290" height="350" rx="12" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1"/>
+  <text x="545" y="104" text-anchor="middle" fill="#34d399" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">완료 후</text>
+
+  <!-- Tree structure - completed -->
+  <text x="420" y="136" fill="#f59e0b" font-family="Consolas, monospace" font-size="12">docs/design/</text>
+  <text x="420" y="158" fill="#64748b" font-family="Consolas, monospace" font-size="12">  [카테고리]/</text>
+  <text x="420" y="180" fill="#64748b" font-family="Consolas, monospace" font-size="12">    [기능명]/</text>
+
+  <!-- Design doc only at top level -->
+  <text x="440" y="214" fill="#34d399" font-family="Consolas, monospace" font-size="11">[기능명].md</text>
+  <rect x="546" y="202" width="80" height="18" rx="4" fill="rgba(16,185,129,0.2)" stroke="#10b981" stroke-width="0.5"/>
+  <text x="586" y="215" text-anchor="middle" fill="#10b981" font-family="Segoe UI, Arial, sans-serif" font-size="9">완성</text>
+
+  <!-- Archive with files -->
+  <text x="440" y="250" fill="#64748b" font-family="Consolas, monospace" font-size="11">_archive/</text>
+  <text x="460" y="274" fill="#475569" font-family="Consolas, monospace" font-size="10">phase1_exploration.md</text>
+  <text x="460" y="294" fill="#475569" font-family="Consolas, monospace" font-size="10">phase2_discovery.md</text>
+  <text x="460" y="314" fill="#475569" font-family="Consolas, monospace" font-size="10">phase3_validation.md</text>
+  <text x="460" y="334" fill="#475569" font-family="Consolas, monospace" font-size="10">plan.md</text>
+  <text x="460" y="354" fill="#475569" font-family="Consolas, monospace" font-size="10">HANDOFF.md</text>
+
+  <!-- Archived label -->
+  <rect x="592" y="266" width="72" height="94" rx="6" fill="rgba(71,85,105,0.1)" stroke="#475569" stroke-width="0.5" stroke-dasharray="4 2"/>
+  <text x="628" y="318" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="10" transform="rotate(-90, 628, 318)">보관됨</text>
+
+</svg>

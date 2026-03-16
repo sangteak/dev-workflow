@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 400" fill="none">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="720" y2="400">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <filter id="shadow2">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="720" height="400" rx="16" fill="url(#bg2)"/>
+
+  <!-- Title -->
+  <text x="360" y="40" text-anchor="middle" fill="#e2e8f0" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">페르소나 피드백 루프</text>
+  <text x="360" y="62" text-anchor="middle" fill="#64748b" font-family="Segoe UI, Arial, sans-serif" font-size="12">라운드 로빈 비평 리뷰 (토픽당 최대 3라운드)</text>
+
+  <!-- Round 1 -->
+  <g filter="url(#shadow2)">
+    <rect x="40" y="90" width="200" height="180" rx="12" fill="rgba(245,158,11,0.08)" stroke="#f59e0b" stroke-width="1.5"/>
+    <text x="140" y="118" text-anchor="middle" fill="#fbbf24" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">[라운드 1/3]</text>
+
+    <!-- Critical persona highlight -->
+    <rect x="56" y="132" width="168" height="28" rx="6" fill="rgba(245,158,11,0.2)" stroke="#f59e0b" stroke-width="1"/>
+    <text x="140" y="150" text-anchor="middle" fill="#fbbf24" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">비평: 🎮 게임 디자이너</text>
+
+    <text x="60" y="180" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">🎮 게임 디자이너 의견</text>
+    <text x="60" y="198" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">👤 플레이어 의견</text>
+    <text x="60" y="216" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">🔧 TD 의견</text>
+
+    <line x1="56" y1="228" x2="224" y2="228" stroke="#334155" stroke-width="1"/>
+    <text x="60" y="248" fill="#e2e8f0" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">합의: ...</text>
+  </g>
+
+  <!-- Arrow 1→2 -->
+  <line x1="240" y1="180" x2="256" y2="180" stroke="#475569" stroke-width="2" stroke-dasharray="5 3"/>
+  <polygon points="256,174 268,180 256,186" fill="#475569"/>
+
+  <!-- Round 2 -->
+  <g filter="url(#shadow2)">
+    <rect x="260" y="90" width="200" height="180" rx="12" fill="rgba(59,130,246,0.08)" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="360" y="118" text-anchor="middle" fill="#60a5fa" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">[라운드 2/3]</text>
+
+    <rect x="276" y="132" width="168" height="28" rx="6" fill="rgba(59,130,246,0.2)" stroke="#3b82f6" stroke-width="1"/>
+    <text x="360" y="150" text-anchor="middle" fill="#60a5fa" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">비평: 👤 플레이어</text>
+
+    <text x="280" y="180" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">🎮 게임 디자이너 의견</text>
+    <text x="280" y="198" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">👤 플레이어 의견</text>
+    <text x="280" y="216" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">🔧 TD 의견</text>
+
+    <line x1="276" y1="228" x2="444" y2="228" stroke="#334155" stroke-width="1"/>
+    <text x="280" y="248" fill="#e2e8f0" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">합의: ...</text>
+  </g>
+
+  <!-- Arrow 2→3 -->
+  <line x1="460" y1="180" x2="476" y2="180" stroke="#475569" stroke-width="2" stroke-dasharray="5 3"/>
+  <polygon points="476,174 488,180 476,186" fill="#475569"/>
+
+  <!-- Round 3 -->
+  <g filter="url(#shadow2)">
+    <rect x="480" y="90" width="200" height="180" rx="12" fill="rgba(16,185,129,0.08)" stroke="#10b981" stroke-width="1.5"/>
+    <text x="580" y="118" text-anchor="middle" fill="#34d399" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">[라운드 3/3]</text>
+
+    <rect x="496" y="132" width="168" height="28" rx="6" fill="rgba(16,185,129,0.2)" stroke="#10b981" stroke-width="1"/>
+    <text x="580" y="150" text-anchor="middle" fill="#34d399" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">비평: 🔧 테크 디렉터</text>
+
+    <text x="500" y="180" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">🎮 게임 디자이너 의견</text>
+    <text x="500" y="198" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">👤 플레이어 의견</text>
+    <text x="500" y="216" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">🔧 TD 의견</text>
+
+    <line x1="496" y1="228" x2="664" y2="228" stroke="#334155" stroke-width="1"/>
+    <text x="500" y="248" fill="#e2e8f0" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">합의: ...</text>
+  </g>
+
+  <!-- Bottom: User Decision -->
+  <rect x="160" y="300" width="400" height="72" rx="12" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6" stroke-width="1.5"/>
+  <text x="360" y="328" text-anchor="middle" fill="#a78bfa" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">사용자 결정</text>
+  <text x="360" y="350" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="12">합의 승인  |  추가 라운드 요청  |  방향 변경</text>
+
+  <!-- Arrow down to user -->
+  <line x1="360" y1="270" x2="360" y2="296" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="5 3"/>
+  <polygon points="354,296 360,308 366,296" fill="#8b5cf6"/>
+
+</svg>
