@@ -2,7 +2,7 @@
 
 Structured development workflow plugin for Claude Code.
 
-Brainstorming → Plan → Develop → Review with persona-based feedback loops.
+Brainstorming → Plan → Develop → Review → Completion with persona-based feedback loops.
 
 ## Installation
 
@@ -54,7 +54,7 @@ git clone https://github.com/sangteak/dev-workflow.git
 
 | Skill | Description |
 |---|---|
-| `workflow-orchestrator` | Session start protocol, stage detection, Superpowers delegation |
+| `workflow-orchestrator` | Workflow lifecycle management (start → stage detection → completion), Superpowers delegation |
 | `persona-resolution` | Persona confirmation at session start |
 | `brainstorming` | 5-phase brainstorming with persona feedback loops (Category → Exploration → Discovery → Validation → Consolidation) |
 | `plan-stage` | Feasibility Assessment, OPEN_QUESTIONS processing, persona feedback loop |
@@ -82,6 +82,9 @@ DEVELOP (Superpowers subagent-driven-development)
   no-git-mode: worktree 스킵, 파일 기반 체크포인트
         ↓
 REVIEW (Superpowers requesting-code-review)
+        ↓
+COMPLETION (dev-workflow)
+  문서 취합 → README 업데이트 → 커밋+푸시
 ```
 
 ## File Structure per Feature

@@ -1,6 +1,6 @@
 ---
 name: workflow-orchestrator
-description: Use at the start of EVERY session - orchestrates the full development workflow (Brainstorm → Plan → Develop → Review) with persona-based feedback loops
+description: Use at the start of EVERY session - orchestrates the full development workflow lifecycle (Brainstorm → Plan → Develop → Review → Completion) with persona-based feedback loops
 ---
 
 # Dev Workflow Orchestrator
@@ -64,6 +64,11 @@ At the start of EVERY session, execute in order:
 - 태스크 목록 존재 (Superpowers `writing-plans` 산출물)
 - 사용자 메시지: 구현, implement, 개발, 작성, coding, write
 
+→ VCS 모드에 관계없이 `superpowers:subagent-driven-development` 실행 시 아래 공통 규칙을 컨텍스트로 전달:
+  - 모든 태스크 완료 후 커밋을 제안하지 않는다
+  - 대신 다음 메시지로 완료를 보고한다: "✅ 모든 태스크가 완료되었습니다. 마무리를 진행해주세요."
+  - 커밋+푸시는 마무리 시퀀스(Completion Protocol)에서 처리한다
+
 → VCS 모드에 따라 분기:
 
 **git-mode:**
@@ -103,6 +108,7 @@ At the start of EVERY session, execute in order:
 | DEVELOP (git-mode) | Superpowers `using-git-worktrees` + `subagent-driven-development` | ❌ 없음 |
 | DEVELOP (no-git-mode) | Superpowers `subagent-driven-development` (worktree 스킵) | ❌ 없음 |
 | REVIEW | Superpowers `requesting-code-review` | ❌ 없음 |
+| COMPLETION | dev-workflow (Completion Protocol) | ❌ 없음 |
 
 - Superpowers 스킬이 존재하면 FIRST 실행
 - DEVELOP/REVIEW 충돌 시 → Superpowers 우선
@@ -110,6 +116,37 @@ At the start of EVERY session, execute in order:
 - PLAN Step 4 완료 후 → Superpowers `writing-plans` 실행
 - no-git-mode에서는 `using-git-worktrees` 를 호출하지 않는다
 - no-git-mode에서 `subagent-driven-development` 실행 시 git 관련 단계(commit, SHA 비교)를 파일 기반으로 대체하라는 컨텍스트를 전달한다
+- DEVELOP 완료 후 커밋+푸시는 Completion Protocol을 통해서만 실행한다
+
+---
+
+## Completion Protocol
+
+DEVELOP 완료 후 마무리 시퀀스를 관리한다. 커밋+푸시는 반드시 이 시퀀스 내에서만 실행한다.
+
+### 마무리 트리거 감지
+
+사용자의 자연어 발화로 마무리 시퀀스를 시작한다:
+- 한국어: "마무리", "마무리해줘", "완료", "정리해줘", "끝내자"
+- 영어: "wrap up", "finish", "finalize", "done"
+
+### 마무리 시퀀스
+
+감지 시 아래 순서를 자동으로 실행한다. 각 단계는 이전 단계 성공 후에만 진행한다.
+
+**Step 1: 문서 취합**
+- invoke `dev-workflow:document-consolidation` (consolidate-main 모드)
+- 실패 시 → 중단, 사용자에게 상황 보고
+
+**Step 2: README 영향 판단**
+- 변경 내용을 분석하여 README.md 업데이트 필요 여부를 판단한다
+- 영향 있음 → "README.md 업데이트가 필요해 보입니다. 진행할까요?" 사용자 확인 후 업데이트
+- 영향 없음 → 스킵
+- README.md가 프로젝트에 존재하지 않으면 스킵
+- 실패 시 → 중단, 사용자에게 상황 보고
+
+**Step 3: 커밋+푸시 제안**
+- "마무리가 완료되었습니다. 커밋+푸시를 진행할까요?" 사용자 확인 후 실행
 
 ---
 
