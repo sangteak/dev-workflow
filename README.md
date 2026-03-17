@@ -256,6 +256,7 @@ tasks/todo.md               ← Superpowers writing-plans 산출물
 | `context-handling` | HANDOFF.md 생성/복구 | 세션 시작 또는 사용자 요청 시 |
 | `development-principles` | 개발 철학, 자기개선 루프 | 전 단계 참조 |
 | `document-consolidation` | 문서 통합 및 아카이브 | COMPLETION 단계 |
+| `design-doc-index` | 설계 문서 색인 및 크로스레퍼런스 | BRAINSTORM/PLAN 중 사용자 요청 시 |
 
 ---
 
