@@ -14,10 +14,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - **`.claude-plugin/`** — 플러그인 메타데이터 (`plugin.json`, `marketplace.json`)
 - **`hooks/`** — 세션 시작 시 `workflow-orchestrator` 스킬을 자동 주입하는 bash 스크립트
-- **`skills/`** — 7개 핵심 스킬 (아래 참조)
+- **`skills/`** — 8개 핵심 스킬 (아래 참조)
 - **`docs/design/`** — 설계 문서 저장소 (카테고리/기능 구조)
 
-### Skills (7개)
+### Skills (8개)
 
 | 스킬 | 역할 |
 |---|---|
@@ -28,6 +28,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `context-handling` | HANDOFF.md 생성/복구 (멀티세션) |
 | `development-principles` | 개발 철학 및 자기개선 루프 |
 | `document-consolidation` | 개발 완료 후 phase/plan 파일 통합 |
+| `design-doc-index` | 설계 문서 색인 및 크로스레퍼런스 (BRAINSTORM/PLAN 중 기존 문서 참조) |
 
 ### Workflow Stage → Delegation
 
