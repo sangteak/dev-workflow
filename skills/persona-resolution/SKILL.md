@@ -25,11 +25,14 @@ description: Use at session start to confirm personas for the current workflow s
   [이모지] [이름]: [역할 설명]
   [이모지] [이름]: [역할 설명]
 
-이 페르소나를 사용할까요? (Yes / No)
+이 페르소나를 사용할까요?
+
+1. Yes
+2. No
 ```
 
-- Yes → 해당 페르소나 확정, Step 2 생략
-- No → Step 2로 이동
+- 1(Yes) → 해당 페르소나 확정, Step 2 생략
+- 2(No) → Step 2로 이동
 
 **예외: 동일 세션 내에서 personas.md를 방금 생성한 경우**
 Yes/No 확인 없이 자동 적용하고 확정만 선언한다:
@@ -95,11 +98,14 @@ DEVELOP/REVIEW는 Superpowers 서브에이전트가 전담한다.
     BRAINSTORM: [목록]
     PLAN:       [목록]
 
-  `.claude/personas.md` 로 저장할까요? (Yes / No)
+  `.claude/personas.md` 로 저장할까요?
+
+  1. Yes
+  2. No
 ```
 
-- Yes → `.claude/personas.md` 파일을 직접 생성한다
-- No  → 다음 세션에서도 동일하게 페르소나 확인 프로세스를 거친다
+- 1(Yes) → `.claude/personas.md` 파일을 직접 생성한다
+- 2(No) → 다음 세션에서도 동일하게 페르소나 확인 프로세스를 거친다
 
 **저장 제안 조건:**
 - 세션 중 페르소나가 한 번이라도 확정된 경우에만 제안
