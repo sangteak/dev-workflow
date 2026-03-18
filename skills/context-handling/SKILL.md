@@ -71,6 +71,10 @@ parent-feature: ""
 - `is-issue: true` 로 설정
 - `parent-feature: [부모 기능명]` 에 부모 기능명 기록
 
+**issues/ 내 HANDOFF 생성·업데이트 시 부모 격리 규칙:**
+- issues/ 내 HANDOFF 생성·업데이트 시 부모 Feature의 HANDOFF.md를 수정하거나 새로 생성하지 않는다
+- 부모-이슈 관계는 이슈 측 메타데이터(`is-issue`, `parent-feature`)로 표현되므로 부모 HANDOFF에 이슈 정보를 중복 기록할 필요가 없다
+
 ---
 
 ## 새 세션에서 HANDOFF 탐색 및 복구
@@ -124,7 +128,7 @@ HANDOFF.md를 기반으로 [국면명]을 이어서 진행합니다.
 
 ## 중간 결정 사항 업데이트
 
-작업 진행 중 HANDOFF.md에 중간 결정 사항을 업데이트할 수 있다.
+작업 진행 중 현재 작업 위치의 HANDOFF.md에 중간 결정 사항을 업데이트할 수 있다.
 사용자가 명시적으로 요청하면 현재 진행 상태를 HANDOFF.md에 반영한다:
 - `last-updated` 날짜 갱신
 - `current-phase` 최신화
