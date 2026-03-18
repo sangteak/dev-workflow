@@ -24,6 +24,21 @@ description: Generate a narrative system overview from related design documents.
 
 ---
 
+## 상태 정규화 전처리
+
+대상 문서 탐색 전에 상태값을 정규화한다. 이 전처리는 필터링보다 먼저 실행한다.
+
+**절차:**
+1. `docs/design/[카테고리]/[기능명]/[기능명].md` 패턴의 모든 파일을 탐색한다
+2. 각 파일의 프론트매터 `status` 값을 읽는다
+3. `complete` → 변경 없음
+4. `completed` → 해당 파일의 프론트매터를 `complete`로 수정한다
+5. 그 외 값 또는 `status` 없음 → 스킵
+
+수정 시 사용자에게 별도 안내하지 않는다 (silent fix).
+
+---
+
 ## 대상 문서 탐색
 
 ### 탐색 규칙

@@ -1,7 +1,7 @@
 ---
 feature: persona-feedback-loop
 category: dev-workflow
-status: completed
+status: complete
 created: 2026-03-11
 last-updated: 2026-03-11
 dependencies: []

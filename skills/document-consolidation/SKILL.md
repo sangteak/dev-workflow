@@ -47,6 +47,7 @@ description: Use when development is complete (after REVIEW) or when an issue is
 3. **프론트매터 업데이트**
    - `status: ready-for-plan` → `status: complete`
    - `last-updated: [오늘 날짜]`
+   - **⚠️ 정규값 우선순위 규칙:** plan.md 등 다른 소스에 명시된 상태값에 관계없이, 프론트매터 `status`는 반드시 정규값 `complete`를 사용한다. 정규 상태값은 `ready-for-plan`과 `complete` 2개만 존재한다.
 
 4. **변경 이력(섹션 10) 추가**
    ```
