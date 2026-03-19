@@ -20,13 +20,12 @@ At the start of EVERY session, execute in order:
    - 페르소나 확정 없이 다음 단계로 넘어가지 않는다
    - 예외: 동일 세션 내 브레인스토밍 완료 후 PLAN 전환 시 재실행 생략, PLAN 페르소나만 확정
 
-2. **HANDOFF & Design Document Check**
-   - Not exists (동일 세션 내 브레인스토밍 완료 직후) → 생략
-   - Not exists (신규 세션) → 아래 순서로 탐색:
-     1. `docs/design/**/HANDOFF.md` glob 탐색 → 발견 시 invoke `dev-workflow:context-handling` skill (HANDOFF 목록 제시)
-     2. HANDOFF 없음 + `docs/design/[카테고리]/[기능명]/phase*.md` 존재 → 가장 최근 phase 파일 감지, 다음 국면부터 이어서 진행 제안
-     3. HANDOFF 없음 + `docs/design/[카테고리]/[기능명]/[기능명].md` 만 존재 → 설계 문서 로드 후 PLAN 진입
-     4. `docs/design/` 자체가 없음 → "설계 문서가 없습니다. 설계 문서를 제공하시겠습니까, 아니면 바로 진행할까요?"
+2. **작업 상태 확인**
+   - 동일 세션 내 브레인스토밍 완료 직후 → 생략
+   - 신규 세션 → invoke `dev-workflow:context-handling` skill
+     (탐색, 분류, 목록 제시를 모두 처리. 탐색 과정을 직접 출력하지 않는다)
+   - context-handling이 "진행 중인 작업 없음"을 반환한 경우:
+     "설계 문서를 제공하시겠습니까, 아니면 바로 진행할까요?" 후속 질문
 
 3. **VCS Detection** — 프로젝트 루트의 `.git` 디렉토리 존재 여부를 확인한다
    - `.git` 존재 → `git-mode` (기존 Superpowers 방식 그대로)

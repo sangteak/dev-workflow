@@ -1,6 +1,6 @@
 ---
 name: context-handling
-description: Use when HANDOFF.md is detected at session start, or when the user explicitly requests a handoff save during brainstorming.
+description: Use at session start to detect and present all in-progress work (with or without HANDOFF.md), or when the user explicitly requests a handoff save during brainstorming.
 ---
 
 # Context Limit Handling (HANDOFF.md)
@@ -14,7 +14,11 @@ description: Use when HANDOFF.md is detected at session start, or when the user 
 
 ## 트리거 조건
 
-자동 감지하지 않는다. 반드시 사용자의 명시적 요청으로만 실행한다.
+### A. 세션 시작 시 (orchestrator에서 invoke)
+workflow-orchestrator의 Session Start Protocol Step 2에서 자동 invoke된다.
+진행 중인 작업 탐색 및 목록 제시를 담당한다.
+
+### B. HANDOFF 저장 요청 시
 
 아래 발언이 있을 때 즉시 HANDOFF.md를 생성한다:
 - "핸드오프 저장해줘"
@@ -77,52 +81,106 @@ parent-feature: ""
 
 ---
 
-## 새 세션에서 HANDOFF 탐색 및 복구
+## 새 세션에서 작업 탐색 및 목록 제시
 
-Session Start Protocol에서 호출 시:
+Session Start Protocol에서 invoke 시, 아래 절차를 실행한다.
+탐색부터 목록 제시까지의 과정을 사용자에게 출력하지 않는다.
+결과만 통합 목록 템플릿으로 제시한다.
 
-1. `docs/design/**/HANDOFF.md` glob 탐색을 실행한다
-2. 발견된 HANDOFF 파일들의 프론트매터(파일 상위 10줄)를 파싱한다
-3. `last-updated` 역순으로 정렬한다
-4. 아래 형식으로 목록을 제시한다:
+### 탐색 절차
 
-```
+docs/design/ 하위를 탐색하여 진행 중인 작업을 수집한 뒤, 아래 통합 목록 템플릿으로만 출력한다.
+
+1. `docs/design/` 존재 여부를 확인한다
+   - 존재하지 않으면 → "작업 없음" 템플릿을 출력하고 종료한다
+2. 아래 파일을 수집한다 (`_archive/` 경로 포함 항목은 즉시 제외):
+   - `docs/design/**/HANDOFF.md`
+   - `docs/design/**/phase*.md`
+   - 각 기능 디렉토리의 `[기능명].md`, `plan.md`
+3. 디렉토리별로 그룹핑한 뒤, 아래 우선순위로 상태를 판정한다:
+   1) HANDOFF.md 있음 → `current-phase` 값을 라벨로 사용
+   2) HANDOFF 없음 + `status: complete` → 완료, 목록에서 제외
+   3) HANDOFF 없음 + `plan.md` 존재 + `status` ≠ `complete` → 라벨: `DEVELOP 진행 중`
+   4) HANDOFF 없음 + `[기능명].md` 존재 + `status: ready-for-plan` → 라벨: `PLAN 대기`
+   5) HANDOFF 없음 + `phase*.md`만 존재 → 가장 높은 phase 번호 + `완료` (예: `Phase 2 완료`)
+   6) 위 어디에도 해당하지 않음 → 목록에서 제외
+4. HANDOFF 없는 항목에는 `⚠️ HANDOFF 없음` 태그를 부착한다
+5. `is-issue: true`인 HANDOFF 또는 `issues/` 하위 항목은 `parent-feature` 하위에 들여쓰기로 표시한다
+6. `last-updated` (HANDOFF) 또는 가장 최근 파일 수정일 역순으로 정렬한다
+7. 통합 목록 템플릿으로 출력한다
+
+### ⛔ 금지 출력
+
+탐색부터 목록 제시 사이에 다음을 출력하지 않는다:
+- "탐색합니다", "검색 중", "파일을 찾고 있습니다"
+- glob 실행 결과 (파일 수, 경로 목록)
+- "HANDOFF.md가 없습니다", "다른 위치에서 찾겠습니다"
+- sequential-thinking 등 내부 추론 과정
+- 탐색 성공/실패 중간 보고
+
+### 통합 목록 템플릿
+
+**진행 중인 작업이 있는 경우:**
+
+````
 📋 진행 중인 작업:
 
   0. ✨ 새 작업 시작
   1. [카테고리] 기능명 (현재 단계) — 최근: YYYY-MM-DD
        └─ 🔧 이슈: 문제명 (현재 단계)
-  2. [카테고리] 기능명 (현재 단계) — 최근: YYYY-MM-DD
+  2. [카테고리] 기능명 (Phase 1 완료 · ⚠️ HANDOFF 없음) — 최근: YYYY-MM-DD
 
 이어서 진행할 작업을 선택하거나, 새 작업을 시작하세요.
-```
+````
 
-5. `is-issue: true`인 HANDOFF는 `parent-feature` 하위에 들여쓰기로 표시한다
-6. 사용자가 번호를 선택하면 해당 HANDOFF를 로드하고 복구 흐름을 진행한다
-7. "새 작업 시작" 선택 시 일반 워크플로우 진입
+**진행 중인 작업이 없는 경우:**
 
-**HANDOFF 미발견 시:**
-`docs/design/` 구조를 분석한다:
-- `phase*.md`만 존재 → 가장 최근 phase 감지, "HANDOFF를 생성하고 이어서 진행할까요?" 제안
-- `plan.md` 존재 → "개발 단계 HANDOFF를 생성할까요?" 제안
-- `[기능명].md`만 존재 → 완료된 기능, 미완료 작업 없음 안내
+````
+📋 진행 중인 작업이 없습니다.
+
+  0. ✨ 새 작업 시작
+
+새 작업을 시작하세요.
+````
 
 ---
 
-## HANDOFF 복구 흐름
+## 작업 복구 흐름
 
-사용자가 목록에서 작업을 선택하면:
+사용자가 목록에서 작업을 선택하면, HANDOFF 유무에 따라 다른 안내를 제시한다.
 
-```
+### HANDOFF 있는 경우
+
+````
 ⚠️ 이전 세션이 [국면명] 진행 중에 종료되었습니다.
 HANDOFF.md를 기반으로 [국면명]을 이어서 진행합니다.
 계속할까요?
-```
+````
 
 사용자 확인 후:
 1. 완료된 phase 파일들을 로드한다
 2. HANDOFF.md의 진행 내용을 기반으로 중단 지점부터 이어서 진행한다
 3. 국면 완료 → 해당 `phase*.md` 생성 → `HANDOFF.md` 삭제 (역할 완료)
+
+### HANDOFF 없는 경우
+
+````
+⚠️ 이 작업에는 HANDOFF.md가 없습니다.
+마지막으로 완료된 단계는 [Phase N / PLAN 대기 / DEVELOP]입니다.
+[다음 단계명]부터 새로 시작합니다. 계속할까요?
+````
+
+사용자 확인 후:
+
+| 라벨 | 복구 동작 |
+|------|----------|
+| Phase N 완료 | phase 파일 로드 → Phase N+1부터 시작 |
+| PLAN 대기 | [기능명].md 로드 → PLAN 단계 진입 |
+| DEVELOP 진행 중 | plan.md 로드 → 태스크 체크리스트 확인 후 재개 |
+
+### "새 작업 시작" 선택 시
+
+일반 워크플로우 진입 (orchestrator의 Stage Detection으로 이동)
 
 ---
 
