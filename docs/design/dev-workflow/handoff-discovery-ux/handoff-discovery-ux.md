@@ -116,13 +116,13 @@ Step 3: 정렬 및 출력
 
 | 파일 조합 | 라벨 |
 |-----------|------|
-| HANDOFF 있음 | HANDOFF의 `current-phase` 값 그대로 |
+| `status: complete` (HANDOFF 유무 무관) | 완료 (목록에서 제외) |
+| HANDOFF 있음 + `status` ≠ `complete` | HANDOFF의 `current-phase` 값 그대로 |
 | `phase1.md`만 존재 | Phase 1 완료 |
 | `phase1.md` + `phase2.md` | Phase 2 완료 |
 | `phase1.md` + `phase2.md` + `phase3.md` | Phase 3 완료 |
 | `[기능명].md` + `status: ready-for-plan` | PLAN 대기 |
 | `plan.md` 존재 + `status` ≠ `complete` | DEVELOP 진행 중 |
-| `status: complete` | 완료 (목록에서 제외) |
 | `_archive/` 존재 | 완료 (목록에서 제외) |
 | 위 어디에도 해당 안 됨 | 목록에서 제외 |
 
@@ -224,3 +224,5 @@ context-handling 스킬에 아래를 명시한다:
 |------|-----------|-----------|------|
 | 2026-03-19 | 초안 작성 | context-handling, orchestrator | ready-for-plan |
 | 2026-03-19 | 개발 완료 — 문서 통합 | context-handling, orchestrator | 완료 |
+| 2026-03-19 | status:complete 필터를 최우선순위로 이동 (HANDOFF 잔존 무관) | context-handling | 완료 |
+| 2026-03-19 | 잔존 HANDOFF 정리 제안 추가 (complete인데 HANDOFF 남아있으면 삭제 제안) | context-handling | 완료 |
