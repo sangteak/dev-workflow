@@ -29,7 +29,9 @@ description: Generate a narrative system overview from related design documents.
 대상 문서 탐색 전에 상태값을 정규화한다. 이 전처리는 필터링보다 먼저 실행한다.
 
 **절차:**
-1. `docs/design/[카테고리]/[기능명]/[기능명].md` 패턴의 모든 파일을 탐색한다
+0. 경로 해소: `find . -maxdepth 2 -iname "docs" -type d` 실행 후 design 하위 확인
+   (상세: development-principles "경로 해소 규칙" 참조)
+1. `[해소된 경로]/[카테고리]/[기능명]/[기능명].md` 패턴의 모든 파일을 탐색한다
 2. 각 파일의 프론트매터 `status` 값을 읽는다
 3. `complete` → 변경 없음
 4. `completed` → 해당 파일의 프론트매터를 `complete`로 수정한다
@@ -43,12 +45,12 @@ description: Generate a narrative system overview from related design documents.
 
 ### 탐색 규칙
 
-1. `docs/design/` 하위의 설계 문서(`[카테고리]/[기능명]/[기능명].md`)를 glob 탐색한다
+1. `[해소된 경로]/` 하위의 설계 문서(`[카테고리]/[기능명]/[기능명].md`)를 glob 탐색한다
 2. 프론트매터 `status: complete` 인 문서만 대상으로 한다
 3. 인자에 따른 매칭:
    - **키워드 매칭**: 디렉토리명 부분 매칭(substring). design-doc-index와 동일 규칙
-     - 카테고리 레벨: `docs/design/*[키워드]*/[기능명]/[기능명].md`
-     - 기능 레벨: `docs/design/[카테고리]/*[키워드]*/[기능명].md`
+     - 카테고리 레벨: `[해소된 경로]/*[키워드]*/[기능명]/[기능명].md`
+     - 기능 레벨: `[해소된 경로]/[카테고리]/*[키워드]*/[기능명].md`
      - 두 결과 합산 후 중복 제거
    - **카테고리 전체**: 해당 카테고리 하위 모든 complete 문서
    - **기능명 목록**: 지정된 기능만

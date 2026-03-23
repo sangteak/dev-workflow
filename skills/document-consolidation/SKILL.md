@@ -26,12 +26,15 @@ description: Use when development is complete (after REVIEW) or when an issue is
 
 ### 실행 절차
 
+0. **경로 해소:** `find . -maxdepth 2 -iname "docs" -type d` 실행 후 design 하위 확인
+   (상세: development-principles "경로 해소 규칙" 참조)
+
 1. **소스 파일 읽기**
-   - `docs/design/[카테고리]/[기능명]/phase1_exploration.md`
-   - `docs/design/[카테고리]/[기능명]/phase2_discovery.md`
-   - `docs/design/[카테고리]/[기능명]/phase3_validation.md`
-   - `docs/design/[카테고리]/[기능명]/plan.md`
-   - `docs/design/[카테고리]/[기능명]/HANDOFF.md` (존재 시)
+   - `[해소된 경로]/[카테고리]/[기능명]/phase1_exploration.md`
+   - `[해소된 경로]/[카테고리]/[기능명]/phase2_discovery.md`
+   - `[해소된 경로]/[카테고리]/[기능명]/phase3_validation.md`
+   - `[해소된 경로]/[카테고리]/[기능명]/plan.md`
+   - `[해소된 경로]/[카테고리]/[기능명]/HANDOFF.md` (존재 시)
 
 2. **섹션별 매핑 규칙에 따라 design 문서 업데이트**
 
@@ -100,8 +103,11 @@ docs/design/[카테고리]/[기능명]/
 
 ### 실행 절차
 
+0. **경로 해소:** `find . -maxdepth 2 -iname "docs" -type d` 실행 후 design 하위 확인
+   (상세: development-principles "경로 해소 규칙" 참조)
+
 1. **이슈 설계 문서 읽기**
-   - `docs/design/[카테고리]/[기능명]/issues/[문제명]/[문제명].md`
+   - `[해소된 경로]/[카테고리]/[기능명]/issues/[문제명]/[문제명].md`
 
 2. **부모 design 문서에 자연스럽게 통합**
 

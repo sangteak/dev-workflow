@@ -53,7 +53,9 @@ At the start of EVERY session, execute in order:
 → invoke `dev-workflow:brainstorming` skill
 
 ### PLAN
-- `docs/design/[카테고리]/[기능명]/[기능명].md` 존재 + 태스크 목록(plan.md) 미생성
+- 경로 해소(`find . -maxdepth 2 -iname "docs" -type d`) 후
+  `[해소된 경로]/[카테고리]/[기능명]/[기능명].md` 존재 + 태스크 목록(plan.md) 미생성
+  (상세: development-principles "경로 해소 규칙" 참조)
 - 사용자 메시지: 계획, plan, 설계, architecture, 구조, breakdown
 - Superpowers `writing-plans` 활성화 직전
 
