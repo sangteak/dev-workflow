@@ -20,7 +20,7 @@
 | **PLAN** | dev-workflow | 실현 가능성 평가, 설계 방향 수립, 태스크 분해 |
 | **DEVELOP** | Superpowers | Git worktree 기반 서브에이전트 구현 (git/no-git 모드) |
 | **REVIEW** | Superpowers | 코드 품질 리뷰 + 스펙 적합성 검증 |
-| **COMPLETION** | dev-workflow | 문서 취합, README 업데이트, 커밋+푸시 |
+| **COMPLETION** | dev-workflow | 문서 취합(feature→domain 통합), README 업데이트, 커밋+푸시 |
 
 ---
 
@@ -134,17 +134,69 @@ git clone https://github.com/sangteak/dev-workflow.git
 
 ## Quick Start
 
-### 1. 새 기능 브레인스토밍 시작
+### End-to-End 워크플로우 예시
 
-세션을 시작하고 자연어로 요청하면 됩니다:
+하나의 기능이 아이디어에서 완성까지 흘러가는 전체 과정입니다:
 
 ```
-"인벤토리 시스템을 브레인스토밍하고 싶어"
+[1] 세션 시작 — 자동으로 페르소나 확정 + 단계 감지
+
+사용자: "인벤토리 시스템을 브레인스토밍하고 싶어"
+
+  📋 기본 페르소나를 제시합니다. 현재 단계: BRAINSTORM
+    🎮 Game Designer / 👤 Player / 🔧 TD
+  이대로 진행하거나, 수정할 페르소나를 알려주세요.
+
+사용자: "그대로 진행해"
+
+  ✅ 페르소나 확정. BRAINSTORM Phase 0 시작...
 ```
 
-워크플로우가 자동으로 BRAINSTORM 단계를 감지하고, 페르소나를 확정한 뒤 5단계 브레인스토밍을 시작합니다.
+```
+[2] BRAINSTORM — 5단계 브레인스토밍 + 페르소나 피드백 루프
 
-### 2. 이전 작업 이어가기
+  Phase 0: 카테고리 결정 → "game-systems"
+  Phase 1: Exploration → 요구사항 탐색 (페르소나 토론 3라운드)
+  Phase 2: Discovery → 미정의 영역 발굴
+  Phase 3: Validation → 기술적 실현 가능성 검증 (🔧 TD 합류)
+  Phase 4: Consolidation → 10섹션 설계 문서 생성
+```
+
+```
+[3] PLAN — 실현 가능성 평가 + 태스크 분해
+
+사용자: "계획 세워줘"
+
+  🏛️ Architect / 🔧 Tech Lead / 📋 PM 페르소나로 전환
+  → OPEN_QUESTIONS 해소
+  → 요구사항별 판정 (✅ FEASIBLE / ⚠️ CAUTION / 🚫 RENEGOTIATE)
+  → Superpowers writing-plans 실행 → plan.md 생성
+```
+
+```
+[4] DEVELOP — Superpowers 서브에이전트 구현
+
+사용자: "구현 시작해"
+
+  ⚙️ git-mode 감지 — worktree 생성 후 서브에이전트 병렬 실행
+  → 태스크별 Implementer + Code Quality Reviewer + Spec Reviewer
+  → "✅ 모든 태스크가 완료되었습니다. 마무리를 진행해주세요."
+```
+
+```
+[5] COMPLETION — 마무리
+
+사용자: "마무리해줘"
+
+  → 문서 취합 (phase/plan → 설계 문서 통합, _archive/ 이동)
+  → domain.md 통합 제안
+  → README 영향 판단
+  → 커밋+푸시 제안
+```
+
+### 주요 시나리오
+
+#### 이전 작업 이어가기
 
 새 세션을 시작하면 자동으로 `HANDOFF.md`를 탐색합니다:
 
@@ -157,15 +209,32 @@ git clone https://github.com/sangteak/dev-workflow.git
 > 어느 작업을 이어서 진행할까요?
 ```
 
-### 3. 마무리하기
+`/context-handling save`로 현재 작업 상태를 저장하고, `/clear` 후 새 메시지를 입력하면 자동 복구됩니다.
 
-개발이 완료되면 자연어로 마무리를 요청합니다:
+#### 설계 문서가 이미 있는 경우
+
+설계 문서를 제공하면 BRAINSTORM을 건너뛰고 PLAN부터 시작합니다:
 
 ```
-"마무리해줘"
+사용자: "이 설계 문서로 계획 세워줘" (설계 문서 경로 제공)
 ```
 
-자동으로 문서 취합 → README 업데이트 판단 → 커밋+푸시 순서로 진행됩니다.
+#### 기존 설계 문서 참조하기
+
+브레인스토밍이나 계획 중 기존 완료된 설계 문서를 참조할 수 있습니다:
+
+```
+사용자: "기존 설계 문서 목록 보여줘"
+사용자: "combat-system 설계 문서 로드해줘"
+```
+
+#### 페르소나 커스터마이징
+
+`.claude/personas.md`를 생성하면 프로젝트에 맞는 페르소나를 사용할 수 있습니다. 세션 종료 시 자동으로 저장을 제안합니다.
+
+#### 이슈/핫픽스 서브워크플로우
+
+완료된 기능에 문제가 발생하면 `issues/` 하위에서 별도 워크플로우를 진행하고, 완료 후 부모 설계 문서에 병합합니다.
 
 ---
 
@@ -215,11 +284,12 @@ Superpowers `requesting-code-review`에 위임됩니다:
 
 ### COMPLETION
 
-마무리 트리거 감지 시 자동 실행:
+마무리 트리거("마무리해줘", "wrap up" 등) 감지 시 자동 실행:
 
-1. **문서 취합** — phase/plan 파일을 설계 문서에 통합, `_archive/`로 이동
-2. **README 영향 판단** — 변경 내용에 따라 README 업데이트 제안
-3. **커밋+푸시 제안** — 사용자 확인 후 실행
+1. **consolidate-main** — phase/plan 파일을 feature 설계 문서에 통합, `_archive/`로 이동
+2. **consolidate-domain** — feature 설계 문서를 category 레벨의 domain.md에 통합 (사용자 선택)
+3. **README 영향 판단** — 변경 내용에 따라 README 업데이트 제안
+4. **커밋+푸시 제안** — 사용자 확인 후 실행
 
 ---
 
@@ -228,6 +298,8 @@ Superpowers `requesting-code-review`에 위임됩니다:
 <p align="center">
   <img src="images/file-structure.svg" alt="Design Document Structure" width="85%"/>
 </p>
+
+**개발 중** — feature 디렉토리에 문서가 생성됩니다:
 
 ```
 docs/design/[category]/[feature]/
@@ -239,8 +311,19 @@ docs/design/[category]/[feature]/
 ├── HANDOFF.md              ← 세션 중단 시 저장 (임시)
 ├── issues/                 ← 핫픽스 서브워크플로우 (선택)
 │   └── [issue-name]/
-└── _archive/               ← 개발 완료 후 phase/plan 파일 이동
+└── _archive/               ← consolidate-main 후 phase/plan 이동
 ```
+
+**통합 완료** — domain.md로 통합되면 feature 디렉토리는 삭제됩니다:
+
+```
+docs/design/[category]/
+├── [domain].md             ← 여러 feature를 통합한 SSOT
+├── [domain].md
+└── [feature]/              ← 아직 통합되지 않은 진행 중 feature
+```
+
+> consolidate-main(feature 내 통합) → consolidate-domain(domain.md 통합) 순서로 진행됩니다.
 
 **보조 파일:**
 
@@ -262,7 +345,7 @@ tasks/todo.md               ← Superpowers writing-plans 산출물
 | `plan-stage` | 실현 가능성 평가, 설계 방향 수립 | PLAN 단계 진입 시 |
 | `context-handling` | HANDOFF.md 생성/복구 (`save`/`resume` 서브커맨드) | 세션 시작 (자동) 또는 `/context-handling save\|resume` |
 | `development-principles` | 개발 철학, 자기개선 루프 | 전 단계 참조 |
-| `document-consolidation` | 문서 통합 및 아카이브 | COMPLETION 단계 |
+| `document-consolidation` | 문서 통합 3모드: consolidate-main (feature 내 통합), consolidate-issue (이슈 병합), consolidate-domain (domain.md 통합) | COMPLETION 단계 |
 | `design-doc-index` | 설계 문서 색인 및 크로스레퍼런스 | BRAINSTORM/PLAN 중 사용자 요청 시 |
 | `design-summary` | 관련 설계 문서 그룹의 통합 요약 생성 | `/dev-workflow:design-summary` 명령 호출 시 |
 
