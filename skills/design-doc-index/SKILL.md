@@ -180,7 +180,7 @@ feature 레벨:  [해소된 경로]/[카테고리]/*aggro*/[기능명].md
 
 ### 매칭 실패 시
 
-키워드에 해당하는 `status: complete` 문서가 없으면:
+키워드에 해당하는 설계 문서(domain.md 또는 `status: complete` feature 문서)가 없으면:
 ```
 📖 "[키워드]" 관련 설계 문서를 찾지 못했습니다.
 ```
