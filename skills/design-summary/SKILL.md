@@ -32,6 +32,7 @@ description: Generate a narrative system overview from related design documents.
 0. 경로 해소: `find . -maxdepth 2 -iname "docs" -type d` 실행 후 design 하위 확인
    (상세: development-principles "경로 해소 규칙" 참조)
 1. `[해소된 경로]/[카테고리]/[기능명]/[기능명].md` 패턴의 모든 파일을 탐색한다
+1-1. domain.md(category 직속 .md)는 상태 정규화 대상에서 제외한다
 2. 각 파일의 프론트매터 `status` 값을 읽는다
 3. `complete` → 변경 없음
 4. `completed` → 해당 파일의 프론트매터를 `complete`로 수정한다
@@ -45,15 +46,19 @@ description: Generate a narrative system overview from related design documents.
 
 ### 탐색 규칙
 
-1. `[해소된 경로]/` 하위의 설계 문서(`[카테고리]/[기능명]/[기능명].md`)를 glob 탐색한다
-2. 프론트매터 `status: complete` 인 문서만 대상으로 한다
-3. 인자에 따른 매칭:
-   - **키워드 매칭**: 디렉토리명 부분 매칭(substring). design-doc-index와 동일 규칙
-     - 카테고리 레벨: `[해소된 경로]/*[키워드]*/[기능명]/[기능명].md`
-     - 기능 레벨: `[해소된 경로]/[카테고리]/*[키워드]*/[기능명].md`
-     - 두 결과 합산 후 중복 제거
-   - **카테고리 전체**: 해당 카테고리 하위 모든 complete 문서
-   - **기능명 목록**: 지정된 기능만
+1. `[해소된 경로]/` 하위의 설계 문서를 glob 탐색한다
+2. **domain.md 우선**: category 직속 .md 파일을 먼저 탐색
+3. **feature 보조**: domain.md가 없는 경우 feature 설계 문서(`[기능명]/[기능명].md`)를 탐색
+4. feature 문서는 프론트매터 `status: complete` 필터링 유지
+5. 인자에 따른 매칭:
+   - **키워드 매칭**: 파일명 및 디렉토리명 부분 매칭(substring)
+     - domain 레벨: `[해소된 경로]/[카테고리]/*[키워드]*.md`
+                     `[해소된 경로]/*[키워드]*/*.md`
+     - feature 레벨: `[해소된 경로]/[카테고리]/*[키워드]*/[기능명].md`
+                      `[해소된 경로]/*[키워드]*/[기능명]/[기능명].md`
+     - 모든 결과 합산 후 중복 제거, domain 우선
+   - **카테고리 전체**: 해당 카테고리 하위 모든 domain.md + complete feature 문서
+   - **기능명 목록**: 지정된 문서만
 
 ### 매칭 결과 확인
 
@@ -68,7 +73,7 @@ description: Generate a narrative system overview from related design documents.
 이 문서들의 통합 요약을 생성할까요?
 ```
 
-매칭 실패 시: `📖 "[키워드]" 관련 구현 완료된 설계 문서를 찾지 못했습니다.`
+매칭 실패 시: `📖 "[키워드]" 관련 설계 문서를 찾지 못했습니다.`
 
 ---
 
@@ -97,6 +102,12 @@ description: Generate a narrative system overview from related design documents.
 ```
 
 2단계: 메인 에이전트가 추출 결과를 조합하여 출력 구조 가이드에 따라 서사적 재구성을 수행한다
+
+### domain.md 특별 처리
+
+domain.md는 이미 통합된 문서이므로, 추출 시 전체 구조를 그대로 활용한다.
+feature 설계 문서와 domain.md가 동일 시스템에 대해 존재하면,
+domain.md의 내용을 기준으로 하고 feature 문서는 보충 정보로만 활용한다.
 
 ---
 
