@@ -1,6 +1,6 @@
 ---
 name: document-consolidation
-description: Use when development is complete (after REVIEW) or when an issue is resolved. Consolidates phase/plan files into the final design document and manages _archive/.
+description: Use when development is complete (after REVIEW) or when an issue is resolved. Consolidates phase/plan files into the final design document, suggests domain merge, and cleans up feature directory.
 ---
 
 # Document Consolidation
@@ -70,38 +70,75 @@ description: Use when development is complete (after REVIEW) or when an issue is
    - 섹션 9: 구현 결과 및 일탈 사항 작성
    - 섹션 10: 변경 이력 추가
 
-   확인 후 _archive/ 이동을 진행합니다. 수정할 부분이 있으면 알려주세요.
+   확인 후 다음 단계를 진행합니다. 수정할 부분이 있으면 알려주세요.
    ```
 
-6. **사용자 승인 후 _archive/ 이동**
+6. **작업 내용 분석 및 domain 병합 제안**
+
+   feature.md의 내용을 분석하여 domain.md에 반영할 변경이 있는지 판단한다.
+   판단 체크리스트:
+   - 섹션 3에 domain.md에 없는 새 REQ가 있는가?
+   - 섹션 4/6에 domain.md와 다른 설계 결정이 있는가?
+
+   **병합 권장 시:**
    ```
-   mkdir -p docs/design/[카테고리]/[기능명]/_archive
-   mv phase1_exploration.md → _archive/
-   mv phase2_discovery.md → _archive/
-   mv phase3_validation.md → _archive/
-   mv plan.md → _archive/
-   mv HANDOFF.md → _archive/ (존재 시)
+   📋 작업 내용 분석 결과:
+
+   - 새로운 요구사항: [있음/없음 + 요약]
+   - 설계 변경: [있음/없음 + 요약]
+   - 기술 결정 추가: [있음/없음 + 요약]
+
+   → domain.md 병합을 권장합니다. 진행할까요?
+
+   1. Yes — domain 병합 후 feature 디렉토리 삭제
+   2. No — feature 디렉토리만 삭제
    ```
+
+   **병합 불필요 시:**
+   ```
+   📋 작업 내용 분석 결과:
+
+   - domain.md에 반영할 새로운 내용이 없습니다.
+   - feature 디렉토리를 삭제합니다. 진행할까요?
+
+   1. Yes
+   2. No
+   ```
+
+   - Yes (병합 권장) → consolidate-domain(Mode 3) 진행
+   - No (병합 권장) 또는 Yes (병합 불필요) → Step 7로 진행
+   - No (병합 불필요) → 삭제 취소, feature 디렉토리 유지
+
+   > 참고: 사용자가 삭제를 거부한 경우 feature 디렉토리가 유지된다. 이는 사용자 override를 허용하는 설계이다.
+
+7. **feature 디렉토리 삭제 (domain 병합 스킵 시)**
+
+   domain 병합을 하지 않는 경우, feature 디렉토리를 직접 삭제한다.
+
+   ```
+   📋 feature 디렉토리를 삭제합니다.
+
+   삭제 대상: docs/design/[카테고리]/[기능명]/
+   (설계 문서의 핵심 내용은 이미 통합되었습니다)
+
+   진행할까요?
+   1. Yes
+   2. No
+   ```
+
+   사용자 승인 후 feature 디렉토리 전체 삭제.
 
 ### 최종 상태
 
+**domain 병합한 경우:**
+Mode 3 완료 상태와 동일 (feature 디렉토리 삭제됨, domain.md에 통합)
+
+**domain 병합 스킵한 경우:**
 ```
-docs/design/[카테고리]/[기능명]/
-├── [기능명].md              ← 자기완결적 최종 문서
-└── _archive/
-    ├── phase1_exploration.md
-    ├── phase2_discovery.md
-    ├── phase3_validation.md
-    ├── plan.md
-    └── HANDOFF.md
+docs/design/[카테고리]/
+└── (feature 디렉토리 삭제됨)
 ```
-
-### domain 통합 연결
-
-_archive/ 이동 완료 후, consolidate-domain(Mode 3)을 제안한다:
-"domain.md 통합을 진행할까요?"
-
-사용자가 거부하면 consolidate-main만으로 완료 처리한다.
+feature.md의 핵심 내용은 Mode 1 Step 1~4에서 이미 통합 처리됨.
 
 ---
 
@@ -279,7 +316,7 @@ docs/design/[카테고리]/
 - 세 모드 모두 반자동이다 — 자동 병합 후 반드시 사용자 리뷰를 거친다
 - 병합 결과가 부자연스러우면 사용자가 직접 수정할 수 있도록 안내한다
 - 통합 실행 전 대상 파일이 존재하는지 확인한다
-- _archive/ 이동 또는 issues/ 삭제는 사용자 승인 후에만 실행한다
+- feature 디렉토리 삭제 또는 issues/ 삭제는 사용자 승인 후에만 실행한다
 - 변경된 섹션만 하이라이트하여 사용자 리뷰를 빠르게 한다
 - domain.md 통합 시 기존 domain.md의 구조와 톤을 유지한다
 - pending 파일은 merge 키워드만 기록하고, 상세 내용은 코드베이스 참조로 보완한다

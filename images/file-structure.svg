@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 460" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" fill="none">
   <defs>
-    <linearGradient id="bg4" x1="0" y1="0" x2="820" y2="460">
+    <linearGradient id="bg4" x1="0" y1="0" x2="720" y2="420">
       <stop offset="0%" stop-color="#0f172a"/>
       <stop offset="100%" stop-color="#1e293b"/>
     </linearGradient>
@@ -10,14 +10,14 @@
   </defs>
 
   <!-- Background -->
-  <rect width="820" height="460" rx="16" fill="url(#bg4)"/>
+  <rect width="720" height="420" rx="16" fill="url(#bg4)"/>
 
   <!-- Title -->
-  <text x="410" y="38" text-anchor="middle" fill="#e2e8f0" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">설계 문서 구조</text>
-  <text x="410" y="58" text-anchor="middle" fill="#64748b" font-family="Segoe UI, Arial, sans-serif" font-size="12">각 기능은 docs/design/ 아래에 구조화된 문서 트리를 생성합니다</text>
+  <text x="360" y="38" text-anchor="middle" fill="#e2e8f0" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">설계 문서 구조</text>
+  <text x="360" y="58" text-anchor="middle" fill="#64748b" font-family="Segoe UI, Arial, sans-serif" font-size="12">각 기능은 docs/design/ 아래에 구조화된 문서 트리를 생성합니다</text>
 
   <!-- Left: Active Development -->
-  <rect x="30" y="80" width="320" height="350" rx="12" fill="rgba(59,130,246,0.06)" stroke="#3b82f6" stroke-width="1"/>
+  <rect x="30" y="80" width="320" height="310" rx="12" fill="rgba(59,130,246,0.06)" stroke="#3b82f6" stroke-width="1"/>
   <text x="190" y="104" text-anchor="middle" fill="#60a5fa" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">개발 중</text>
 
   <!-- Tree structure - active -->
@@ -59,48 +59,28 @@
   <rect x="172" y="356" width="72" height="18" rx="4" fill="rgba(100,116,139,0.15)" stroke="#64748b" stroke-width="0.5"/>
   <text x="208" y="369" text-anchor="middle" fill="#64748b" font-family="Segoe UI, Arial, sans-serif" font-size="9">선택사항</text>
 
-  <!-- Archive empty -->
-  <text x="70" y="398" fill="#475569" font-family="Consolas, monospace" font-size="11">_archive/</text>
-  <rect x="152" y="386" width="64" height="18" rx="4" fill="rgba(71,85,105,0.15)" stroke="#475569" stroke-width="0.5"/>
-  <text x="184" y="399" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="9">비어있음</text>
-
   <!-- Flow Arrow between panels -->
-  <line x1="366" y1="255" x2="440" y2="255" stroke="#34d399" stroke-width="2" stroke-dasharray="6 3" marker-end="url(#arrowhead)"/>
-  <text x="403" y="242" text-anchor="middle" fill="#34d399" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="600">통합</text>
+  <line x1="366" y1="240" x2="384" y2="240" stroke="#64748b" stroke-width="2.5" stroke-dasharray="6 3"/>
+  <polygon points="384,234 396,240 384,246" fill="#64748b"/>
+  <text x="381" y="228" text-anchor="middle" fill="#34d399" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="600">통합</text>
 
   <!-- Right: After Domain Consolidation -->
-  <rect x="460" y="80" width="330" height="350" rx="12" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1"/>
-  <text x="625" y="104" text-anchor="middle" fill="#34d399" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">통합 완료</text>
+  <rect x="400" y="80" width="290" height="210" rx="12" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1"/>
+  <text x="545" y="104" text-anchor="middle" fill="#34d399" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">통합 완료</text>
 
   <!-- Tree structure - consolidated -->
-  <text x="480" y="136" fill="#f59e0b" font-family="Consolas, monospace" font-size="12">docs/design/</text>
-  <text x="480" y="158" fill="#64748b" font-family="Consolas, monospace" font-size="12">  [카테고리]/</text>
+  <text x="420" y="136" fill="#f59e0b" font-family="Consolas, monospace" font-size="12">docs/design/</text>
+  <text x="420" y="158" fill="#64748b" font-family="Consolas, monospace" font-size="12">  [카테고리]/</text>
 
-  <!-- Domain doc - the SSOT -->
-  <text x="500" y="192" fill="#34d399" font-family="Consolas, monospace" font-size="12" font-weight="700">[domain명].md</text>
+  <!-- After completion: domain.md only -->
+  <text x="440" y="214" fill="#34d399" font-family="Consolas, monospace" font-size="11">[domain명].md</text>
+  <rect x="546" y="202" width="80" height="18" rx="4" fill="rgba(16,185,129,0.2)" stroke="#10b981" stroke-width="0.5"/>
+  <text x="586" y="215" text-anchor="middle" fill="#10b981" font-family="Segoe UI, Arial, sans-serif" font-size="9">SSOT</text>
 
-  <!-- SSOT badge -->
-  <rect x="630" y="179" width="120" height="20" rx="6" fill="rgba(16,185,129,0.25)" stroke="#10b981" stroke-width="1"/>
-  <text x="690" y="193" text-anchor="middle" fill="#10b981" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="700">SSOT</text>
-
-  <!-- Description of domain.md -->
-  <rect x="490" y="212" width="270" height="72" rx="8" fill="rgba(16,185,129,0.08)" stroke="#10b981" stroke-width="0.5" stroke-dasharray="4 2"/>
-  <text x="500" y="232" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">여러 feature 문서를 도메인 단위로 통합</text>
-  <text x="500" y="252" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">feature 디렉토리는 삭제됨</text>
-  <text x="500" y="272" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">카테고리 루트에 단일 문서로 관리</text>
-
-  <!-- Visual: crossed out feature dirs -->
-  <rect x="490" y="302" width="260" height="80" rx="8" fill="rgba(71,85,105,0.06)" stroke="#475569" stroke-width="0.5" stroke-dasharray="4 2"/>
-
-  <text x="500" y="322" fill="#475569" font-family="Consolas, monospace" font-size="11" text-decoration="line-through">[기능A]/</text>
-  <text x="500" y="342" fill="#475569" font-family="Consolas, monospace" font-size="11" text-decoration="line-through">[기능B]/</text>
-  <text x="500" y="362" fill="#475569" font-family="Consolas, monospace" font-size="11" text-decoration="line-through">[기능C]/</text>
-
-  <!-- Deleted label -->
-  <rect x="640" y="322" width="96" height="22" rx="6" fill="rgba(239,68,68,0.15)" stroke="#ef4444" stroke-width="0.5"/>
-  <text x="688" y="337" text-anchor="middle" fill="#ef4444" font-family="Segoe UI, Arial, sans-serif" font-size="10">삭제됨</text>
+  <!-- Feature directory deleted notice -->
+  <text x="440" y="258" fill="#64748b" font-family="Consolas, monospace" font-size="10">(feature 디렉토리 삭제됨)</text>
 
   <!-- Bottom note -->
-  <text x="410" y="450" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="11">document-consolidation 스킬이 feature 문서들을 domain.md로 통합합니다</text>
+  <text x="360" y="410" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="11">document-consolidation 스킬이 feature 문서들을 domain.md로 통합합니다</text>
 
 </svg>

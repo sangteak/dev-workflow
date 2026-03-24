@@ -53,7 +53,6 @@ docs/design/
         ├── plan.md                   ← Superpowers writing-plans 산출물
         ├── HANDOFF.md                ← 멀티세션 복구용
         ├── issues/[problem-name]/    ← 핫픽스 서브워크플로우
-        └── _archive/                 ← 개발 완료 후 이동
 ```
 
 ## Conventions
@@ -75,6 +74,6 @@ docs/design/
 
 - **VCS 감지**: `.git` 존재 → git-mode (worktree 사용), 없음 → no-git-mode (파일 기반 체크포인트)
 - **HANDOFF 복구**: 세션 시작 시 `docs/design/**/HANDOFF.md` glob 탐색 → 발견 시 목록 제시
-- **Phase 파일 불변성**: phase1/2/3.md는 생성 후 수정 불가, 개발 완료 후 `_archive/`로 이동
+- **Phase 파일 불변성**: phase1/2/3.md는 생성 후 수정 불가, 개발 완료 후 feature 디렉토리와 함께 삭제
 - **issues/ 서브워크플로우**: 사용자 명시 요청 시에만 생성, Phase 0 스킵, 완료 후 부모 문서에 병합 후 삭제
 - **자기개선 루프**: 수정받을 때마다 `tasks/lessons.md`에 기록, 세션 시작 시 내부적으로 검토

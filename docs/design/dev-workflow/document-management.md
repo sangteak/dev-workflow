@@ -75,11 +75,15 @@ HANDOFF.md ──── 세션 간 전달 ───→ 삭제 (feature 디렉토
 issues/ ──────── hotfix 작업 ───→ 부모에 통합 후 삭제
 ```
 
-feature 완료 시 domain.md에 통합/승격 후 feature 디렉토리를 삭제한다. 기존 정책의 `_archive/` 이동은 2계층 모델 도입으로 불필요해졌다.
+feature 완료 시 domain.md에 통합/승격 후 feature 디렉토리를 삭제한다. 기존의 별도 아카이브 정책은 2계층 모델 도입으로 불필요해졌다.
 
 ### 통합 정책
 
-통합은 반자동으로 수행한다. REVIEW 완료 시점에 통합을 제안하고, 사용자가 승인하면 자동 실행한다. 자동 병합 결과를 사용자에게 보여주고 확인 후 확정하는 흐름이다. issues/ 통합은 "원래 하나였던 것처럼" 자연스럽게 병합한다. 최종 domain.md는 자기완결적이어야 한다 — 문서 하나로 해당 domain의 전체 맥락을 파악할 수 있어야 한다.
+통합은 반자동으로 수행한다. REVIEW 완료 시점에 consolidate-main을 실행하여 phase/plan 내용을 feature.md에 통합한 뒤, 작업 내용을 분석하여 domain 병합 필요 여부를 판단 근거와 함께 제안한다. 판단 기준은 (1) domain.md에 없는 새 REQ가 있는가, (2) domain.md와 다른 설계 결정이 있는가의 두 가지다. 사용자가 제안을 override할 수 있다.
+
+domain 병합 시 consolidate-domain(Mode 3)이 merge 또는 승격을 실행한 후 feature 디렉토리를 삭제한다. domain 병합을 스킵하는 경우(결함 수정 등) consolidate-main이 직접 feature 디렉토리 삭제를 제안한다. 어떤 경로든 feature 디렉토리는 작업 완료 후 삭제된다.
+
+issues/ 통합은 "원래 하나였던 것처럼" 자연스럽게 병합한다. 최종 domain.md는 자기완결적이어야 한다 — 문서 하나로 해당 domain의 전체 맥락을 파악할 수 있어야 한다.
 
 ## 크로스 도메인 변경과 pending
 
@@ -179,7 +183,7 @@ domain.md 도입 후 domain.md 자체가 통합 문서 역할을 하므로, desi
 
 | 파일 | 용도 |
 |---|---|
-| `skills/document-consolidation/SKILL.md` | phase/plan → domain.md 통합, merge/승격/pending 처리 (consolidate-main, consolidate-issue, consolidate-domain 3모드) |
+| `skills/document-consolidation/SKILL.md` | phase/plan → design 통합, 작업 분석 기반 domain 병합 제안, feature 디렉토리 삭제 (consolidate-main, consolidate-issue, consolidate-domain 3모드) |
 | `skills/design-doc-index/SKILL.md` | 설계 문서 색인 및 크로스레퍼런스, domain.md 우선 인덱싱 |
 | `skills/design-summary/SKILL.md` | 관련 설계 문서 그룹의 통합 요약 생성 (명령 호출 전용) |
 | `skills/brainstorming/SKILL.md` | 카테고리 선택 절차, 설계 문서 크로스레퍼런스 섹션 포함 |
@@ -196,6 +200,7 @@ domain.md 도입 후 domain.md 자체가 통합 문서 역할을 하므로, desi
 | domain.md 판별 | 위치 기반 (category 디렉토리 직속 .md) | 별도 메타데이터 불필요, 구조 자체가 의미 전달 |
 | domain 경계 결정 | 사후 발견 (작업 축적 후 자연 형성) | 사전 정의는 초기 판단 오류 위험 |
 | feature 완료 후 처리 | domain.md 통합 후 feature 디렉토리 삭제 | 아카이브 불필요, git branch 삭제와 동일 |
+| domain 병합 판단 | 작업 내용 분석 기반 선택적 제안 | 결함 수정 등 domain 영향 없는 작업이 존재, 무조건 필수화 기각 |
 | 크로스 도메인 업데이트 | feature 완료 시점에 즉시 반영 (Eager 기각) | 미완료 feature 폐기 시 의존성 문서 오염 방지 |
 | design/plan 관계 | 같은 feature 디렉토리에 통합 | 기능의 모든 문서를 한곳에서 관리, 서브에이전트 컨텍스트 로딩 효율 |
 | HANDOFF 탐색 | glob 스캔 (인덱스 파일 없음) | 멀티세션 경쟁 조건 없음, 항상 최신, 추가 파일 불필요 |

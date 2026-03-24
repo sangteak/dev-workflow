@@ -188,7 +188,7 @@ git clone https://github.com/sangteak/dev-workflow.git
 
 사용자: "마무리해줘"
 
-  → 문서 취합 (phase/plan → 설계 문서 통합, _archive/ 이동)
+  → 문서 취합 (phase/plan → 설계 문서 통합, domain 병합 제안 또는 feature 디렉토리 삭제)
   → domain.md 통합 제안
   → README 영향 판단
   → 커밋+푸시 제안
@@ -286,7 +286,7 @@ Superpowers `requesting-code-review`에 위임됩니다:
 
 마무리 트리거("마무리해줘", "wrap up" 등) 감지 시 자동 실행:
 
-1. **consolidate-main** — phase/plan 파일을 feature 설계 문서에 통합, `_archive/`로 이동
+1. **consolidate-main** — phase/plan 파일을 feature 설계 문서에 통합, domain 병합 제안 또는 feature 디렉토리 삭제
 2. **consolidate-domain** — feature 설계 문서를 category 레벨의 domain.md에 통합 (사용자 선택)
 3. **README 영향 판단** — 변경 내용에 따라 README 업데이트 제안
 4. **커밋+푸시 제안** — 사용자 확인 후 실행
@@ -311,7 +311,6 @@ docs/design/[category]/[feature]/
 ├── HANDOFF.md              ← 세션 중단 시 저장 (임시)
 ├── issues/                 ← 핫픽스 서브워크플로우 (선택)
 │   └── [issue-name]/
-└── _archive/               ← consolidate-main 후 phase/plan 이동
 ```
 
 **통합 완료** — domain.md로 통합되면 feature 디렉토리는 삭제됩니다:
