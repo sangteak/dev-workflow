@@ -33,6 +33,17 @@ At the start of EVERY session, execute in order:
    - 판단 모호 시 → 사용자에게 "worktree를 사용할 수 있는 환경인가요?" 질문
    - 감지 결과를 내부적으로 기록 (세션당 1회, 사용자에게 출력하지 않음)
 
+3.5. **Ouroboros Detection** — Ouroboros 플러그인 존재 여부를 확인한다
+   - 탐색 순서:
+     1. Glob `**/ouroboros/agents/socratic-interviewer.md` 로 에이전트 파일 탐색
+     2. 발견 시 → ToolSearch `+ouroboros` 로 MCP 도구 로드 시도
+   - 판정:
+     - agents 파일 발견 + MCP 로드 성공 → **Path A** (Enhanced + MCP)
+     - agents 파일 발견 + MCP 로드 실패 → **Path B** (Enhanced, MCP 없음)
+     - agents 파일 미발견 → **Path C** (Standalone)
+   - 감지 결과를 내부적으로 기록 (세션당 1회, 사용자에게 출력하지 않음)
+   - Path A 또는 B일 때만 Stage Announcement에 한 줄 표시: "🔗 Ouroboros 연동: Enhanced Mode"
+
 4. **Stage Detection** — 현재 워크플로우 단계 자동 감지
 
 5. **Stage Announcement** — 감지된 단계와 확정 페르소나 선언 후 진행
