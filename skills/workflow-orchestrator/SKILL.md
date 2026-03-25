@@ -67,7 +67,7 @@ At the start of EVERY session, execute in order:
 
 → VCS 모드에 관계없이 `superpowers:subagent-driven-development` 실행 시 아래 공통 규칙을 컨텍스트로 전달:
   - 모든 태스크 완료 후 커밋을 제안하지 않는다
-  - 대신 다음 메시지로 완료를 보고한다: "✅ 모든 태스크가 완료되었습니다. 마무리를 진행해주세요."
+  - 대신 다음 메시지로 완료를 보고한다: "✅ 모든 태스크가 완료되었습니다. 마무리할까요?"
   - 커밋+푸시는 마무리 시퀀스(Completion Protocol)에서 처리한다
 
 → VCS 모드에 따라 분기:

@@ -180,7 +180,7 @@ git clone https://github.com/sangteak/dev-workflow.git
 
   ⚙️ git-mode 감지 — worktree 생성 후 서브에이전트 병렬 실행
   → 태스크별 Implementer + Code Quality Reviewer + Spec Reviewer
-  → "✅ 모든 태스크가 완료되었습니다. 마무리를 진행해주세요."
+  → "✅ 모든 태스크가 완료되었습니다. 마무리할까요?"
 ```
 
 ```
