@@ -324,6 +324,17 @@ docs/design/[category]/
 
 > consolidate-main(feature 내 통합) → consolidate-domain(domain.md 통합) 순서로 진행됩니다.
 
+**Commands (슬래시 명령 별칭):**
+
+```
+commands/
+├── save.md                 ← /dev-workflow:save → context-handling save 즉시 실행
+├── resume.md               ← /dev-workflow:resume → context-handling resume 즉시 실행
+└── design-summary.md       ← /dev-workflow:design-summary → 설계 문서 통합 요약
+```
+
+> 콘솔 자동완성에서 `/save` 입력 → `dev-workflow:save` 선택 → 엔터로 즉시 실행됩니다.
+
 **보조 파일:**
 
 ```
@@ -342,7 +353,7 @@ tasks/todo.md               ← Superpowers writing-plans 산출물
 | `persona-resolution` | 단계별 페르소나 확정 | 세션 시작 프로토콜 Step 1 |
 | `brainstorming` | 5단계 브레인스토밍 + 피드백 루프 | BRAINSTORM 단계 진입 시 |
 | `plan-stage` | 실현 가능성 평가, 설계 방향 수립 | PLAN 단계 진입 시 |
-| `context-handling` | HANDOFF.md 생성/복구 (`save`/`resume` 서브커맨드) | 세션 시작 (자동) 또는 `/context-handling save\|resume` |
+| `context-handling` | HANDOFF.md 생성/복구 (`save`/`resume` 서브커맨드) | 세션 시작 (자동) 또는 `/dev-workflow:save` · `/dev-workflow:resume` |
 | `development-principles` | 개발 철학, 자기개선 루프 | 전 단계 참조 |
 | `document-consolidation` | 문서 통합 3모드: consolidate-main (feature 내 통합), consolidate-issue (이슈 병합), consolidate-domain (domain.md 통합) | COMPLETION 단계 |
 | `design-doc-index` | 설계 문서 색인 및 크로스레퍼런스 | BRAINSTORM/PLAN 중 사용자 요청 시 |
