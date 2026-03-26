@@ -15,6 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **`.claude-plugin/`** — 플러그인 메타데이터 (`plugin.json`, `marketplace.json`)
 - **`hooks/`** — 세션 시작 시 `workflow-orchestrator` 스킬을 자동 주입하는 bash 스크립트
 - **`skills/`** — 9개 핵심 스킬 (아래 참조)
+- **`commands/`** — 콘솔 자동완성용 독립 명령 파일 (save, resume, design-summary)
 - **`docs/design/`** — 설계 문서 저장소 (카테고리/기능 구조)
 
 ### Skills (9개)
@@ -89,3 +90,19 @@ docs/design/
 - **Phase 파일 불변성**: phase1/2/3.md는 생성 후 수정 불가, 개발 완료 후 feature 디렉토리와 함께 삭제
 - **issues/ 서브워크플로우**: 사용자 명시 요청 시에만 생성, Phase 0 스킵, 완료 후 부모 문서에 병합 후 삭제
 - **자기개선 루프**: 수정받을 때마다 `tasks/lessons.md`에 기록, 세션 시작 시 내부적으로 검토
+
+### Commands (슬래시 명령 별칭)
+
+`commands/` 디렉토리에는 콘솔 자동완성으로 즉시 실행 가능한 독립 명령 파일을 배치한다.
+
+**포함 기준:** "사용자가 워크플로우 자동 흐름 밖에서, 임의의 시점에, 명시적 의도를 가지고 호출하는 스킬"
+
+| 커맨드 | 대상 스킬 | ARGUMENTS | 설명 |
+|--------|-----------|-----------|------|
+| save | context-handling | save (하드코딩) | 세션 컨텍스트를 HANDOFF.md에 저장 |
+| resume | context-handling | resume (하드코딩) | HANDOFF.md에서 작업 복구 |
+| design-summary | design-summary | {{ARGUMENTS}} | 설계 문서 통합 요약 생성 |
+
+- 자동 트리거 스킬(orchestrator, persona-resolution 등)에는 커맨드를 추가하지 않는다
+- 하드코딩 ARGUMENTS: 콘솔 자동완성 즉시 실행 시 아규먼트 입력 불가 문제 해결
+- {{ARGUMENTS}}: 사용자 입력이 필요한 경우 사용 (Ouroboros 패턴)
