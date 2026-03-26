@@ -8,7 +8,7 @@
     {
       "name": "dev-workflow",
       "description": "Structured development workflow with persona-based feedback loops",
-      "version": "1.5.1",
+      "version": "1.6.0",
       "source": "./",
       "author": {
         "name": "sangteak"
