@@ -10,6 +10,7 @@ dependencies:
 affects:
   - brainstorming
   - workflow-orchestrator
+  - plan-stage
   - document-consolidation (v2)
 ---
 
@@ -275,7 +276,52 @@ ESSENCE: "이것은 진짜 무엇인가? 본질은?"
 
 ## 9. 구현 결과 및 일탈 사항
 
-> 구현 완료 후 작성
+### 변경된 스킬 파일
+
+| 스킬 | 변경 유형 | 핵심 변경 |
+|---|---|---|
+| workflow-orchestrator | 수정 | Session Start Protocol Step 3.5 추가 (Ouroboros Detection, Path A/B/C 결정) |
+| brainstorming | 대폭 수정 | 국면 1에 Step A/B/C 3단계 구조 삽입, 에이전트 매칭, 토론 리드 제거 |
+| plan-stage | 수정 | Step 2에 Architect 서브에이전트, Step 3에 Researcher 서브에이전트 추가 |
+
+### 설계 대비 일탈 사항
+
+**1. MVP 범위 확대 — plan-stage 에이전트 통합**
+
+설계 문서에서는 REQ-013(국면 2~3 에이전트 확장)을 v2로 분류했으나, 구현 시 plan-stage에 Architect(구조적 리스크 분석)와 Researcher(CAUTION 항목 조사)를 MVP에 포함했다. plan-stage는 국면이 아닌 별도 단계이므로 v2 범위(국면 2~4)와 직접 겹치지 않으며, 실현 가능성 평가의 품질 향상 효과가 명확하여 선적용했다.
+
+**2. MVP 범위 확대 — brainstorming 추가 에이전트 통합**
+
+설계 초안에서 Ontologist(본질 질문), Simplifier(스코프 정리)를 v2 후보로 언급했으나, 구현 시 국면 1에 포함했다:
+- **Step A-0 (본질 질문):** 요구사항이 솔루션 중심일 때 Ontologist 서브에이전트로 본질/근본원인/전제조건/숨겨진 가정을 탐색
+- **Simplifier 스코프 정리:** 요구사항 ≥8건 또는 ⚠️/❌ ≥3건일 때 핵심/선택 분류 + YAGNI 축소 제안
+
+두 에이전트 모두 조건부 트리거(항상 실행되지 않음)로 구현되어 오버헤드가 제한적이며, 브레인스토밍 품질에 직접 기여하므로 선적용했다.
+
+**3. Seed-Architect 직접 통합**
+
+설계에서는 Step B의 시드 추출을 "seed-architect 패턴 차용"으로 기술했으나, 구현에서는 Seed-Architect를 정식 서브에이전트로 투입하여 YAML 구조화를 독립 컨텍스트에서 수행하도록 했다. 패턴 차용보다 에이전트 직접 실행이 일관성(다른 Step과 동일한 서브에이전트 패턴) 면에서 우수했다.
+
+### 구현된 에이전트 매핑 (최종)
+
+| 스킬 | Step/단계 | 에이전트 | 트리거 조건 |
+|---|---|---|---|
+| brainstorming | Step A-0 (본질 질문) | Ontologist | 요구사항이 솔루션 중심일 때 |
+| brainstorming | Step A (인터뷰) | Socratic Interviewer | 항상 |
+| brainstorming | Step B (시드 추출) | Seed-Architect | 항상 |
+| brainstorming | Step C (확장 토론) | Contrarian (비판 슬롯) | 항상 |
+| brainstorming | Step C (교착 해소) | Hacker | 교착 감지 시 |
+| brainstorming | 국면 1→2 전환 | Simplifier | 요구사항 ≥8 또는 ⚠️/❌ ≥3 |
+| plan-stage | Step 2 (실현 가능성) | Architect | 항상 |
+| plan-stage | Step 3 (조사) | Researcher | CAUTION/RENEGOTIATE 항목 존재 시 |
+
+### Path C (Standalone) 구현
+
+Ouroboros 미설치 환경에서의 폴백이 설계대로 구현되었다:
+- 소크라테스 질문 패턴(WHY-CHAIN, COUNTERFACTUAL, BOUNDARY, ESSENCE) 내장
+- 시드 YAML 인라인 템플릿 제공
+- 명확도 체크리스트 동일 적용
+- Step C에서 DO/DON'T 제약 기반 비판 (서브에이전트 없이)
 
 ## 10. 변경 이력
 
@@ -283,3 +329,5 @@ ESSENCE: "이것은 진짜 무엇인가? 본질은?"
 |---|---|---|---|
 | 2026-03-25 | 초안 작성 (브레인스토밍 완료) | brainstorming, workflow-orchestrator | ready-for-plan |
 | 2026-03-25 | 에이전트 매칭 전략(2규칙 체계) 추가, 토론 리드 시스템 제거 결정, 곱셈 효과 설명 보강 | brainstorming 페르소나 피드백 루프 | ready-for-plan |
+| 2026-03-26 | v1 MVP 구현 완료. plan-stage 에이전트 통합, Ontologist/Simplifier/Seed-Architect 선적용 | brainstorming, plan-stage, workflow-orchestrator | complete |
+| 2026-03-26 | Section 9 (구현 결과 및 일탈) 작성, affects에 plan-stage 추가 | 설계 문서 | complete |
