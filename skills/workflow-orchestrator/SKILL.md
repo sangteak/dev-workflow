@@ -34,13 +34,18 @@ At the start of EVERY session, execute in order:
    - 감지 결과를 내부적으로 기록 (세션당 1회, 사용자에게 출력하지 않음)
 
 3.5. **Ouroboros Detection** — Ouroboros 플러그인 존재 여부를 확인한다
-   - 탐색 순서:
-     1. Glob `**/ouroboros/agents/socratic-interviewer.md` 로 에이전트 파일 탐색
-     2. 발견 시 → ToolSearch `+ouroboros` 로 MCP 도구 로드 시도
+   - 탐색 순서 (MCP 우선, 에이전트 파일 후순위):
+     1. Ouroboros MCP 도구 사용 가능 여부 확인
+        - 사용 가능한 도구 목록에서 `ouroboros` 포함 MCP 도구 탐색 (예: `mcp__plugin_ouroboros_ouroboros__ouroboros_interview`)
+        - 또는 ToolSearch `+ouroboros` 실행
+     2. MCP 미발견 시 → 에이전트 파일 탐색
+        - `find "$HOME/.claude/plugins" -path "*/ouroboros/agents/socratic-interviewer.md"` 실행
+        - ⚠️ 프로젝트 루트 기준 glob은 사용 불가 (Ouroboros는 프로젝트 외부 플러그인 디렉토리에 설치됨)
    - 판정:
-     - agents 파일 발견 + MCP 로드 성공 → **Path A** (Enhanced + MCP)
-     - agents 파일 발견 + MCP 로드 실패 → **Path B** (Enhanced, MCP 없음)
-     - agents 파일 미발견 → **Path C** (Standalone)
+     - MCP 도구 사용 가능 → **Path A** (Enhanced + MCP)
+     - MCP 미사용 + agents 파일 발견 → **Path B** (Enhanced, MCP 없음)
+     - 모두 미발견 → **Path C** (Standalone)
+   - 에이전트 파일 경로는 Path A/B 판정 시 기록하여 brainstorming 스킬에서 참조한다
    - 감지 결과를 내부적으로 기록 (세션당 1회, 사용자에게 출력하지 않음)
    - Path A 또는 B일 때만 Stage Announcement에 한 줄 표시: "🔗 Ouroboros 연동: Enhanced Mode"
 
@@ -108,7 +113,8 @@ At the start of EVERY session, execute in order:
 
 **📎 Enhanced Mode — Evaluator QA 게이트:**
 Superpowers 코드 리뷰 완료 후, 설계 문서의 수락 기준(Success Criteria / Acceptance Criteria)이 존재하면
-Evaluator 에이전트를 서브에이전트로 실행하여 AC 충족 여부를 검증한다:
+Evaluator 에이전트를 서브에이전트로 실행하여 AC 충족 여부를 검증한다.
+에이전트 파일 경로: orchestrator 감지 경로 사용. 미확보 시 `find "$HOME/.claude/plugins" -path "*/ouroboros/agents/evaluator.md" -type f | head -1` 로 동적 탐색.
 
 ```
 아래 에이전트 역할 정의를 읽고 그 역할을 수행하라.
