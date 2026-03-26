@@ -1,0 +1,28 @@
+# templates/seed.yaml
+# dev-workflow 시드 표준 형식
+# Ouroboros seed-architect 호환
+#
+# 용도: 브레인스토밍 국면 1 Step B에서 인터뷰 결과를 구조화.
+# 모든 국면의 앵커 역할. phase 간 일관성 추적의 기준점.
+#
+# 필드 설명:
+#   goal: 핵심 목표 1문장. 기능의 존재 이유.
+#   constraints: 반드시 지켜야 하는 기술적/비즈니스 제약.
+#   non_goals: 명시적으로 범위에서 제외한 것.
+#   success_criteria: 측정 가능한 성공 기준. "이것이 되면 성공".
+#   assumptions: 검증되지 않은 전제. 틀리면 설계가 흔들리는 것.
+#   open_questions: 아직 답이 없는 질문. 다음 국면에서 해소 대상.
+#   context: 배경 설명. 왜 지금 이 기능이 필요한가.
+
+goal: ""
+constraints:
+  - ""
+non_goals:
+  - ""
+success_criteria:
+  - ""
+assumptions:
+  - ""
+open_questions:
+  - ""
+context: ""

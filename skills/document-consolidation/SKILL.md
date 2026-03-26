@@ -35,6 +35,7 @@ description: Use when development is complete (after REVIEW) or when an issue is
    - `[해소된 경로]/[카테고리]/[기능명]/phase2_discovery.md`
    - `[해소된 경로]/[카테고리]/[기능명]/phase3_validation.md`
    - `[해소된 경로]/[카테고리]/[기능명]/plan.md`
+   - `[해소된 경로]/[카테고리]/[기능명]/seed.yaml` (존재 시, Enhanced Mode에서 생성)
    - `[해소된 경로]/[카테고리]/[기능명]/HANDOFF.md` (존재 시)
 
 2. **섹션별 매핑 규칙에 따라 design 문서 업데이트**
@@ -46,6 +47,7 @@ description: Use when development is complete (after REVIEW) or when an issue is
    | phase3 TD 검토 | 섹션 8 기술 가이드라인 | TD 가이드라인 보강 |
    | plan 구현 전략 | 섹션 4 설계 개요 | 실제 구현 아키텍처로 보강 |
    | plan 설계 변경 | 섹션 6 기술 결정 | 구현 중 변경된 결정 추가 |
+   | seed.yaml 제약/가정 | 섹션 7 제약조건과 가정 | seed의 constraints/assumptions 보강 |
    | 실제 구현 결과 | 섹션 9 구현 결과 | 설계 대비 일탈 사항 기록 |
 
 3. **프론트매터 업데이트**

@@ -33,6 +33,17 @@ At the start of EVERY session, execute in order:
    - 판단 모호 시 → 사용자에게 "worktree를 사용할 수 있는 환경인가요?" 질문
    - 감지 결과를 내부적으로 기록 (세션당 1회, 사용자에게 출력하지 않음)
 
+3.5. **Ouroboros Detection** — Ouroboros 플러그인 존재 여부를 확인한다
+   - 탐색 순서:
+     1. Glob `**/ouroboros/agents/socratic-interviewer.md` 로 에이전트 파일 탐색
+     2. 발견 시 → ToolSearch `+ouroboros` 로 MCP 도구 로드 시도
+   - 판정:
+     - agents 파일 발견 + MCP 로드 성공 → **Path A** (Enhanced + MCP)
+     - agents 파일 발견 + MCP 로드 실패 → **Path B** (Enhanced, MCP 없음)
+     - agents 파일 미발견 → **Path C** (Standalone)
+   - 감지 결과를 내부적으로 기록 (세션당 1회, 사용자에게 출력하지 않음)
+   - Path A 또는 B일 때만 Stage Announcement에 한 줄 표시: "🔗 Ouroboros 연동: Enhanced Mode"
+
 4. **Stage Detection** — 현재 워크플로우 단계 자동 감지
 
 5. **Stage Announcement** — 감지된 단계와 확정 페르소나 선언 후 진행
@@ -95,6 +106,42 @@ At the start of EVERY session, execute in order:
 
 → Superpowers `requesting-code-review` 전담 (페르소나 없음)
 
+**📎 Enhanced Mode — Evaluator QA 게이트:**
+Superpowers 코드 리뷰 완료 후, 설계 문서의 수락 기준(Success Criteria / Acceptance Criteria)이 존재하면
+Evaluator 에이전트를 서브에이전트로 실행하여 AC 충족 여부를 검증한다:
+
+```
+아래 에이전트 역할 정의를 읽고 그 역할을 수행하라.
+
+--- 에이전트 역할 정의 ---
+[Ouroboros agents/evaluator.md 전문]
+
+--- 수락 기준 ---
+[설계 문서의 success_criteria 목록]
+
+--- 구현 결과물 ---
+[변경된 파일 목록 및 주요 변경 내용]
+
+각 수락 기준에 대해 PASS/FAIL/PARTIAL을 판정하라.
+FAIL 또는 PARTIAL 항목에는 구체적 근거와 수정 제안을 포함하라.
+```
+
+출력 형식:
+```
+── 🎯 AC 검증 결과 [Evaluator] ───────────────────────
+  ✅ PASS: [N개]
+  ⚠️ PARTIAL: [N개]
+  ❌ FAIL: [N개]
+
+[상세 목록]
+──────────────────────────────────────────────────────
+```
+
+- FAIL 항목이 있으면 → 수정 후 재검증을 제안한다
+- 모두 PASS → REVIEW 완료로 진행한다
+- Standalone Mode에서는 Evaluator를 생략하고 Superpowers 코드 리뷰 결과만으로 판단한다
+- 설계 문서에 수락 기준이 없으면 Evaluator를 스킵한다
+
 ### Ambiguous
 ```
 현재 단계를 감지하지 못했습니다. 어느 단계인가요?
@@ -109,14 +156,14 @@ At the start of EVERY session, execute in order:
 
 ## Superpowers Delegation
 
-| 단계 | 담당 | 페르소나 |
-|---|---|---|
-| BRAINSTORM | dev-workflow | ✅ 사용 |
-| PLAN | dev-workflow | ✅ 사용 |
-| DEVELOP (git-mode) | Superpowers `using-git-worktrees` + `subagent-driven-development` | ❌ 없음 |
-| DEVELOP (no-git-mode) | Superpowers `subagent-driven-development` (worktree 스킵) | ❌ 없음 |
-| REVIEW | Superpowers `requesting-code-review` | ❌ 없음 |
-| COMPLETION | dev-workflow (Completion Protocol) | ❌ 없음 |
+| 단계 | 담당 | 페르소나 | 📎 Ouroboros 에이전트 |
+|---|---|---|---|
+| BRAINSTORM | dev-workflow | ✅ 사용 | Ontologist, Socratic, Seed-Architect, Contrarian, Simplifier, Hacker |
+| PLAN | dev-workflow | ✅ 사용 | Architect, Researcher |
+| DEVELOP (git-mode) | Superpowers `using-git-worktrees` + `subagent-driven-development` | ❌ 없음 | — |
+| DEVELOP (no-git-mode) | Superpowers `subagent-driven-development` (worktree 스킵) | ❌ 없음 | — |
+| REVIEW | Superpowers `requesting-code-review` + Evaluator QA | ❌ 없음 | Evaluator |
+| COMPLETION | dev-workflow (Completion Protocol) | ❌ 없음 | — |
 
 - Superpowers 스킬이 존재하면 FIRST 실행
 - DEVELOP/REVIEW 충돌 시 → Superpowers 우선
