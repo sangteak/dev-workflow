@@ -15,7 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **`.claude-plugin/`** — 플러그인 메타데이터 (`plugin.json`, `marketplace.json`)
 - **`hooks/`** — 세션 시작 시 `workflow-orchestrator` 스킬을 자동 주입하는 bash 스크립트
 - **`skills/`** — 9개 핵심 스킬 (아래 참조)
-- **`commands/`** — 콘솔 자동완성용 독립 명령 파일 (save, resume, design-summary)
+- **`commands/`** — 콘솔 자동완성용 독립 명령 파일 (save, resume, design-summary, setup)
 - **`docs/design/`** — 설계 문서 저장소 (카테고리/기능 구조)
 
 ### Skills (9개)
@@ -102,6 +102,7 @@ docs/design/
 | save | context-handling | save (하드코딩) | 세션 컨텍스트를 HANDOFF.md에 저장 |
 | resume | context-handling | resume (하드코딩) | HANDOFF.md에서 작업 복구 |
 | design-summary | design-summary | {{ARGUMENTS}} | 설계 문서 통합 요약 생성 |
+| setup | — (자체 로직) | — | 권장 플러그인 의존성 설치 및 검증 |
 
 - 자동 트리거 스킬(orchestrator, persona-resolution 등)에는 커맨드를 추가하지 않는다
 - 하드코딩 ARGUMENTS: 콘솔 자동완성 즉시 실행 시 아규먼트 입력 불가 문제 해결
