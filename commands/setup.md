@@ -11,6 +11,16 @@ description: "권장 플러그인 의존성 설치 및 검증"
 | Superpowers | (공식 — 등록 불필요) | superpowers | — | `claude plugin install superpowers@claude-plugins-official` | 필수 | 개발/리뷰 자동화 |
 | Ouroboros | Q00/ouroboros | ouroboros | `claude plugin marketplace add Q00/ouroboros` | `claude plugin install ouroboros@ouroboros` | 권장 | 페르소나 강화 브레인스토밍 |
 
+## 플러그인 디렉토리 구조 참조
+
+```
+~/.claude/plugins/
+├── installed_plugins.json      ← 설치된 플러그인 레지스트리
+├── known_marketplaces.json     ← 등록된 마켓플레이스 목록
+├── cache/[marketplace]/[plugin]/[version]/  ← 플러그인 실제 파일
+└── marketplaces/[marketplace]/ ← 마켓플레이스 리포 클론
+```
+
 ## 실행 프로토콜
 
 아래 순서를 정확히 따른다. 순서를 건너뛰지 않는다.
@@ -62,11 +72,62 @@ claude plugin list 2>&1
 
 사용자가 "2" 또는 "취소"를 선택하면 아무것도 하지 않고 종료한다.
 
-### Step 3: 설치 실행
+### Step 3: 사전 점검 (Pre-flight Check)
 
-사용자가 "1"을 선택하면, 미설치된 의존성만 위 테이블의 명령어 순서대로 실행한다:
+사용자가 "1"을 선택하면, 설치 실행 전에 **미설치 플러그인에 대해서만** 잔여물을 점검하고 정리한다.
+이전 설치/삭제 과정에서 남은 캐시나 디렉토리가 있으면 CLI 명령이 충돌하기 때문이다.
 
-1. 등록 명령이 있으면 먼저 실행 (Bash 도구)
+각 미설치 플러그인에 대해 아래를 순서대로 확인한다:
+
+**3-A: 마켓플레이스 등록 상태 확인**
+
+```bash
+cat ~/.claude/plugins/known_marketplaces.json 2>&1
+```
+
+- 해당 플러그인의 마켓플레이스가 이미 `known_marketplaces.json`에 존재하면 → Step 4에서 `marketplace add` 명령을 **스킵**한다
+- 존재하지 않으면 → Step 4에서 `marketplace add`를 실행한다
+
+**3-B: 잔여 캐시 디렉토리 정리**
+
+미설치 판정(Step 1)인데 캐시 디렉토리가 남아있으면 충돌 원인이 된다.
+
+```bash
+ls ~/.claude/plugins/cache/[marketplace]/[plugin]/ 2>&1
+```
+
+- 디렉토리가 존재하면 → 삭제한다:
+  ```bash
+  rm -rf ~/.claude/plugins/cache/[marketplace]/[plugin]/
+  ```
+- 디렉토리가 없으면 → 정상, 스킵
+
+**3-C: installed_plugins.json 잔여 항목 정리**
+
+미설치 판정인데 `installed_plugins.json`에 항목이 남아있으면 충돌 원인이 된다.
+
+```bash
+cat ~/.claude/plugins/installed_plugins.json 2>&1
+```
+
+- JSON에서 해당 플러그인 키(예: `ouroboros@ouroboros`)가 존재하면 → 해당 항목을 제거한 JSON을 다시 저장한다
+- 존재하지 않으면 → 정상, 스킵
+
+**사전 점검 결과 표시:**
+
+정리 작업이 있었을 경우에만 표시한다:
+
+```
+🧹 사전 점검 완료
+  - [플러그인명] 잔여 캐시 정리됨
+  - [플러그인명] 마켓플레이스 이미 등록됨 (등록 스킵)
+```
+
+### Step 4: 설치 실행
+
+미설치된 의존성만 위 테이블의 명령어 순서대로 실행한다:
+
+1. 마켓플레이스 미등록 시 등록 명령 실행 (Step 3-A에서 이미 등록 확인됨 → 스킵)
 2. 설치 명령을 실행 (Bash 도구)
 
 각 명령 실행 전 진행 상황을 표시한다:
@@ -75,15 +136,15 @@ claude plugin list 2>&1
 
 **⚠️ 에러 처리 규칙 (필수):**
 
-명령 실행이 실패하면 아래 규칙을 엄격히 따른다:
+CLI 명령 실행이 실패하면 아래 규칙을 엄격히 따른다:
 
 1. **즉시 중단한다** — 실패한 명령에 대해 재시도하지 않는다
-2. **워크어라운드를 시도하지 않는다** — 캐시 정리, 수동 클론, 디렉토리 rename, git clone 등 어떤 대안적 방법도 시도하지 않는다
-3. **Step 4로 즉시 넘어간다** — 성공한 플러그인은 검증하고, 실패한 플러그인은 수동 안내를 제공한다
+2. **워크어라운드를 시도하지 않는다** — 수동 클론, 디렉토리 rename, git clone 등 어떤 대안적 방법도 시도하지 않는다. 사전 점검(Step 3)에서 처리하지 못한 문제는 사용자에게 맡긴다
+3. **Step 5로 즉시 넘어간다** — 성공한 플러그인은 검증하고, 실패한 플러그인은 수동 안내를 제공한다
 
-이 규칙은 절대적이다. Claude가 자체적으로 판단하여 복구를 시도하면 캐시 충돌, 권한 문제 등 더 심각한 상태를 유발할 수 있다.
+이 규칙은 절대적이다. Step 3의 사전 점검이 알려진 문제를 미리 해결하므로, Step 4에서 실패하면 예상 밖의 문제이다. 이 경우 즉흥적 복구 시도는 상황을 악화시킬 수 있다.
 
-### Step 4: 검증
+### Step 5: 검증
 
 Bash 도구로 `claude plugin list 2>&1`를 재실행하여 설치 성공 여부를 확인한다.
 
