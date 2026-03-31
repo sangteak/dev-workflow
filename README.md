@@ -164,84 +164,95 @@ DEVELOP 단계에서 Superpowers는 `git worktree`를 사용해 격리된 브랜
 ## Quick Start
 
 > 설치는 [Installation](#installation)을 먼저 참조하세요.
+> Ouroboros Enhanced Mode 기준 예시입니다. Standalone Mode에서는 Ouroboros 관련 출력이 표시되지 않습니다.
 
-### 인벤토리 시스템 설계 — 처음부터 끝까지
+### BRAINSTORM
 
-**사용자:** 인벤토리 시스템 브레인스토밍하고 싶어.
+새 Claude Code 세션을 시작하면 dev-workflow가 작업 상태를 자동 감지합니다:
 
----
+```
+📋 진행 중인 작업이 없습니다.
 
-**[BRAINSTORM]** 페르소나 자동 확정 후 본질 질문부터 시작합니다:
+  0. ✨ 새 작업 시작
+
+새 작업을 시작하세요.
+```
+
+**사용자:** 알림 기능을 추가하려 해. 요구사항은 이래:
+- 알림 타입: 이메일, 푸시, SMS
+- 사용자별 알림 설정 (채널 선택, 수신 여부)
+- 채널별 실패 시 재시도 (채널마다 정책 다름)
+- 알림 이력 30일 보관 (감사용 + 사용자 표시용 분리)
 
 ```
 ✅ 페르소나 확정:
-  🎮 Game Designer / 👤 Player / 🔧 TD (Phase 3 활성화)
+  👤 Product Manager / 🔧 Backend Engineer / 📱 Client Developer (국면3 활성화)
 🔗 Ouroboros 연동: Enhanced Mode
 ```
 
 🔬 **본질 질문 [Ontologist]:**
-> **[Essence]** 인벤토리가 진짜 무엇인가 — 아이템을 담는 그릇인가,
-> 아니면 플레이어의 **소유와 선택**을 관리하는 시스템인가?
+> **[Essence]** 알림이 진짜 무엇인가 — 정보를 전달하는 채널인가,
+> 아니면 사용자와 시스템 간 **신뢰 계약**인가?
 
-[Round 1/3] [비판: 🎮 Game Designer] [에이전트: Contrarian]
+📋 **핵심 질문 [에이전트: Socratic]:**
 
-🎮 **Game Designer** [Contrarian]:
-> "아이템 슬롯 수를 고정하면 구현이 단순해진다"는 가정이 틀리면?
-> 장비/소모품/퀘스트 아이템이 각각 다른 규칙으로 동작하는 순간 이 설계는 붕괴됩니다.
+1. **[채널 설정]** 알림 설정을 "끄는" 사용자가 원하는 것은 알림 자체를 안 받겠다는 것인가,
+   아니면 특정 채널/타입의 알림만 차단하겠다는 것인가?
+   > 힌트: 마케팅 알림과 보안 알림의 수신 정책이 같아야 하는가?
 
-**합의:** 아이템 타입별 동작 정책을 먼저 정의한 후 슬롯 구조를 결정. Phase 4에서 `inventory-system.md` 생성.
+2. **[재시도 정책]** "실패"의 판정 기준은 무엇인가? 네트워크 오류와 수신자 미존재를
+   같은 방식으로 처리하는가?
+   > 힌트: SMS 재시도 3회는 비용 3배를 의미한다.
+
+**사용자:** 1번: 채널 선택 — 이메일은 받고 푸시는 끄는 식. 타입별로도 설정 가능해야 해.
+2번: 네트워크 오류만 재시도, 수신자 없으면 즉시 실패. 채널마다 재시도 횟수 달라도 돼.
+
+[라운드 1/3] [비판: 🔧 Backend Engineer] [에이전트: Contrarian]
+
+👤 **Product Manager** [Socratic]:
+> 채널 × 알림 타입 매트릭스 설정이라면 UI 복잡도가 올라갑니다.
+> 사용자가 실제로 이 세분화가 필요한가요, 아니면 "알림 끄기"로 충분한 사용자가 더 많지 않을까요?
+
+🔧 **Backend Engineer** [Contrarian]:
+> 재시도 정책을 채널별로 분리하면 알림 발송 로직이 채널 어댑터 패턴으로 가야 합니다.
+> 이미 이 패턴을 쓰고 있다면 괜찮지만, 아니라면 지금 설계해야 합니다 — 나중에 추가하면 비용이 큽니다.
+
+📱 **Client Developer** [Socratic]:
+> 30일 이력을 사용자에게 보여줄 때 어떤 정보를 표시하나요?
+> "발송 성공/실패 여부"와 "사용자가 읽었는지 여부"는 다른 데이터입니다.
+
+**합의:** 알림 설정은 `(사용자 × 채널 × 알림 타입)` 3중 매트릭스로 설계.
+채널 어댑터 패턴 도입. 이력은 감사용(서버 내부) + 사용자 표시용(30일 읽음 여부 포함) 분리.
+
+### PLAN
+
+```
+── Feasibility Assessment ────────────────────────────
+
+[채널별 재시도 정책 (채널 어댑터 패턴)]
+  👤 Product Manager: ✅ 비즈니스 요구사항과 일치
+  🔧 Backend Engineer: ✅ 채널 어댑터로 확장성 확보 가능
+  📱 Client Developer: ✅ 클라이언트 영향 없음
+  → 종합 판정: ✅ FEASIBLE
+
+[알림 설정 3중 매트릭스 (사용자 × 채널 × 타입)]
+  👤 Product Manager: ⚠️ 설정 UI 복잡도 증가 — 초기 스코프 조정 검토
+  🔧 Backend Engineer: ✅ DB 스키마로 표현 가능, 조회 성능 인덱싱 필요
+  📱 Client Developer: ⚠️ 설정 동기화 로직 복잡도 증가
+  → 종합 판정: ⚠️ CAUTION — 초기 릴리스는 채널 단위만, 타입별 설정은 v2
+
+── 판정 요약 ──────────────────────────────────────────
+✅ FEASIBLE:    1개
+⚠️ CAUTION:     1개
+🚫 RENEGOTIATE: 0개
+──────────────────────────────────────────────────────
+```
+
+→ plan.md 생성 완료: `docs/design/your-project/notification-feature/plan.md`
 
 ---
 
-**[PLAN]** 실현 가능성을 평가합니다:
-
-```
-── Feasibility Assessment ──────────────────────────
-[동시성 처리]
-  🏛️ Architect: ✅ 낙관적 잠금으로 해결 가능
-  🔧 Tech Lead: ⚠️ 분산 락 필요 — Redis 도입 권장
-  📋 PM:        ✅ Phase 1 스코프 포함 가능
-→ 판정: ⚠️ CAUTION — 접근 방식 합의 후 진행
-────────────────────────────────────────────────────
-```
-
-→ `plan.md` 생성
-
----
-
-**[DEVELOP]** 서브에이전트가 병렬로 구현합니다:
-
-```
-⚙️ git-mode — worktree 생성 후 병렬 실행
-  Task 1: Implementer    → inventory_service.py
-  Task 2: Quality Review → 코드 품질 검토
-  Task 3: Spec Review    → 설계 문서 적합성 검증
-
-✅ 모든 태스크가 완료되었습니다. 마무리할까요?
-```
-
----
-
-**[REVIEW]** AC 자동 검증:
-
-```
-── 🎯 AC 검증 결과 [Evaluator] ──────────────────────
-  ✅ PASS:    8개
-  ⚠️ PARTIAL: 1개 — 동시성 엣지 케이스 보완 필요
-─────────────────────────────────────────────────────
-```
-
----
-
-**[COMPLETION]** 사용자: "마무리해줘"
-
-```
-→ 문서 취합 (phase/plan → inventory-system.md 통합)
-→ README 영향 판단
-→ 커밋+푸시 제안
-```
-
----
+> DEVELOP → REVIEW → COMPLETION 단계는 [Workflow Stages in Detail](#workflow-stages-in-detail)을 참조하세요.
 
 ### 주요 시나리오
 
@@ -250,12 +261,13 @@ DEVELOP 단계에서 Superpowers는 `git worktree`를 사용해 격리된 브랜
 새 세션을 시작하면 자동으로 `HANDOFF.md`를 탐색합니다:
 
 ```
-> HANDOFF가 감지되었습니다:
-> 1. inventory-system (Phase 2: Discovery)
-> 2. combat-system (Plan: Feasibility)
-> 0. 새 작업 시작
->
-> 어느 작업을 이어서 진행할까요?
+📋 진행 중인 작업:
+
+  0. ✨ 새 작업 시작
+  1. [your-project] notification-feature (Phase 2: Discovery) — 최근: 2026-03-31
+  2. [your-project] auth-system (PLAN 대기 · ⚠️ HANDOFF 없음) — 최근: 2026-03-28
+
+이어서 진행할 작업을 선택하거나, 새 작업을 시작하세요.
 ```
 
 `/dev-workflow:save`로 현재 작업 상태를 저장하고, `/clear` 후 새 메시지를 입력하면 자동 복구됩니다.
@@ -274,7 +286,7 @@ DEVELOP 단계에서 Superpowers는 `git worktree`를 사용해 격리된 브랜
 
 ```
 사용자: "기존 설계 문서 목록 보여줘"
-사용자: "combat-system 설계 문서 로드해줘"
+사용자: "auth-system 설계 문서 로드해줘"
 ```
 
 #### 페르소나 커스터마이징
