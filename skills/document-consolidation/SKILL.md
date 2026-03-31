@@ -19,6 +19,8 @@ description: Use when development is complete (after REVIEW) or when an issue is
 - issues/ 완료 시: "이슈 내용을 설계 문서에 통합할까요?" (consolidate-issue)
 - consolidate-main 완료 시: "domain.md 통합을 진행할까요?" (consolidate-domain)
 
+**예외:** `workflow-orchestrator` Completion Protocol에서 invoke된 경우, 이 규칙을 적용하지 않는다. **즉시 실행한다.**
+
 ---
 
 ## Mode 1: consolidate-main
