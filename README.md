@@ -168,7 +168,7 @@ DEVELOP 단계에서 Superpowers는 `git worktree`를 사용해 격리된 브랜
 
 ### BRAINSTORM
 
-새 Claude Code 세션을 시작하면 dev-workflow가 작업 상태를 자동 감지합니다:
+`/dev-workflow:resume`을 실행하면 작업 상태를 확인합니다:
 
 ```
 📋 진행 중인 작업이 없습니다.
