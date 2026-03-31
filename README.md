@@ -492,37 +492,6 @@ Superpowers `requesting-code-review`에 위임됩니다:
 
 ---
 
-## File Structure
-
-<p align="center">
-  <img src="images/file-structure.svg" alt="Design Document Structure" width="85%"/>
-</p>
-
-**개발 중** — feature 디렉토리에 문서가 생성됩니다:
-
-```
-docs/design/[category]/[feature]/
-├── phase1_exploration.md   ← Phase 1 완료 시 생성, 불변
-├── phase2_discovery.md     ← Phase 2 완료 시 생성, 불변
-├── phase3_validation.md    ← Phase 3 완료 시 생성, 불변
-├── [feature].md            ← 최종 설계 문서 (SSOT)
-├── plan.md                 ← PLAN 단계에서 생성
-├── HANDOFF.md              ← 세션 중단 시 저장 (임시)
-├── issues/                 ← 핫픽스 서브워크플로우 (선택)
-│   └── [issue-name]/
-```
-
-**통합 완료** — domain.md로 통합되면 feature 디렉토리는 삭제됩니다:
-
-```
-docs/design/[category]/
-├── [domain].md             ← 여러 feature를 통합한 SSOT
-├── [domain].md
-└── [feature]/              ← 아직 통합되지 않은 진행 중 feature
-```
-
-> consolidate-main(feature 내 통합) → consolidate-domain(domain.md 통합) 순서로 진행됩니다.
-
 **Commands (슬래시 명령 별칭):**
 
 ```
