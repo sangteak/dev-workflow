@@ -1,7 +1,7 @@
 {
   "name": "dev-workflow",
   "description": "Structured development workflow: Brainstorming → Plan → Develop → Review with persona-based feedback loops",
-  "version": "1.7.6",
+  "version": "1.7.7",
   "author": {
     "name": "sangteak"
   },

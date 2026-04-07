@@ -35,11 +35,18 @@ Socratic   × 🎮 Game Designer  → "왜 이 메커니즘이 필요한가?"
 
 ### 세션이 끊겨도 이어집니다
 
-긴 브레인스토밍 세션은 Claude Code의 컨텍스트 창을 소진합니다. `/compact`로 요약할 수도 있지만, dev-workflow는 **HANDOFF 방식**을 선택했습니다.
+긴 브레인스토밍 세션은 Claude Code의 컨텍스트 창을 소진합니다. dev-workflow는 세 가지 도구를 상황에 따라 전략적으로 사용합니다.
 
-**왜 `/compact`가 아닌 HANDOFF인가:**
-- `/compact`는 대화를 요약하지만, 현재 Phase / 확정된 결정 / 미해소 OPEN_QUESTIONS 같은 구조적 상태를 보존하지 못합니다
-- HANDOFF는 작업 상태를 마크다운 파일로 저장하므로, 세션을 완전히 닫거나 며칠 후 다시 열어도 정확히 중단된 지점부터 이어갈 수 있습니다
+**컨텍스트 관리 전략:**
+
+| 도구 | 언제 | 효과 |
+|---|---|---|
+| `/compact` | Phase 진행 중 컨텍스트 60~70% 도달 시 | 대화 압축, 세션·페르소나·상태 유지 (세션 내 연장) |
+| Phase 파일 (`phase*.md`) | Phase 완료 시 자동 저장 | 외부 메모리 역할 — `/clear` 후에도 복구 가능 |
+| HANDOFF.md (`/dev-workflow:save`) | Phase 진행 중 어쩔 수 없이 `/clear`해야 할 때 | 미완료 Phase의 중간 상태를 파일로 보존 |
+
+**Phase 경계가 최적의 `/clear` 타이밍:**
+각 Phase 파일이 생성된 직후, 중요한 내용이 모두 파일에 저장된 상태입니다. 이 시점에 `/compact`로 세션을 연장하거나, `/clear`로 완전히 초기화해도 안전합니다. brainstorming 스킬이 각 Phase 완료 시 이 안내를 자동으로 제공합니다.
 
 **복구 흐름:**
 
