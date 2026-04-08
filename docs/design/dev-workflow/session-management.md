@@ -1,10 +1,26 @@
-> 멀티세션 컨텍스트 보존과 복구를 위한 HANDOFF 생명주기 전체를 관리한다 -- 저장 명령, 탐색/복구 UX, 이슈 격리 규칙을 포함한다.
+> 멀티세션 컨텍스트 보존과 복구를 위한 HANDOFF 생명주기 전체를 관리한다 -- 저장 명령, 탐색/복구 UX, 이슈 격리 규칙, 컨텍스트 관리 3도구 전략을 포함한다.
 
 ## 시스템 개요
 
 Claude Code 세션은 컨텍스트 한계에 도달하거나 사용자가 임의로 종료할 수 있다. 이때 진행 중인 작업의 맥락을 보존하고, 다음 세션에서 매끄럽게 복구하는 것이 세션 관리의 핵심 과제다.
 
-이 도메인은 세 가지 축으로 구성된다. 첫째, HANDOFF 저장과 복구를 slash command로 명시적으로 트리거하는 **명령 체계**. 둘째, 세션 시작 시 진행 중인 작업을 HANDOFF 유무와 관계없이 하나의 통합 목록으로 제시하는 **탐색 UX**. 셋째, 이슈 서브워크플로우에서 부모 Feature의 HANDOFF가 오염되지 않도록 하는 **스코프 격리 규칙**. 이 세 축은 모두 `context-handling` 스킬을 SSOT(Single Source of Truth)로 삼아 동작하며, 정책이 분산되지 않도록 설계되어 있다.
+이 도메인은 네 가지 축으로 구성된다. 첫째, `/compact` · phase 파일 · HANDOFF를 상황에 따라 전략적으로 사용하는 **컨텍스트 관리 3도구 전략**. 둘째, HANDOFF 저장과 복구를 slash command로 명시적으로 트리거하는 **명령 체계**. 셋째, 세션 시작 시 진행 중인 작업을 HANDOFF 유무와 관계없이 하나의 통합 목록으로 제시하는 **탐색 UX**. 넷째, 이슈 서브워크플로우에서 부모 Feature의 HANDOFF가 오염되지 않도록 하는 **스코프 격리 규칙**. 이 축들은 모두 `context-handling` 스킬을 SSOT(Single Source of Truth)로 삼아 동작하며, 정책이 분산되지 않도록 설계되어 있다.
+
+## 컨텍스트 관리 3도구 전략
+
+긴 작업 세션은 컨텍스트 창을 점진적으로 소진한다. 사용자는 보통 80%에 도달했을 때 `/clear`를 하지만, 작업 중 타이밍을 놓쳐 90~100%까지 이어지는 경우가 빈번하다. 이 문제의 해결책은 `/compact` · phase 파일 · HANDOFF를 대체 관계가 아닌 보완 관계로 전략적으로 사용하는 것이다.
+
+| 도구 | 언제 | 효과 |
+|---|---|---|
+| `/compact` | Phase 진행 중 컨텍스트 60~70% 도달 시 | 대화 압축, 세션·페르소나·상태 유지 (세션 내 연장) |
+| Phase 파일 (`phase*.md`) | Phase 완료 시 자동 저장 | 외부 메모리 역할 — `/clear` 후에도 복구 가능 |
+| HANDOFF.md (`/dev-workflow:save`) | Phase 진행 중 어쩔 수 없이 `/clear`해야 할 때 | 미완료 Phase의 중간 상태를 파일로 보존 |
+
+**Phase 경계가 최적의 `/clear` 타이밍이다.** 각 Phase 파일이 생성된 직후, 중요한 내용이 모두 파일에 저장된 상태다. 이 시점에 `/compact`로 세션을 연장하거나, `/clear`로 완전히 초기화해도 context-handling이 phase 파일을 탐지하여 자동 복구한다. HANDOFF는 불필요하다. brainstorming 스킬이 각 Phase 완료 시 이 안내를 자동으로 출력한다.
+
+반면 Phase 진행 중에 어쩔 수 없이 `/clear`를 해야 할 때는 반드시 `/dev-workflow:save`로 HANDOFF.md를 먼저 생성해야 한다. Phase 파일에 아직 저장되지 않은 논의 내용이 소실되기 때문이다.
+
+이 전략의 기술적 배경: `/compact`는 대화 히스토리만 압축하며, 세션 내 페르소나·워크플로우 상태·현재 단계는 그대로 유지된다. Phase 파일은 `/clear` 이후에도 디스크에 남아 있으므로 context-handling의 파일 조합 추론으로 단계를 복구할 수 있다.
 
 ## HANDOFF 저장과 복구 명령
 
@@ -54,6 +70,8 @@ Feature 개발 중 이슈를 생성하여 `issues/` 서브워크플로우에 진
 |------|------|
 | `skills/context-handling/SKILL.md` | HANDOFF 정책의 SSOT. 저장/복구 서브커맨드, 탐색 절차, 출력 템플릿, 격리 규칙을 모두 포함 |
 | `skills/workflow-orchestrator/SKILL.md` | Session Start Protocol Step 2에서 context-handling을 invoke |
+| `skills/brainstorming/SKILL.md` | 각 Phase 완료 시 컨텍스트 관리 힌트 블록 자동 출력 |
+| `README.md` | 컨텍스트 관리 3도구 전략 테이블 포함 (사용자 온보딩) |
 | `.claude-plugin/plugin.json` | 플러그인 버전 및 스킬 description 관리 |
 | `.claude-plugin/marketplace.json` | 마켓플레이스 배포 버전 관리 |
 
@@ -71,3 +89,6 @@ Feature 개발 중 이슈를 생성하여 `issues/` 서브워크플로우에 진
 | 이슈 HANDOFF 격리 | 명시적 금지 규칙 | Claude는 단정 규칙을 잘 따름, 시나리오별 가이드는 해석 여지가 넓어 역효과 |
 | 이슈 생성 시 부모 HANDOFF 자동 저장 | 불필요 | DEVELOP 산출물(plan.md, git, TodoWrite)로 복구 가능 |
 | 부모 HANDOFF에 이슈 참조 기록 | 불필요 | `is-issue` + `parent-feature` 메타데이터로 충분 |
+| Phase 경계 힌트에서 /dev-workflow:save 포함 | 제외 | Phase 완료 시 phase 파일이 이미 외부 메모리. HANDOFF는 Phase 진행 중 강제 /clear 시에만 필요 |
+| /compact 권장 타이밍 | 60~70% | 80% 이상까지 기다리면 타이밍을 놓치는 경우가 빈번. 선제적 압축이 UX 마찰을 줄임 |
+| brainstorming 힌트 자동 출력 | Phase 완료 직후 | 사용자가 판단해야 할 정확한 시점에 안내 제공. 자동 /compact 실행은 Claude Code에서 불가 |
