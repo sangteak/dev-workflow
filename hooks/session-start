@@ -19,7 +19,7 @@ escape_for_json() {
 }
 
 orchestrator_escaped=$(escape_for_json "$orchestrator_content")
-session_context="<EXTREMELY_IMPORTANT>\nYou have a structured development workflow.\n\n**Below is the full content of your 'dev-workflow:workflow-orchestrator' skill:**\n\n${orchestrator_escaped}\n</EXTREMELY_IMPORTANT>"
+session_context="<!-- dev-workflow:orchestrator -->\n\n<EXTREMELY_IMPORTANT>\nYou have a structured development workflow.\n\n**Below is the full content of your 'dev-workflow:workflow-orchestrator' skill:**\n\n${orchestrator_escaped}\n</EXTREMELY_IMPORTANT>"
 
 cat <<EOF
 {
