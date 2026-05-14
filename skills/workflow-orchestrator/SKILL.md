@@ -82,17 +82,15 @@ At the start of EVERY session, execute in order:
 - 사용자 메시지: 구현, implement, 개발, 작성, coding, write
 
 → VCS 모드에 관계없이 `superpowers:subagent-driven-development` 실행 시 아래 공통 규칙을 컨텍스트로 전달:
+  1. **단계 진입 즉시**: invoke `dev-workflow:rules-injection` with:
+     - stage: develop
+     - purpose: pre-stage-attach
+     - target_agent: Implementer
 
-0. **단계 진입 즉시**: invoke `dev-workflow:rules-injection` with:
-   - stage: develop
-   - purpose: pre-stage-attach
-   - target_agent: Implementer
-
-   이 호출 결과(활성 규칙 본문 + 단계 라벨)를 `superpowers:subagent-driven-development`의 Implementer/spec-reviewer/code-quality-reviewer 호출 프롬프트에 함께 첨부한다. `.claude/rules/`가 없으면 자동으로 no-op이 된다.
-
-  - 모든 태스크 완료 후 커밋을 제안하지 않는다
-  - 대신 다음 메시지로 완료를 보고한다: "✅ 모든 태스크가 완료되었습니다. 마무리할까요?"
-  - 커밋+푸시는 마무리 시퀀스(Completion Protocol)에서 처리한다
+     이 호출 결과(활성 규칙 본문 + 단계 라벨)를 `superpowers:subagent-driven-development`의 Implementer/spec-reviewer/code-quality-reviewer 호출 프롬프트에 함께 첨부한다. `.claude/rules/`가 없으면 자동으로 no-op이 된다.
+  2. 모든 태스크 완료 후 커밋을 제안하지 않는다
+  3. 대신 다음 메시지로 완료를 보고한다: "✅ 모든 태스크가 완료되었습니다. 마무리할까요?"
+  4. 커밋+푸시는 마무리 시퀀스(Completion Protocol)에서 처리한다
 
 → VCS 모드에 따라 분기:
 
@@ -135,6 +133,8 @@ At the start of EVERY session, execute in order:
    - purpose: post-review-validate
 
    `type: quantitative/structural` 규칙은 Ouroboros Evaluator로 라우팅되어 PASS/FAIL/PARTIAL 판정. 위반 시 `auto-fix` 메타데이터에 따라 자동 수정 라운드 실행 (별도 커밋 + 테스트 재실행 + 실패 시 자동 롤백).
+
+**순서:** Superpowers `requesting-code-review` 완료 후 → 위 `post-review-validate`(rules-injection)를 먼저 실행 → 그 다음 아래 `Evaluator QA 게이트`를 실행한다. rules-injection에서 type:quantitative/structural 규칙을 Evaluator로 라우팅하므로, Evaluator QA 게이트는 설계 문서의 Success Criteria만 검증한다 (중복 호출 회피).
 
 **📎 Enhanced Mode — Evaluator QA 게이트:**
 Superpowers 코드 리뷰 완료 후, 설계 문서의 수락 기준(Success Criteria / Acceptance Criteria)이 존재하면
