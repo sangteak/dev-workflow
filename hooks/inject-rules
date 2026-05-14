@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+# SessionStart hook for dev-workflow plugin — inject .claude/rules/*.md
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+PROJECT_ROOT="${CLAUDE_PROJECT_DIR:-$PWD}"
+RULES_DIR="${PROJECT_ROOT}/.claude/rules"
+
+# 디렉토리 없음 또는 비어있음 → 조용히 skip
+if [ ! -d "${RULES_DIR}" ]; then
+    cat <<EOF
+{
+  "additional_context": "",
+  "hookSpecificOutput": {
+    "hookEventName": "SessionStart",
+    "additionalContext": ""
+  }
+}
+EOF
+    exit 0
+fi
+
+escape_for_json() {
+    local s="$1"
+    s="${s//\\/\\\\}"
+    s="${s//\"/\\\"}"
+    s="${s//$'\n'/\\n}"
+    s="${s//$'\r'/\\r}"
+    s="${s//$'\t'/\\t}"
+    printf '%s' "$s"
+}
+
+rules_content=""
+loaded_names=()
+count=0
+
+# 평면 글로브 (examples/ 서브디렉토리 자동 제외 — ** 재귀 금지)
+for file in "${RULES_DIR}"/*.md; do
+    [ -e "$file" ] || continue
+    fname="$(basename "$file" .md)"
+    loaded_names+=("$fname")
+    count=$((count + 1))
+    content="$(cat "$file" 2>&1 || echo "Error reading $file")"
+    rules_content="${rules_content}
+
+<!-- rule: ${fname} -->
+${content}
+"
+done
+
+if [ "$count" -eq 0 ]; then
+    cat <<EOF
+{
+  "additional_context": "",
+  "hookSpecificOutput": {
+    "hookEventName": "SessionStart",
+    "additionalContext": ""
+  }
+}
+EOF
+    exit 0
+fi
+
+# 관측 헤더 한 줄
+names_joined="$(IFS=,; echo "${loaded_names[*]}")"
+header="🛡️ 프로젝트 규칙 ${count}개 로드됨: ${names_joined}"
+
+full_output="<!-- dev-workflow:rules -->
+<project-rules>
+${header}
+
+${rules_content}
+</project-rules>"
+
+escaped="$(escape_for_json "$full_output")"
+
+cat <<EOF
+{
+  "additional_context": "${escaped}",
+  "hookSpecificOutput": {
+    "hookEventName": "SessionStart",
+    "additionalContext": "${escaped}"
+  }
+}
+EOF
+
+exit 0
