@@ -194,6 +194,45 @@ feature digest 산출 직후 사용자에게 검토 요청 (domain과 동일 패
 
 ---
 
+## (4) 적용
+
+머지 계획 + Architect 검증 통과 후 적용 단계로 진입.
+
+### Dry-run plan 생성 (REQ-009)
+
+자동 수정 항목도 **회계 형식**으로 노출한다 (사용자가 사후 검증 가능):
+
+```
+── 머지 계획 (dry-run) ────────────────────────────
+
+대상: matchmaking.md (도메인)
+머지 후보: rating-system, br-mode-system
+
+[자동 수정 항목 — 회계 형식]
+- feature.REQ-001 → domain.REQ-008 (renumbering)
+  참조 갱신: feature.md 섹션 4 (2건), 섹션 6 (1건)
+- 표 형식 통일: 의존성 맵 컬럼 순서
+
+[사용자 결정 항목]
+1. 의미 충돌: domain의 "MMR 기준" vs feature의 "latency 기준"
+   → 어느 정책을 채택하시겠습니까?
+2. 새 섹션 "보안 고려사항" 신설 위치
+   → 11번 섹션? 7번 다음? 다른 위치?
+
+이대로 진행할까요?
+1. Yes
+2. No (abort)
+```
+
+### 실제 적용
+
+사용자 승인 후:
+1. domain.md 수정
+2. 섹션 10 변경 이력 자동 추가 (REQ-020): `| YYYY-MM-DD | {feature-name} 통합 (작성자: {git_author}) | {affected_sections} | 완료 |`
+3. (5) 검증 단계로 이동
+
+---
+
 ## (5) 검증
 
 (4) 적용 직후 검증 단계를 실행한다.
@@ -216,8 +255,90 @@ feature digest 산출 직후 사용자에게 검토 요청 (domain과 동일 패
 
 ---
 
+## 실행 모드 결정 (REQ-015)
+
+후보 식별 직후, 다음 알고리즘으로 실행 모드를 결정한다:
+
+```
+total_bytes = sum(file_size(domain.md) + file_size(f.md) for f in candidates)
+estimated_tokens = total_bytes / 3.5  # MERGE_TOKEN_DIVISOR 환경 변수 적용
+feature_count = len(candidates)
+
+if feature_count < 3 AND estimated_tokens < 20K:
+    mode = "sequential"  # 메인 세션 순차
+elif feature_count >= 5 OR estimated_tokens > 50K:
+    mode = "parallel"    # 서브에이전트 풀
+else:
+    mode = ask_user_3way(default="자동위임")
+```
+
+사용자 3지 선택지 출력:
+```
+머지 후보 N개 (예상 토큰 ~XK). 실행 모드를 선택하세요:
+
+1. 순차 (안전, 약간 느림)
+2. 병렬 (빠름, 풀 크기 {MERGE_POOL_SIZE})
+3. 자동위임 — 시스템이 보수적으로 결정 (기본)
+```
+
+`자동위임` 선택 시 → 시스템이 보수적으로 순차로 결정.
+
+---
+
+## 카테고리 직렬/병렬 정책
+
+### 카테고리 내 직렬 (REQ-013) — 누적 base
+
+같은 카테고리의 후보들은 git log main 머지 순서 기준으로 직렬 처리.
+직전 머지 결과를 다음 머지의 base로 사용 (누적 base).
+
+```
+카테고리 A 내부 (시작 순서):
+  f1 → A.md(v0) base로 머지 → A.md(v1)
+  f2 → A.md(v1) base로 머지 → A.md(v2)
+  f3 → A.md(v2) base로 머지 → A.md(v3)
+```
+
+`no-git-mode`에서는 파일 mtime 기준으로 fallback.
+
+### 카테고리 간 병렬 (REQ-014)
+
+서로 다른 카테고리는 서브에이전트 풀로 병렬 처리.
+풀 크기 기본값 3, 상한 5. `MERGE_POOL_SIZE` 환경 변수로 조정 가능.
+처리 완료 시 다음 후보를 즉시 투입 (rolling pool).
+
+---
+
+## 사용자 결정 큐 노출 규칙 (REQ-016)
+
+병렬 모드에서 여러 카테고리가 동시에 사용자 결정이 필요할 수 있다.
+다음 규칙을 적용한다:
+
+- 카테고리 워커가 "사용자 결정 필요" 항목 도달 시 **메인 큐에 push** (FIFO)
+- 메인 컨텍스트는 큐에서 **한 번에 1개**만 꺼내 사용자에게 노출
+- 사용자 응답 후 해당 카테고리 워커는 재개 → 다음 큐 항목 노출
+- 다른 카테고리는 결정 대기 동안 정상 진행 (block 안 됨)
+
+## 출력 버퍼 flush 규칙 (REQ-017)
+
+병렬 모드의 결과 출력 순서를 안정화한다:
+
+- 각 카테고리 결과를 메인이 buffer에 보관
+- flush 순서: 카테고리 시작 순서 (git log main 머지 순서)
+- 시작 순서가 빠른 카테고리가 진행 중이면 후속 출력 보류
+- 실시간 인터리브 금지
+
+```
+시작 순서: A → B → C
+완료 순서: C → A → B  (각자 다른 속도)
+
+올바른 출력 순서 (시작 순서 기준):
+[A 결과] [B 결과] [C 결과]
+```
+
+---
+
 <!-- 후속 Task에서 추가될 섹션 (forward reference):
-     - (4) 적용 (dry-run → 승인 → 수정) — (3)과 (5) 사이에 삽입
      - 옵션 처리 (ARGUMENTS, --auto 플래그, 자동 모드 발화)
      - 호환성 첫 머지 체크리스트
      - In-session Resolution 정책 (실패 시 4지 선택)
