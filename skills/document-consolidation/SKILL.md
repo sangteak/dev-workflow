@@ -1,6 +1,6 @@
 ---
 name: document-consolidation
-description: Use when development is complete (after REVIEW) or when an issue is resolved. Consolidates phase/plan files into the final design document, suggests domain merge, and cleans up feature directory.
+description: Use when development is complete (after REVIEW). Consolidates phase/plan files into the final design document for the current feature. Domain consolidation is now handled by separate `merge-to-domain` skill.
 ---
 
 # Document Consolidation
@@ -17,9 +17,10 @@ description: Use when development is complete (after REVIEW) or when an issue is
 자동 실행하지 않는다. 아래 시점에 **제안**하고 사용자 승인 후 실행한다:
 - REVIEW 완료 시: "문서 통합을 진행할까요?" (consolidate-main)
 - issues/ 완료 시: "이슈 내용을 설계 문서에 통합할까요?" (consolidate-issue)
-- consolidate-main 완료 시: "domain.md 통합을 진행할까요?" (consolidate-domain)
 
 **예외:** `workflow-orchestrator` Completion Protocol에서 invoke된 경우, 이 규칙을 적용하지 않는다. **즉시 실행한다.**
+
+> ℹ️ 도메인 통합(Mode 3)은 v1.9.0부터 별도 스킬(`merge-to-domain`)로 분리되었습니다. Mode 1 종료 후 자동 전환되지 않습니다.
 
 ---
 
@@ -77,47 +78,9 @@ description: Use when development is complete (after REVIEW) or when an issue is
    확인 후 다음 단계를 진행합니다. 수정할 부분이 있으면 알려주세요.
    ```
 
-6. **작업 내용 분석 및 domain 병합 제안**
+6. **feature 디렉토리 삭제**
 
-   feature.md의 내용을 분석하여 domain.md에 반영할 변경이 있는지 판단한다.
-   판단 체크리스트:
-   - 섹션 3에 domain.md에 없는 새 REQ가 있는가?
-   - 섹션 4/6에 domain.md와 다른 설계 결정이 있는가?
-
-   **병합 권장 시:**
-   ```
-   📋 작업 내용 분석 결과:
-
-   - 새로운 요구사항: [있음/없음 + 요약]
-   - 설계 변경: [있음/없음 + 요약]
-   - 기술 결정 추가: [있음/없음 + 요약]
-
-   → domain.md 병합을 권장합니다. 진행할까요?
-
-   1. Yes — domain 병합 후 feature 디렉토리 삭제
-   2. No — feature 디렉토리만 삭제
-   ```
-
-   **병합 불필요 시:**
-   ```
-   📋 작업 내용 분석 결과:
-
-   - domain.md에 반영할 새로운 내용이 없습니다.
-   - feature 디렉토리를 삭제합니다. 진행할까요?
-
-   1. Yes
-   2. No
-   ```
-
-   - Yes (병합 권장) → consolidate-domain(Mode 3) 진행
-   - No (병합 권장) 또는 Yes (병합 불필요) → Step 7로 진행
-   - No (병합 불필요) → 삭제 취소, feature 디렉토리 유지
-
-   > 참고: 사용자가 삭제를 거부한 경우 feature 디렉토리가 유지된다. 이는 사용자 override를 허용하는 설계이다.
-
-7. **feature 디렉토리 삭제 (domain 병합 스킵 시)**
-
-   domain 병합을 하지 않는 경우, feature 디렉토리를 직접 삭제한다.
+   feature 설계 문서의 핵심 내용은 Step 1~4에서 이미 통합되었으므로, phase/plan/HANDOFF 등 중간 산출물이 포함된 feature 디렉토리를 삭제한다.
 
    ```
    📋 feature 디렉토리를 삭제합니다.
@@ -132,17 +95,25 @@ description: Use when development is complete (after REVIEW) or when an issue is
 
    사용자 승인 후 feature 디렉토리 전체 삭제.
 
+   > 참고: 사용자가 삭제를 거부한 경우 feature 디렉토리가 유지된다. 이는 사용자 override를 허용하는 설계이다.
+
+7. **종료 안내**
+
+   ```
+   ✅ feature 문서 통합 완료: docs/design/[카테고리]/[기능명]/[기능명].md
+
+   도메인 통합은 별도 머지 세션에서 처리됩니다.
+   (관리자: /dev-workflow:merge-to-domain [카테고리] 호출)
+   ```
+
 ### 최종 상태
 
-**domain 병합한 경우:**
-Mode 3 완료 상태와 동일 (feature 디렉토리 삭제됨, domain.md에 통합)
-
-**domain 병합 스킵한 경우:**
 ```
 docs/design/[카테고리]/
 └── (feature 디렉토리 삭제됨)
 ```
-feature.md의 핵심 내용은 Mode 1 Step 1~4에서 이미 통합 처리됨.
+
+feature.md의 핵심 내용은 Mode 1 Step 1~4에서 이미 통합 처리됨. 도메인 통합은 별도 스킬(`merge-to-domain`)에서 담당한다.
 
 ---
 
@@ -198,8 +169,11 @@ feature.md의 핵심 내용은 Mode 1 Step 1~4에서 이미 통합 처리됨.
 
 ## Mode 3: consolidate-domain
 
+> ⚠️ **DEPRECATED**: Mode 3은 v1.9.0부터 폐기 예정입니다.
+> 도메인 통합은 `/dev-workflow:merge-to-domain` 명령 (skills/merge-to-domain/SKILL.md)을 사용하세요.
+> 다음 릴리스(v2.0.0)에서 본 섹션은 완전히 제거됩니다.
+
 feature 완료 후 설계 문서를 domain.md에 통합하거나 새 domain으로 승격한다.
-consolidate-main 실행 후 자동으로 이어지는 단계이다.
 
 ### 실행 절차
 
