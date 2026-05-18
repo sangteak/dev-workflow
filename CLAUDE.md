@@ -14,11 +14,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - **`.claude-plugin/`** — 플러그인 메타데이터 (`plugin.json`, `marketplace.json`)
 - **`hooks/`** — 세션 시작 시 `workflow-orchestrator` 스킬을 자동 주입하는 bash 스크립트
-- **`skills/`** — 9개 핵심 스킬 (아래 참조)
-- **`commands/`** — 콘솔 자동완성용 독립 명령 파일 (save, resume, design-summary, setup)
+- **`skills/`** — 11개 핵심 스킬 (아래 참조)
+- **`commands/`** — 콘솔 자동완성용 독립 명령 파일 (save, resume, design-summary, setup, add-rule, merge-to-domain)
 - **`docs/design/`** — 설계 문서 저장소 (카테고리/기능 구조)
 
-### Skills (9개)
+### Skills (11개)
 
 | 스킬 | 역할 |
 |---|---|
@@ -31,6 +31,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `document-consolidation` | 개발 완료 후 phase/plan 파일 통합 |
 | `design-doc-index` | 설계 문서 색인 및 크로스레퍼런스 (BRAINSTORM/PLAN 중 기존 문서 참조) |
 | `design-summary` | 관련 설계 문서 그룹의 통합 요약 생성 (명령 호출: `/dev-workflow:design-summary`) |
+| `rules-injection` | 프로젝트별 규칙을 워크플로우 스테이지에 자동 주입 (명령 호출: `/dev-workflow:add-rule`) |
+| `merge-to-domain` | 관리자가 카테고리 도메인 문서(SSOT)에 complete feature를 intelligent merge. 5단계 알고리즘 + Architect 라운드 + dry-run 안전 게이트 |
 
 ### Workflow Stage → Delegation
 
@@ -40,6 +42,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | PLAN | dev-workflow 스킬 | ✅ 사용 |
 | DEVELOP | Superpowers `subagent-driven-development` | ❌ 없음 |
 | REVIEW | Superpowers `requesting-code-review` | ❌ 없음 |
+| COMPLETION | dev-workflow (Completion Protocol 작업자 측) + dev-workflow (merge-to-domain, 관리자 측) | ❌ 없음 |
 
 ## Document Structure
 
@@ -103,7 +106,23 @@ docs/design/
 | resume | context-handling | resume (하드코딩) | HANDOFF.md에서 작업 복구 |
 | design-summary | design-summary | {{ARGUMENTS}} | 설계 문서 통합 요약 생성 |
 | setup | — (자체 로직) | — | 권장 플러그인 의존성 설치 및 검증 |
+| add-rule | rules-injection | {{ARGUMENTS}} | 프로젝트별 규칙을 워크플로우 스테이지에 자동 주입하는 룰 추가 |
+| merge-to-domain | merge-to-domain | {{ARGUMENTS}} | 관리자가 도메인 머지 파이프라인 호출 (카테고리명/플래그/공란 지원) |
 
 - 자동 트리거 스킬(orchestrator, persona-resolution 등)에는 커맨드를 추가하지 않는다
 - 하드코딩 ARGUMENTS: 콘솔 자동완성 즉시 실행 시 아규먼트 입력 불가 문제 해결
 - {{ARGUMENTS}}: 사용자 입력이 필요한 경우 사용 (Ouroboros 패턴)
+
+### 자기-도그푸딩 (Self-Dogfooding)
+
+dev-workflow 플러그인은 자기 도메인 문서를 신규 `merge-to-domain` 스킬로 관리한다.
+현재 6개 도메인 문서 (document-management, session-management, ux-consistency,
+workflow-lifecycle, thinking-enhancement, project-customization)는 신규 스킬 도입 이전에
+생성되었으므로 **첫 머지 시 호환성 체크리스트** (REQ-022)가 발동된다:
+
+- 정책 ID 부재 → 사용자 결정 (자동 부여 vs 보존)
+- 섹션 10 변경 이력 부재 → 시작점 행 자동 추가
+- 의존성 맵 부재 → 머지에 필요할 때만 질문
+
+마이그레이션을 별도 작업으로 만들지 않는다. 신규 스킬이 자연스럽게 첫 머지에서
+점진 보완한다.
