@@ -326,7 +326,7 @@ DEVELOP 단계에서 Superpowers는 `git worktree`를 사용해 격리된 브랜
 
 ```bash
 /plugin marketplace add sangteak/dev-workflow
-/plugin install dev-workflow@sangteak-dev-workflow
+/plugin install dev-workflow@dev-workflow-marketplace
 ```
 
 ### 2. Setup Dependencies
