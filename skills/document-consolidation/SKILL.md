@@ -10,6 +10,8 @@ description: Use when development is complete (after REVIEW) or when an issue is
 
 **모든 파일 경로 규칙:** `docs/design/[카테고리]/[기능명]/`
 
+> 결정 요청 형식은 `skills/workflow-orchestrator/decision-flow.md`를 따른다. document-consolidation의 매 단계 사용자 확인은 자연스럽게 풀 박스(D) 형식을 따른다.
+
 ---
 
 ## 트리거
