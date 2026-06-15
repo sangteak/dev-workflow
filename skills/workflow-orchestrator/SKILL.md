@@ -250,7 +250,7 @@ invoke `dev-workflow:rules-injection` with:
 - 합의 결론은 페르소나 토론과 명확히 분리
 - 단계 진입 시 항상 명시적으로 선언
 - 사용자가 합의를 확인하면 루프를 반복하지 않고 진행
-- 결정 요청 형식은 `skills/workflow-orchestrator/decision-flow.md`를 따른다.
+- 결정 요청 형식은 `skills/workflow-orchestrator/decision-flow.md`를 따른다
 
 ---
 
