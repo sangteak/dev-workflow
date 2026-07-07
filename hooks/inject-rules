@@ -8,17 +8,24 @@ PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 PROJECT_ROOT="${CLAUDE_PROJECT_DIR:-$PWD}"
 RULES_DIR="${PROJECT_ROOT}/.claude/rules"
 
+# 플랫폼별 단일 필드 방출 (업스트림 Superpowers 6.0.3+ 패턴 준용).
+# Claude Code는 additional_context와 hookSpecificOutput.additionalContext를
+# 중복 제거 없이 모두 읽으므로, 현재 플랫폼이 소비하는 필드 하나만 방출해야 한다.
+# heredoc 대신 printf 사용: bash 5.3+ heredoc hang 회피 (obra/superpowers#571)
+emit_context() {
+    local payload="$1"
+    if [ -n "${CURSOR_PLUGIN_ROOT:-}" ]; then
+        printf '{\n  "additional_context": "%s"\n}\n' "$payload" | cat
+    elif [ -n "${CLAUDE_PLUGIN_ROOT:-}" ] && [ -z "${COPILOT_CLI:-}" ]; then
+        printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$payload" | cat
+    else
+        printf '{\n  "additionalContext": "%s"\n}\n' "$payload" | cat
+    fi
+}
+
 # 디렉토리 없음 또는 비어있음 → 조용히 skip
 if [ ! -d "${RULES_DIR}" ]; then
-    cat <<EOF
-{
-  "additional_context": "",
-  "hookSpecificOutput": {
-    "hookEventName": "SessionStart",
-    "additionalContext": ""
-  }
-}
-EOF
+    emit_context ""
     exit 0
 fi
 
@@ -51,15 +58,7 @@ ${content}
 done
 
 if [ "$count" -eq 0 ]; then
-    cat <<EOF
-{
-  "additional_context": "",
-  "hookSpecificOutput": {
-    "hookEventName": "SessionStart",
-    "additionalContext": ""
-  }
-}
-EOF
+    emit_context ""
     exit 0
 fi
 
@@ -76,14 +75,6 @@ ${rules_content}
 
 escaped="$(escape_for_json "$full_output")"
 
-cat <<EOF
-{
-  "additional_context": "${escaped}",
-  "hookSpecificOutput": {
-    "hookEventName": "SessionStart",
-    "additionalContext": "${escaped}"
-  }
-}
-EOF
+emit_context "$escaped"
 
 exit 0

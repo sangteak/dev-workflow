@@ -18,18 +18,28 @@ escape_for_json() {
     printf '%s' "$s"
 }
 
+# 플랫폼별 단일 필드 방출 (업스트림 Superpowers 6.0.3+ 패턴 준용).
+# Claude Code는 additional_context와 hookSpecificOutput.additionalContext를
+# 중복 제거 없이 모두 읽으므로, 현재 플랫폼이 소비하는 필드 하나만 방출해야 한다.
+# heredoc 대신 printf 사용: bash 5.3+ heredoc hang 회피 (obra/superpowers#571)
+emit_context() {
+    local payload="$1"
+    if [ -n "${CURSOR_PLUGIN_ROOT:-}" ]; then
+        # Cursor는 additional_context (snake_case)를 소비
+        printf '{\n  "additional_context": "%s"\n}\n' "$payload" | cat
+    elif [ -n "${CLAUDE_PLUGIN_ROOT:-}" ] && [ -z "${COPILOT_CLI:-}" ]; then
+        # Claude Code는 hookSpecificOutput.additionalContext (nested)를 소비
+        printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$payload" | cat
+    else
+        # Copilot CLI(COPILOT_CLI=1) 또는 미상 플랫폼 — SDK 표준 형식
+        printf '{\n  "additionalContext": "%s"\n}\n' "$payload" | cat
+    fi
+}
+
 orchestrator_escaped=$(escape_for_json "$orchestrator_content")
 plugin_root_escaped=$(escape_for_json "$PLUGIN_ROOT")
 session_context="<!-- dev-workflow:orchestrator -->\n\n<EXTREMELY_IMPORTANT>\nYou have a structured development workflow.\n\n플러그인 루트: ${plugin_root_escaped}\n(스킬 본문의 '[플러그인 루트]' 경로 해소에 이 값을 사용한다)\n\n**Below is the full content of your 'dev-workflow:workflow-orchestrator' skill:**\n\n${orchestrator_escaped}\n</EXTREMELY_IMPORTANT>"
 
-cat <<EOF
-{
-  "additional_context": "${session_context}",
-  "hookSpecificOutput": {
-    "hookEventName": "SessionStart",
-    "additionalContext": "${session_context}"
-  }
-}
-EOF
+emit_context "$session_context"
 
 exit 0

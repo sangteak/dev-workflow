@@ -123,11 +123,13 @@ auto-fix 정책: confirm
 
 **git-mode:**
 1. Superpowers Implementer를 호출하여 수정 지시 (위반 내용 + 규칙 본문 전달)
+   - **수정 착수 전 워킹 트리 확인**: 미커밋 변경이 있으면 auto-fix를 시작하지 않고 `confirm` 흐름으로 강등한다 (롤백이 사용자의 미커밋 변경까지 파괴하는 것을 방지)
 2. 수정 완료 후 별도 커밋 생성: `style(auto-fix): [규칙 요약] 적용 (rule: [파일명])`
 3. 테스트 재실행 (Implementer가 CLAUDE.md의 `## Test Command` 또는 package.json/Makefile에서 추론)
+   - **테스트 명령 추론 실패 시**: 테스트 없이 커밋을 유지하지 말고 `confirm` 흐름으로 강등한다 — "테스트 명령을 찾지 못해 자동 검증이 불가합니다. 수정 결과를 검토해주세요" 보고와 함께 diff 요약 제시 (UE5 등 package.json/Makefile이 없는 프로젝트에서 무검증 자동 커밋 방지)
 4. 결과 분기:
    - ✅ 테스트 통과 → 커밋 유지, REVIEW 완료
-   - ❌ 테스트 실패 → `git reset --hard HEAD~1` 자동 롤백 + 사용자 보고:
+   - ❌ 테스트 실패 → 자동 롤백 + 사용자 보고. **롤백 전 안전 확인 필수**: `git log -1 --format=%s`가 `style(auto-fix):` 접두로 시작하는 경우에만 `git reset --hard HEAD~1`을 실행한다. 접두 불일치 시(다른 커밋이 끼어든 경우) 롤백을 중단하고 상황을 보고한다:
      ```
      ⚠️ 자동 수정 후 테스트 실패 — 변경 사항 롤백됨
 
