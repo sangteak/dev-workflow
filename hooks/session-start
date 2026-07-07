@@ -19,7 +19,8 @@ escape_for_json() {
 }
 
 orchestrator_escaped=$(escape_for_json "$orchestrator_content")
-session_context="<!-- dev-workflow:orchestrator -->\n\n<EXTREMELY_IMPORTANT>\nYou have a structured development workflow.\n\n**Below is the full content of your 'dev-workflow:workflow-orchestrator' skill:**\n\n${orchestrator_escaped}\n</EXTREMELY_IMPORTANT>"
+plugin_root_escaped=$(escape_for_json "$PLUGIN_ROOT")
+session_context="<!-- dev-workflow:orchestrator -->\n\n<EXTREMELY_IMPORTANT>\nYou have a structured development workflow.\n\n플러그인 루트: ${plugin_root_escaped}\n(스킬 본문의 '[플러그인 루트]' 경로 해소에 이 값을 사용한다)\n\n**Below is the full content of your 'dev-workflow:workflow-orchestrator' skill:**\n\n${orchestrator_escaped}\n</EXTREMELY_IMPORTANT>"
 
 cat <<EOF
 {

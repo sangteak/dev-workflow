@@ -10,6 +10,8 @@ description: Use at the start of EVERY session - orchestrates the full developme
 These instructions are MANDATORY across ALL projects.
 If Superpowers skills exist for a task, run them FIRST. This workflow extends Superpowers — it does NOT replace it.
 
+사용자 입력 요청에 AskUserQuestion 도구를 사용하지 않는다 (본 워크플로우가 주관하는 BRAINSTORM/PLAN/COMPLETION 한정 — Superpowers 전담 DEVELOP/REVIEW 단계는 이 금지의 적용 범위 밖이다).
+
 ---
 
 ## Session Start Protocol
@@ -250,7 +252,11 @@ invoke `dev-workflow:rules-injection` with:
 - 합의 결론은 페르소나 토론과 명확히 분리
 - 단계 진입 시 항상 명시적으로 선언
 - 사용자가 합의를 확인하면 루프를 반복하지 않고 진행
-- 결정 요청 형식은 `skills/workflow-orchestrator/decision-flow.md`를 따른다
+
+**결정 요청 형식 (SSOT):** BRAINSTORM/PLAN 진입 후 첫 사용자 결정 요청 전에 반드시 `decision-flow.md`를 Read한다. 이 파일은 사용자 프로젝트가 아닌 플러그인 설치 디렉토리에 있다. 경로 해소 순서:
+1. 플러그인 루트를 아는 경우 (세션 시작 컨텍스트에 주입된 "플러그인 루트" 값 사용): `[플러그인 루트]/skills/workflow-orchestrator/decision-flow.md`
+2. 미확보 시 동적 탐색: `find "$HOME/.claude/plugins" -path "*dev-workflow*/skills/workflow-orchestrator/decision-flow.md" -not -path "*/worktrees/*" -type f | head -1` (플러그인 캐시는 `.../dev-workflow/<버전>/skills/...` 구조로 버전 디렉토리를 포함한다)
+3. Read 실패 시: Input Format Rules의 '결정 요청 폴백 형식'을 따르고, 탐색 실패를 사용자에게 노출하지 않는다
 
 ---
 
@@ -284,6 +290,27 @@ invoke `dev-workflow:rules-injection` with:
 [질문 텍스트]
 > 예: "[예시 입력]"
 ```
+
+### decision-flow와의 경계
+
+- 산출물(phase 파일·설계 문서·plan.md)에 기록될 결정(선택지 2개 이상)은 `decision-flow.md`의 결정 박스(D, 오픈형)와 순차 흐름을 따른다
+- 단순 진행 확인·Yes/No 게이트·탐색적 질문은 본 섹션의 무박스 형식을 따른다
+- 결정 박스 내부의 선택지 표기 규칙(번호만, 0번 조건)은 본 섹션이 담당한다
+
+### 결정 요청 폴백 형식 (decision-flow.md Read 실패 시)
+
+- 결정은 한 번에 하나만 묻는다. 사용자가 일괄로 답하거나 위임하면 그 의도를 수용한다 (응답이 형식을 이긴다)
+- 결정 요청은 우측 개방형 결정 박스로 표시한다:
+
+```
+┌── 📌 결정 요청: [결정명] ──────────────
+│  1. [선택지]
+│  2. [선택지]
+└──────────────────────────────────────
+```
+
+- 여러 결정이 대기 중이면 결정 요청 응답 상단에 한 줄 헤더를 표시한다: `📋 확정 N/M · 진행 중: [결정명] · 재논의 K건`
+- 재논의 대기열(모델이 감지했으나 즉시 처리하지 않기로 한 결정 간 충돌 항목)이 없으면 '재논의' 필드를 생략한다
 
 ### 공통 규칙
 

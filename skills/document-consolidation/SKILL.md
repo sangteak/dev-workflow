@@ -10,7 +10,7 @@ description: Use when development is complete (after REVIEW) or when an issue is
 
 **모든 파일 경로 규칙:** `docs/design/[카테고리]/[기능명]/`
 
-> 결정 요청 형식은 `skills/workflow-orchestrator/decision-flow.md`를 따른다. document-consolidation의 매 단계 사용자 확인은 자연스럽게 풀 박스(D) 형식을 따른다.
+> 본 스킬의 단계 확인은 이미 순차 구조(한 시점에 확인 1건)로 고정되어 있으므로 decision-flow.md의 헤더(B)·사전 브리핑(F)·재논의 대기열을 적용하지 않는다 (SSOT '적용 예외' 해당). 각 단계의 인라인 템플릿(번호 목록·확인문·열린 입력)을 문서 그대로 사용한다.
 
 ---
 
