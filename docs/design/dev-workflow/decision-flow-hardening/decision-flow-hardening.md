@@ -1,8 +1,8 @@
 ---
 feature: decision-flow-hardening
 category: dev-workflow
-status: ready-for-plan
-last-updated: 2026-07-06
+status: complete
+last-updated: 2026-07-08
 ---
 
 # Decision Flow Hardening (v1.10.0)
@@ -106,3 +106,9 @@ v1.9.0 리뷰에서 확정된 결함 25건 중 핵심:
 | `hooks/session-start` | PLUGIN_ROOT 값 한 줄 주입 (검증 단계 보강) |
 | `README.md` | v1.9.0 "의존성 발견 시 그룹핑" 서술을 v1.10.0 재설계로 갱신 |
 | `.claude-plugin/marketplace.json`, `.claude-plugin/plugin.json` | 1.10.0 |
+
+## 10. 변경 이력
+
+| 날짜 | 변경 내용 | 영향 범위 | 상태 |
+|------|-----------|-----------|------|
+| 2026-07-08 | v1.10.0 출하 완료 상태 반영 (스테일 status 정정 — G4 부수) | frontmatter | 완료 |
