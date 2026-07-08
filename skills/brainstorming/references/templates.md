@@ -21,16 +21,13 @@
 
 출력 형식:
 ```
-🔬 본질 질문 [Ontologist]:
+🔬 본질 질문 [Ontologist] — ❓ 질문 [N]/4 : [Essence | Root Cause | Prerequisites | Hidden Assumptions]
 
-1. [Essence] 질문 내용
-2. [Root Cause] 질문 내용
-3. [Prerequisites] 질문 내용
-4. [Hidden Assumptions] 질문 내용
+**배경/힌트:** [이 관점에서 왜 묻는지 1줄]
 
-답변할 수 있는 질문에 답해 주세요.
-답변하지 않은 질문은 코드/문서 조사를 진행합니다.
-건너뛰려면 "넘어가자"라고 말씀하세요.
+[질문 내용]
+
+(첫 질문에만: 답하기 어려우면 "모름"/"넘어가" — 조사로 넘깁니다 · 전체 보기: "다 보여줘" · 건너뛰려면 "넘어가자")
 ```
 노출은 decision-flow.md 질문 규칙을 따른다 — 하나씩 (❓ 질문 N/4), "모름"/"넘어가"는 조사로.
 
