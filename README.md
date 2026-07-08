@@ -524,7 +524,8 @@ Superpowers `requesting-code-review`에 위임됩니다:
 
 1. **consolidate-main** — phase/plan 파일을 feature 설계 문서에 통합 + status를 `complete`로 마킹
 2. **README 영향 판단** — 변경 내용에 따라 README 업데이트 제안
-3. **커밋+푸시 제안** — 사용자 확인 후 실행
+3. **커밋 규칙 주입** — rules-injection (`applies-to: completion` 규칙을 커밋 메시지 작성에 반영)
+4. **커밋+푸시 제안** — 사용자 확인 후 실행
 
 > 🔧 내부 스킬: `document-consolidation` (consolidate-main 모드)
 
@@ -564,7 +565,7 @@ commands/
 ```
 .claude/personas.md         ← 프로젝트별 페르소나 오버라이드 (선택)
 tasks/lessons.md            ← 세션 간 학습 누적 (자기개선 루프)
-tasks/todo.md               ← Superpowers writing-plans 산출물
+docs/design/[카테고리]/[기능명]/plan.md  ← Superpowers writing-plans 산출물
 ```
 
 ---

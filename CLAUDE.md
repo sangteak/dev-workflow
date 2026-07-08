@@ -14,11 +14,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - **`.claude-plugin/`** — 플러그인 메타데이터 (`plugin.json`, `marketplace.json`)
 - **`hooks/`** — 세션 시작 시 `workflow-orchestrator` 스킬을 자동 주입하는 bash 스크립트
-- **`skills/`** — 11개 핵심 스킬 (아래 참조)
+- **`skills/`** — 핵심 스킬 (아래 참조)
 - **`commands/`** — 콘솔 자동완성용 독립 명령 파일 (save, resume, design-summary, setup, add-rule, merge-to-domain)
 - **`docs/design/`** — 설계 문서 저장소 (카테고리/기능 구조)
 
-### Skills (11개)
+### Skills
 
 | 스킬 | 역할 |
 |---|---|
@@ -88,7 +88,7 @@ docs/design/
 
 ## Key Patterns
 
-- **VCS 감지**: `.git` 존재 → git-mode (worktree 사용), 없음 → no-git-mode (파일 기반 체크포인트)
+- **VCS 감지**: 세션 환경 컨텍스트의 "Is directory a git repo" 값 사용 (`.git` 리터럴 검사는 linked worktree 오탐으로 미사용) — Yes → git-mode (worktree 사용), No → no-git-mode (파일 기반 체크포인트)
 - **HANDOFF 복구**: 세션 시작 시 `docs/design/**/HANDOFF.md` glob 탐색 → 발견 시 목록 제시
 - **Phase 파일 불변성**: phase1/2/3.md는 생성 후 수정 불가. 개발 완료 시 document-consolidation이 중간 산출물(phase/plan/HANDOFF)만 삭제하고 `[기능명].md`는 complete로 보존 — feature 디렉토리 전체 삭제는 도메인 머지 후 merge-to-domain이 수행
 - **issues/ 서브워크플로우**: 사용자 명시 요청 시에만 생성, Phase 0 스킵, 완료 후 부모 문서에 병합 후 삭제

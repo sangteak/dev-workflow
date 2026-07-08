@@ -37,7 +37,7 @@ auto-fix: true | false | confirm   # 선택, 기본 confirm
 
 - `stage`: develop | review | completion | plan
 - `purpose`: pre-stage-attach | post-review-validate | conflict-check
-- `target_agent`: Implementer | code-reviewer | Evaluator | Architect (필요 시)
+- `target_agent`: Implementer | Task Reviewer | code-reviewer | Evaluator | Architect (필요 시)
 
 ## 2차 — 단계별 프롬프트 첨부 절차
 

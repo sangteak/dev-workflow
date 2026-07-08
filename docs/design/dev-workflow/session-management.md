@@ -62,7 +62,7 @@ Feature 개발 중 이슈를 생성하여 `issues/` 서브워크플로우에 진
 
 해결 방식은 명시적 금지 규칙 추가다. issues/ 서브워크플로우에서 HANDOFF를 생성하거나 업데이트할 때 부모 Feature의 HANDOFF.md를 수정하거나 새로 생성하지 않는다. 중간 결정 사항 업데이트 시에도 "현재 작업 위치의 HANDOFF.md"만 대상으로 한정한다. Claude는 명시적 단정 규칙을 근거와 함께 제시하면 잘 따르므로, 시나리오별 가이드보다 금지 규칙이 효과적이다.
 
-이슈 생성 시 부모 HANDOFF를 자동 저장하는 방안은 불필요하다. 이슈는 DEVELOP 단계에서만 발생하며, DEVELOP 상태는 plan.md, git, TodoWrite 등 기존 산출물로 충분히 복구 가능하다. 부모 HANDOFF에 이슈 참조를 기록하는 방안도 `is-issue`와 `parent-feature` 메타데이터로 이미 관계가 표현되므로 중복 기록일 뿐이다.
+이슈 생성 시 부모 HANDOFF를 자동 저장하는 방안은 불필요하다. 이슈는 DEVELOP 단계에서만 발생하며, DEVELOP 상태는 plan.md, git, 네이티브 태스크 추적 등 기존 산출물로 충분히 복구 가능하다. 부모 HANDOFF에 이슈 참조를 기록하는 방안도 `is-issue`와 `parent-feature` 메타데이터로 이미 관계가 표현되므로 중복 기록일 뿐이다.
 
 ## 관련 파일
 
@@ -87,7 +87,7 @@ Feature 개발 중 이슈를 생성하여 `issues/` 서브워크플로우에 진
 | 상태 판단 | status + 파일 조합 추론 | 기존 status 2개(`ready-for-plan`, `complete`)로 충분 |
 | HANDOFF 1개일 때 | 항상 목록 제시 | 자동 복귀는 사용자 의도 확인 불가, 새 작업 선택지 보장 |
 | 이슈 HANDOFF 격리 | 명시적 금지 규칙 | Claude는 단정 규칙을 잘 따름, 시나리오별 가이드는 해석 여지가 넓어 역효과 |
-| 이슈 생성 시 부모 HANDOFF 자동 저장 | 불필요 | DEVELOP 산출물(plan.md, git, TodoWrite)로 복구 가능 |
+| 이슈 생성 시 부모 HANDOFF 자동 저장 | 불필요 | DEVELOP 산출물(plan.md, git, 태스크 추적)로 복구 가능 |
 | 부모 HANDOFF에 이슈 참조 기록 | 불필요 | `is-issue` + `parent-feature` 메타데이터로 충분 |
 | Phase 경계 힌트에서 /dev-workflow:save 포함 | 제외 | Phase 완료 시 phase 파일이 이미 외부 메모리. HANDOFF는 Phase 진행 중 강제 /clear 시에만 필요 |
 | /compact 권장 타이밍 | 60~70% | 80% 이상까지 기다리면 타이밍을 놓치는 경우가 빈번. 선제적 압축이 UX 마찰을 줄임 |

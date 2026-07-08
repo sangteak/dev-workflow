@@ -91,7 +91,7 @@ domain_digest:
 **Fallback (REQ-026):**
 - domain.md 토큰이 80K를 초과하면 섹션 단위 분할 학습으로 fallback
 - 섹션 인덱스로 부분 로드 → 각 섹션의 digest를 합쳐서 domain_digest 구성
-- 토큰 추정: `file_size_bytes / 3.5` (`MERGE_TOKEN_DIVISOR` 환경 변수로 조정)
+- 토큰 추정: `file_size_bytes / 3.5` (고정 상수 — 한·영 혼합 평균 근사, 임계값 트리거 용도로 충분)
 
 **학습 단계 사용자 게이트 (REQ-005):**
 
@@ -293,7 +293,7 @@ feature digest 산출 직후 사용자에게 검토 요청 (domain과 동일 패
 
 ```
 total_bytes = sum(file_size(domain.md) + file_size(f.md) for f in candidates)
-estimated_tokens = total_bytes / 3.5  # MERGE_TOKEN_DIVISOR 환경 변수 적용
+estimated_tokens = total_bytes / 3.5  # 고정 상수
 feature_count = len(candidates)
 category_count = len(target_categories)
 
@@ -314,7 +314,7 @@ else:
 머지 후보 N개 (예상 토큰 ~XK). 실행 모드를 선택하세요:
 
 1. 순차 (안전, 약간 느림)
-2. 병렬 (빠름, 풀 크기 {MERGE_POOL_SIZE})
+2. 병렬 (빠름, 풀 크기 3)
 3. 자동위임 — 시스템이 보수적으로 결정 (기본)
 ```
 
@@ -342,7 +342,7 @@ else:
 ### 카테고리 간 병렬 (REQ-014)
 
 서로 다른 카테고리는 서브에이전트 풀로 병렬 처리.
-풀 크기 기본값 3, 상한 5. `MERGE_POOL_SIZE` 환경 변수로 조정 가능.
+풀 크기 기본값 3, 상한 5 (고정 — brainstorming Enhanced Mode 검증 범위).
 처리 완료 시 다음 후보를 즉시 투입 (rolling pool).
 
 ---
