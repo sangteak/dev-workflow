@@ -26,6 +26,9 @@ description: Generate a narrative system overview from related design documents.
 
 ## 상태 정규화 전처리
 
+0. 경로 해소: `find . -maxdepth 2 -iname "docs" -type d` 실행 후 design 하위 확인
+   (상세: development-principles "경로 해소 규칙" 참조)
+
 **상태 정규화 (silent-fix):** 필터링 전에 frontmatter `status: completed`를 `complete`로 자동 수정한다 (허용 변형은 completed뿐, domain.md는 대상 제외). 정규화가 항상 필터링보다 먼저다.
 
 ---
