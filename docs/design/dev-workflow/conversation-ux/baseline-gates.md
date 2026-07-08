@@ -141,3 +141,112 @@ wc -c skills/workflow-orchestrator/decision-flow.md skills/workflow-orchestrator
 - [x] persona-resolution 저장 제안 → #13
 
 목록의 13개 화면 전부 표에 기록됨. 누락 없음.
+
+---
+
+## 검증 결과 (Task 5)
+
+> Task 2~4 (커밋 `8141186`, `da19134`, `c22874b`) 적용 후 T1 베이스라인 전수 재검. 대상: 8개 편집 파일 전부.
+
+### Step 1: 게이트 대조 전수 재검 (13행)
+
+| # | 화면 | 베이스라인 선택지/0번 | 개정 후 선택지/0번 | 판정 |
+|---|---|---|---|---|
+| 1 | 결정 박스 (D) SSOT | 2(+0) / 있음 | 2(+0, 조건부 `0. 기타`) / 있음 — 스켈레톤 3부 이관, 괘선 제거 | PASS |
+| 2 | 재논의 대기열 박스 | 3 / 없음 | 3 (모두 재논의/일부만/모두 기각) / 없음 | PASS |
+| 3 | 결정 요청 폴백 형식 | 2 / 없음 | 2 / 없음(0은 조건부 예시) | PASS |
+| 4 | Ambiguous 단계 질문 | 4(+0) / 있음 | 4(+0. 해당 없음) / 있음 — 문면 동일 | PASS |
+| 5 | 국면0 명확형 | 0 (자연어 Yes/No) | 2 (`1. Yes`/`2. No`) | **의도된 변경** (task-3-brief Step 4①) |
+| 6 | 국면0 모호형 | 3 / 없음 | 3 + `0. ✨ 새 카테고리 생성` / **있음(신설)** | **의도된 변경** (task-3-brief Step 4①) |
+| 7 | 미답변 조사 Pass 2 | 3 / 없음 | 3 (전부 조사/선택 조사/스킵) / 없음 | PASS |
+| 8 | 시드 확인 | 2 / 없음 | 2 (Yes/수정이 필요하다) / 없음 | PASS |
+| 9 | Simplifier 3택 | 3 / 없음 | 3 (제안 수용/일부만 수용/유지) / 없음 | PASS |
+| 10 | 미결 사항(OPEN_QUESTIONS) 확인 | 가변 목록형, 헤더+번호 나열, 0번 부재 | 가변 목록형, 헤더+번호 나열 유지, 0번 부재 | PASS (구조 요소 기준) |
+| 11 | 재협의 4지 | 4 / 없음 | 4 / 없음 (결과 1줄만 추가) | PASS |
+| 12 | 잔존 HANDOFF 삭제 제안 | 2 / 없음 | 2 (Yes/No) / 없음 | PASS |
+| 13 | 페르소나 저장 제안 | 2 / 없음 | 2 (Yes/No) / 없음 | PASS |
+
+**Tally: 11 PASS + 2 의도된 변경(행5·행6), FAIL 0.** 두 의도된 변경 모두 task-3-brief.md Step 4①의 verbatim 지시와 정확히 일치.
+
+### Step 2: 확정 문면 grep 전수
+
+**T2 재실행 (task-2-brief.md Step 11):**
+
+| 명령 | 기대값 | 실측값 | 판정 |
+|---|---|---|---|
+| `grep -c "┌\|└" decision-flow.md/SKILL.md/bootstrap.md` | 각 0 | decision-flow.md=1(self-mention), SKILL.md=0, bootstrap.md=0 | 아래 정밀 재검 참조 |
+| `grep -c "📌 결정 요청 :" decision-flow.md` | ≥3 | 3 | PASS |
+| `grep -c "❓ 질문" decision-flow.md` | ≥2 | 3 | PASS |
+| `grep -c "일괄로 답하시거나" decision-flow.md` | 0 | 0 | PASS |
+| `grep -c "본문 또는 본문이 지시하는 references/" decision-flow.md` | 1 | 1 | PASS |
+
+**괘선 정밀 재검(줄 앵커형 `grep -c "^[┌└│]"` 사용, Task 2 리뷰 권고 반영):** SKILL.md에서 9건 검출되었으나 Python 유니코드 정확 비교로 재검한 결과 **거짓 양성**으로 판명 — 이 grep 구현이 `[┌└│]` 문자 클래스를 바이트 단위(첫 바이트 `E2`)로 매칭해 `→`(U+2192)·`─`(U+2500) 등 무관 문자로 시작하는 줄까지 오탐. Python 정확 비교 결과 3개 파일 모두 줄 시작 괘선 문자 **0건**. 파일 전체 임의 위치 검색도 재실행: 3개 파일 통틀어 **1건**(decision-flow.md:218 "`**금지:** 정렬이 필요한 괘선(┌ │ └)과...`" — 금지 조항이 금지 대상을 설명하는 산문 인용, 실제 박스 사용 아님). **실질 괘선 박스 사용 0건.**
+
+**T3 재실행 (task-3-brief.md Step 5):** `grep -c "최대 2개" brainstorming/SKILL.md` = 0 (PASS) · `grep -c "❓ 질문" SKILL.md/templates.md` = 2/2 (PASS, 기대 각 ≥1)
+
+**T4 재실행 (task-4-brief.md Step 6):** `grep -c "고르면:" plan-stage/context-handling/persona-resolution` = 4/2/2 (PASS, 기대 각 ≥1) · `grep -c "일괄로 답하시거나" plan-stage/SKILL.md` = 0 (PASS)
+
+**grep 전수 tally: 9/9 PASS** (괘선 항목은 self-mention 예외 처리 후 실질 PASS로 정정)
+
+**폴백 3점 상호 무모순 대조:**
+
+① decision-flow.md §「공통 형식·언어」(line 192-205): `📌 결정 요청 : [결정명]` + 배경 + `N. [선택지] — 고르면: [결과 1줄]` + 조건부 `0. [탈출 레이블]` + `💡 추천: [번호]` + 사유줄
+
+② workflow-orchestrator/SKILL.md 폴백 형식(line 298-317): ①과 **문면 완전 동일**(verbatim 이관) + 별도 헤더 `📋 확정 N/M · 진행 중: [결정명] · 재논의 K건`
+
+③ bootstrap.md(line 31-32): `(폴백: 📌 결정 요청 : [제목] + 번호 선택지(결과 1줄 병기) + 💡 추천 줄 · 헤더 📋 확정 N/M · 자가 응답 금지)` — 압축 요약형이나 ①②의 4대 구성 요소(제목·번호+결과줄·추천줄·헤더)를 정확히 요약, "자가 응답 금지"는 §1 메타 원칙과 정합.
+
+**판정: 3점 상호 모순 없음.** 괘선 언급이 3점 어디에도 실물로 없음 (bootstrap.md는 이미 신형 교체 완료 — task-2-brief Step 10 이행 확인).
+
+### Step 3: 범위 밖 무변경 확인
+
+`git diff b0b6b81..HEAD --stat`:
+```
+ skills/brainstorming/SKILL.md                 |  28 +++---
+ skills/brainstorming/references/templates.md  |  33 ++++---
+ skills/context-handling/SKILL.md              |  11 ++-
+ skills/persona-resolution/SKILL.md            |   4 +-
+ skills/plan-stage/SKILL.md                    |  10 +-
+ skills/workflow-orchestrator/SKILL.md         |  24 +++--
+ skills/workflow-orchestrator/bootstrap.md     |   2 +-
+ skills/workflow-orchestrator/decision-flow.md | 128 +++++++++++++++++++-------
+ 8 files changed, 160 insertions(+), 80 deletions(-)
+```
+
+`grep -iE "merge-to-domain|design-summary|rules-injection|document-consolidation|development-principles|design-doc-index"` → **매치 0건** (exit code 1). 6개 제외 대상 스킬 모두 변경 파일 목록에 없음.
+
+**정확한 변경 파일 목록:** `git diff b0b6b81..HEAD --name-only` 결과 8개 파일 — `skills/brainstorming/SKILL.md`, `skills/brainstorming/references/templates.md`, `skills/context-handling/SKILL.md`, `skills/persona-resolution/SKILL.md`, `skills/plan-stage/SKILL.md`, `skills/workflow-orchestrator/SKILL.md`, `skills/workflow-orchestrator/bootstrap.md`, `skills/workflow-orchestrator/decision-flow.md` — 브리핑 지정 목록과 **정확히 일치**. `docs/design/dev-workflow/conversation-ux/` 하위는 baseline-gates.md 자체(b0b6b81에서 이미 생성)만 해당하며 diff 범위 내 신규 변경 없음.
+
+**부트스트랩 예산 재확인:** `wc -c` → decision-flow.md 22497B, SKILL.md 19176B, bootstrap.md 2422B (베이스라인 2365B 대비 **+57B**, task-2-brief Step 10의 +200B 이내 조건 충족).
+
+### 판단 리뷰 (신선한 눈)
+
+> 컨텍스트 없는 opus 서브에이전트에게 개정된 decision-flow.md + brainstorming 2파일만 제공하여 판정 (파일:줄 근거는 task-5-report.md의 Fix Round 섹션과 대조 가능). 발견 사항 F1~F4는 수정 커밋 `2be8f94`로 해소 후 재검 완료.
+
+**평결 (Q1~Q4):**
+
+- **Q1 규칙집 실행 가능성:** 대체로 가능 — F3(§4 응답 범위 조건 압축, Important) · F4("다 보여줘"="한꺼번에" 등가 미명시, Minor) 발견
+- **Q2 스켈레톤 모방 가능성:** 결정 박스 정의-예시 일치 — F5(0번 조건부의 실물 예시 부재, Minor — 기록만)
+- **Q3 파일 간 정합 (두 트랙 상호 모순 여부):** 폴백 2점·plan-stage 푸터 정합(F8 Clean), 괘선 준수(F9 Clean) — F1(Ontologist 출력 펜스 4개 동시 나열 vs "하나씩" 지시 자기모순, Important) · F2(개방형 질문과 질문 스켈레톤의 관계 미규정, Important) · F6(시드 확인 로컬 템플릿에 배경/추천 부재 — §8 로컬 템플릿 우선이 허용하는 형태, Minor 기록만)
+- **Q4 약모델 리스크:** F7(3단 참조 홉 — F1·F2 해소로 실질 완화) · F10(질문/결정 카운터 경계 판정 어려움, Minor 기록·관측 대상)
+
+**Disposition:**
+
+| Finding | 심각도 | 처리 |
+|---|---|---|
+| F1 (Ontologist 펜스 자기모순) | Important | **FIXED** (`2be8f94`) — 출력 펜스를 순차형(`❓ 질문 [N]/4`)으로 교체 |
+| F2 (개방형 질문 관계 미규정) | Important | **FIXED** (`2be8f94`) — 질문 스켈레톤 직후 개방형 허용 1줄 추가 |
+| F3 (§4 조건 압축) | Important | **FIXED** (`2be8f94`) — 3불릿 분리 (문장 문면 동일, 구조만) |
+| F4 (등가 문구 미명시) | Minor | **FIXED** (`2be8f94`) — §3 발동 조건에 정확 문구 예시 추가 |
+| F5 (0번 실물 예시 부재) | Minor | 기록-only — 관측 대상 |
+| F6 (시드 확인 배경/추천 부재) | Minor | 기록-only — §8 로컬 템플릿 우선 조항이 명시적으로 허용 |
+| F7 (3단 참조 홉) | — | F1·F2 해소로 실질 완화 |
+| F8 (폴백·푸터 정합) | Clean | — |
+| F9 (괘선 준수) | Clean | — |
+| F10 (카운터 경계 판정) | Minor | 기록-only — 관측 대상 (§9 후보) |
+
+**Fix Round 재검 (commit `2be8f94`, 2 files):**
+
+1. `git show 2be8f94` 검토 — 변경 파일 정확히 2개(templates.md·decision-flow.md), templates.md의 에이전트 PROMPT 펜스(4관점 생성 지시부) 무접촉·출력 노출 펜스만 교체, F3 불릿 3개는 기존 문장과 verbatim 동일(구조 분리만), F4는 괄호 예시만 추가. ✅
+2. 영향 grep 재실행 — `grep -c "배경/힌트" decision-flow.md`=1(≥1 ✅) · `grep -c "하나씩 모드:"`=1(=1 ✅) · templates.md:24에 `❓ 질문 [N]/4` 존재 ✅ · `📌 결정 요청 :`=3 불변 ✅ · `❓ 질문` decision-flow=3·templates=3(2→3, Ontologist 펜스 +1) 기준 충족 ✅ · 괘선 Python 재검: decision-flow.md 금지 조항 self-mention 1건(223행 이동)만, SKILL.md·bootstrap.md clean, templates.md 294·309행은 디렉토리 트리(금지 조항 명시 허용, 베이스라인부터 존재) ✅ · 폴백 3점: SKILL.md·bootstrap.md 무접촉 + 스켈레톤 펜스 자체 무변경(F2 줄은 펜스 밖 후행 서술) → 상호 무모순 유지 ✅
+3. 게이트 대조 영향 없음 — 2be8f94 변경 지점(§3 모드 표·§4 불릿·질문 스켈레톤 후행 1줄·Ontologist 출력 펜스)은 13행 게이트 화면 비해당 (A-0 본질 질문은 베이스라인 표 비대상). **13행 판정 불변: 11 PASS + 2 의도된 변경, FAIL 0.** ✅
