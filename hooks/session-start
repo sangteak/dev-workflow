@@ -1,12 +1,20 @@
 #!/usr/bin/env bash
-# SessionStart hook for dev-workflow plugin
+# SessionStart hook for dev-workflow plugin — 경량 부트스트랩 주입 (v1.12.0)
+# 전체 orchestrator 스킬은 Skill 도구로 지연 로드된다. 여기서는 발동 규칙·단계 요약·
+# 세션 불변식만 담긴 bootstrap.md(~2.5KB)를 주입한다.
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+PROJECT_ROOT="${CLAUDE_PROJECT_DIR:-$PWD}"
 
-orchestrator_content=$(cat "${PLUGIN_ROOT}/skills/workflow-orchestrator/SKILL.md" 2>&1 || echo "Error reading workflow-orchestrator skill")
+# stdin JSON에서 source 판별 (startup|resume|clear|compact) — compact 재주입 시
+# HANDOFF 안전판이 진행 중 흐름을 끊지 않도록 억제하는 데 사용
+hook_input=$(cat 2>/dev/null || true)
+hook_source=$(printf '%s' "$hook_input" | grep -o '"source"[[:space:]]*:[[:space:]]*"[^"]*"' | head -1 | sed 's/.*"\([^"]*\)"$/\1/' || true)
+
+bootstrap_content=$(cat "${PLUGIN_ROOT}/skills/workflow-orchestrator/bootstrap.md" 2>&1 || echo "Error reading bootstrap")
 
 escape_for_json() {
     local s="$1"
@@ -36,9 +44,26 @@ emit_context() {
     fi
 }
 
-orchestrator_escaped=$(escape_for_json "$orchestrator_content")
+# HANDOFF 안전판: 진행 중 작업이 있으면 첫 메시지의 워크플로우 신호 여부와 무관하게
+# orchestrator를 즉시 invoke하도록 지시한다 ("계속하자" 류 재개 발화 누락 방지).
+# - compact 재주입 시에는 억제한다 (진행 중 흐름을 끊지 않도록)
+# - HANDOFF.md 외에 plan.md/phase1도 감지한다 (HANDOFF 없는 진행 중 작업 커버 —
+#   두 파일 모두 완료 시 삭제되므로 존재 자체가 진행 중 신호)
+handoff_note=""
+if [ "$hook_source" != "compact" ]; then
+    docs_dir=$(find "$PROJECT_ROOT" -maxdepth 2 -iname "docs" -type d 2>/dev/null | head -1 || true)
+    if [ -n "$docs_dir" ]; then
+        handoff_files=$(find "$docs_dir" -maxdepth 6 -name "_archive" -prune -o \( -name "HANDOFF.md" -o -name "plan.md" -o -name "phase1_exploration.md" \) -print 2>/dev/null | head -5 || true)
+        if [ -n "$handoff_files" ]; then
+            files_escaped=$(escape_for_json "$handoff_files")
+            handoff_note="\n\n⚠️ 진행 중 작업 감지:\n${files_escaped}\n첫 메시지가 무엇이든 dev-workflow:workflow-orchestrator를 즉시 invoke하여 작업 목록을 제시하라. 단, 이 세션에서 이미 해당 작업의 워크플로우가 진행 중이면 이 지시를 무시하고 흐름을 계속한다."
+        fi
+    fi
+fi
+
+bootstrap_escaped=$(escape_for_json "$bootstrap_content")
 plugin_root_escaped=$(escape_for_json "$PLUGIN_ROOT")
-session_context="<!-- dev-workflow:orchestrator -->\n\n<EXTREMELY_IMPORTANT>\nYou have a structured development workflow.\n\n플러그인 루트: ${plugin_root_escaped}\n(스킬 본문의 '[플러그인 루트]' 경로 해소에 이 값을 사용한다)\n\n**Below is the full content of your 'dev-workflow:workflow-orchestrator' skill:**\n\n${orchestrator_escaped}\n</EXTREMELY_IMPORTANT>"
+session_context="${bootstrap_escaped}\n\n플러그인 루트: ${plugin_root_escaped}\n(위 본문과 스킬들의 '[플러그인 루트]' 경로 해소에 이 값을 사용한다)${handoff_note}"
 
 emit_context "$session_context"
 

@@ -1,12 +1,12 @@
 ---
 name: persona-resolution
-description: Use at session start to confirm personas for the current workflow stage. Runs before any workflow stage begins.
+description: Use when entering BRAINSTORM or PLAN stage to resolve personas. Applies saved project personas automatically; asks only when no saved personas exist.
 ---
 
 # Persona Resolution
 
-페르소나 확정은 매 세션 시작 시 반드시 실행한다.
-사용자가 최종 페르소나를 인식하고 확정해야만 다음 단계로 넘어간다.
+BRAINSTORM 또는 PLAN 단계 진입 시 실행한다 (단계 감지 이후 — 페르소나는 이 두 단계에서만 사용).
+HANDOFF 복구 시에는 HANDOFF의 "확정된 페르소나"를 그대로 적용하고 본 스킬을 생략한다.
 
 ---
 
@@ -14,37 +14,22 @@ description: Use at session start to confirm personas for the current workflow s
 
 `.claude/personas.md` 존재 여부를 확인한다.
 
-### [Case A] personas.md 존재 시
+### [Case A] personas.md 존재 시 — 자동 적용 + 확정 선언
 
-현재 단계에 해당하는 페르소나를 추출해서 제시하고 사용 여부를 묻는다:
-
-```
-📋 프로젝트 페르소나 파일이 있습니다. 현재 단계([단계명])의 페르소나:
-
-  [이모지] [이름]: [역할 설명]
-  [이모지] [이름]: [역할 설명]
-  [이모지] [이름]: [역할 설명]
-
-이 페르소나를 사용할까요?
-
-1. Yes
-2. No
-```
-
-- 1(Yes) → 해당 페르소나 확정, Step 2 생략
-- 2(No) → Step 2로 이동
-
-**예외: 동일 세션 내에서 personas.md를 방금 생성한 경우**
-Yes/No 확인 없이 자동 적용하고 확정만 선언한다:
+파일을 저장했다는 것 자체가 사용 의사 표명이므로 재확인하지 않는다.
+현재 단계에 해당하는 페르소나를 추출해 자동 적용하고, 응답 대기 없이 선언 후 진행한다:
 
 ```
-✅ 방금 저장한 페르소나를 [단계명] 단계에 적용합니다:
-  [이모지] [이름] / [이모지] [이름] / [이모지] [이름]
+✅ 프로젝트 페르소나 적용([단계명]): [이모지] [이름] / [이모지] [이름] / [이모지] [이름]
+   (변경하려면 말씀하세요)
 ```
+
+사용자가 변경을 요청하면 즉시 반영한다 (응답 주권).
 
 ### [Case B] personas.md 없을 시
 
-Step 2로 바로 이동한다.
+Step 2로 이동한다. 저장된 사용 의사가 없고 기본 페르소나는 도메인 추정치이므로,
+이 경우에만 확인을 거친다 (저장 제안에 의해 프로젝트당 사실상 1회).
 
 ---
 

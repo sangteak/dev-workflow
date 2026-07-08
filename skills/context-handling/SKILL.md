@@ -27,7 +27,7 @@ args에 따라 분기한다:
 ## 트리거 조건
 
 ### A. 세션 시작 시 (orchestrator에서 invoke)
-workflow-orchestrator의 Session Start Protocol Step 2에서 자동 invoke된다.
+workflow-orchestrator의 Session Start Protocol '경량 상시 1. 작업 상태 확인'에서 자동 invoke된다.
 진행 중인 작업 탐색 및 목록 제시를 담당한다.
 
 ### B. HANDOFF 저장 요청 시
@@ -147,23 +147,13 @@ Session Start Protocol에서 invoke 시, 아래 절차를 실행한다.
 
 ### complete feature 카운트 알림 (REQ-027 — domain-merge-pipeline 연동)
 
-탐색 중 식별된 각 카테고리의 `status: complete` feature 수를 카운트하여,
-결과가 0건 초과인 카테고리에 대해 통합 목록 출력 직후 아래 형식으로 한 줄 안내를 추가한다:
+탐색 중 `status: complete` feature가 1건 이상 발견되면, 통합 목록 말미에 **한 줄**을 추가한다 (별도 블록 없음 — 경량 상시 원칙):
 
 ```
-📦 도메인 머지 대기 중:
-  - dev-workflow: 2건 (rating-system, br-mode-system)
-  - matchmaking: 1건 (queue-system)
-
-관리자라면 `/dev-workflow:merge-to-domain [카테고리]`로 도메인 통합을 진행할 수 있습니다.
+📦 머지 대기: dev-workflow 2건, matchmaking 1건 — 관리자: /dev-workflow:merge-to-domain [카테고리]
 ```
 
-**정책:**
-- 0건인 카테고리는 표시하지 않는다
-- 모든 카테고리가 0건이면 알림 자체를 출력하지 않는다
-- 이 알림은 자동 머지 트리거가 아니며, 사용자가 인지하도록 정보만 제공한다
-- 관리자가 아닌 사용자(작업자)에게 노출되어도 무방하다 (정보 메시지 성격)
-- 잔존 HANDOFF 정리 제안이 함께 출력되는 경우, 이 알림이 먼저 출력된다
+**정책:** 0건 카테고리 생략, 전부 0건이면 미출력. 자동 머지 트리거가 아닌 정보 제공이며 작업자에게 노출되어도 무방하다. 잔존 HANDOFF 정리 제안보다 먼저 출력한다.
 
 ### 잔존 HANDOFF 정리
 
@@ -193,6 +183,11 @@ Session Start Protocol에서 invoke 시, 아래 절차를 실행한다.
 - "HANDOFF.md가 없습니다", "다른 위치에서 찾겠습니다"
 - sequential-thinking 등 내부 추론 과정
 - 탐색 성공/실패 중간 보고
+
+### 축약 규칙 (불필요한 왕복 방지)
+
+- 사용자 메시지의 의도가 목록의 **단일 항목과 명확히 일치**하면 목록 제시를 생략하고 해당 항목의 복구 확인 1회로 축약한다 (예: 진행 중 작업이 1건뿐인데 "구현 이어서 하자" → 바로 "⚠️ [기능명] DEVELOP을 이어서 진행합니다. 계속할까요?")
+- 진행 중 작업이 0건이고 워크플로우 의도가 이미 확인된 경우, 빈 목록 템플릿을 생략하고 다음 단계 질문만 출력한다
 
 ### 통합 목록 템플릿
 

@@ -38,7 +38,7 @@ Claude Code 세션은 컨텍스트 한계에 도달하거나 사용자가 임의
 
 기존에는 세션 시작 시 HANDOFF 탐색 과정에서 glob 실패 메시지("docs/design/ 경로에 없습니다"), sequential-thinking 내부 로그 등이 그대로 노출되어 가독성이 극도로 저하되었다. 또한 HANDOFF.md를 작성하지 않은 채 세션이 종료된 작업은 목록에 나타나지 않았고, orchestrator와 context-handling에 탐색 로직이 분산되어 출력 일관성을 유지하기 어려웠다.
 
-이를 해결하기 위해 탐색 책임을 context-handling 한 곳으로 일원화했다. orchestrator의 Session Start Protocol Step 2는 단순 invoke만 수행하도록 축소하고, 탐색, 분류, 목록 제시, 폴백을 모두 context-handling이 처리한다.
+이를 해결하기 위해 탐색 책임을 context-handling 한 곳으로 일원화했다. orchestrator의 Session Start Protocol(경량 상시 — 작업 상태 확인)은 단순 invoke만 수행하도록 축소하고, 탐색, 분류, 목록 제시, 폴백을 모두 context-handling이 처리한다.
 
 탐색은 단일 패스로 수행한다. `docs/design/` 하위 전체를 한 번에 스캔하여 HANDOFF.md, phase 파일, 기능명.md, plan.md를 수집하고, `_archive/` 경로 포함 항목을 즉시 제거한 뒤 디렉토리별로 그룹핑한다. 순차 탐색(1차 실패 후 2차 재탐색)은 중간 실패 메시지 노출의 원인이었으므로 기각했다.
 
@@ -69,7 +69,7 @@ Feature 개발 중 이슈를 생성하여 `issues/` 서브워크플로우에 진
 | 파일 | 용도 |
 |------|------|
 | `skills/context-handling/SKILL.md` | HANDOFF 정책의 SSOT. 저장/복구 서브커맨드, 탐색 절차, 출력 템플릿, 격리 규칙을 모두 포함 |
-| `skills/workflow-orchestrator/SKILL.md` | Session Start Protocol Step 2에서 context-handling을 invoke |
+| `skills/workflow-orchestrator/SKILL.md` | Session Start Protocol 경량 상시 1(작업 상태 확인)에서 context-handling을 invoke |
 | `skills/brainstorming/SKILL.md` | 각 Phase 완료 시 컨텍스트 관리 힌트 블록 자동 출력 |
 | `README.md` | 컨텍스트 관리 3도구 전략 테이블 포함 (사용자 온보딩) |
 | `.claude-plugin/plugin.json` | 플러그인 버전 및 스킬 description 관리 |
