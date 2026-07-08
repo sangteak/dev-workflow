@@ -12,19 +12,7 @@ description: Use when the user wants to reference existing design documents duri
 
 ## 상태 정규화 전처리
 
-색인/로드 실행 전에 대상 문서의 상태값을 정규화한다. 이 전처리는 필터링보다 먼저 실행한다.
-
-**절차:**
-0. 경로 해소: `find . -maxdepth 2 -iname "docs" -type d` 실행 후 design 하위 확인
-   (상세: development-principles "경로 해소 규칙" 참조)
-1. `[해소된 경로]/[카테고리]/[기능명]/[기능명].md` 패턴의 모든 파일을 탐색한다
-1-1. domain.md(category 직속 .md)는 상태 정규화 대상에서 제외한다
-2. 각 파일의 프론트매터 `status` 값을 읽는다
-3. `complete` → 변경 없음
-4. `completed` → 해당 파일의 프론트매터를 `complete`로 수정한다
-5. 그 외 값 또는 `status` 없음 → 스킵
-
-수정 시 사용자에게 별도 안내하지 않는다 (silent fix).
+**상태 정규화 (silent-fix):** 필터링 전에 frontmatter `status: completed`를 `complete`로 자동 수정한다 (허용 변형은 completed뿐, domain.md는 대상 제외). 정규화가 항상 필터링보다 먼저다.
 
 ---
 
