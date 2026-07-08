@@ -1,0 +1,137 @@
+goal: "관리자 슬래시 명령으로 트리거하여 여러 작업자의 complete 상태 feature 문서를 5단계 intelligent 알고리즘으로 domain.md SSOT에 의미 보존 방식으로 통합하는 머지 파이프라인을 구축한다."
+
+constraints:
+  - "Markdown 전용 플러그인 — 코드 변경 없이 스킬/명령/오케스트레이터 갱신만으로 구현"
+  - "기존 dev-workflow 워크플로우(Brainstorm → Plan → Develop → Review → Completion)와 하위 호환 유지"
+  - "관리자 단독 로컬 Claude Code 세션에서만 실행 (CI/CD/원격 자동화 X)"
+  - "작업자는 domain.md를 직접 편집할 수 없다 — 관리자 머지 파이프라인만이 유일한 갱신 경로"
+  - "intelligent merge 강제 — 단순 concat 머지 금지, 코드 직접 탐색은 보조 수단으로만 허용"
+  - "사용자 질문 우선 원칙 — 분류 애매 시 사용자 결정으로 fallback (보수 원칙)"
+  - "dry-run → 사용자 승인 → 적용 3단계 강제 (자동 수정 항목도 dry-run에 회계 형식으로 노출)"
+  - "git 롤백 메커니즘에 위임 — 자체 롤백/스냅샷 구현 금지"
+  - "concurrency 제어는 git native 메커니즘에 위임 — 별도 락 메커니즘 도입 금지"
+  - "linter는 별도 도구 — 본 파이프라인 책임 범위 외"
+  - "직렬화 정책: 카테고리 내 누적 base 직렬(git log main 머지 순서), 카테고리 간만 병렬"
+
+non_goals:
+  - "CI/CD 환경에서의 자동 머지 트리거"
+  - "작업자가 domain.md를 직접 편집할 수 있는 경로 제공"
+  - "코드와 문서 간 정합성을 검증하는 linter 구현"
+  - "git 외 VCS(Mercurial/SVN 등) 지원 및 자체 롤백 메커니즘"
+  - "사람 가독성 최우선 출력 포맷 (주 독자는 Claude Code)"
+  - "concat 방식의 단순 머지 (intelligent merge 강제)"
+  - "기존 도메인 문서 일괄 마이그레이션 (점진 보완 방식 채택)"
+  - "merge_status frontmatter 도입 및 _archive 디렉토리 보존"
+  - "작성자 통보 별도 메커니즘 (git log + 섹션 10 변경 이력으로 갈음)"
+  - "2단계 게이트(ready-for-merge 별도 상태)"
+  - "부분 머지(partial merge) 개념"
+
+success_criteria:
+  - "신규 merge-to-domain 스킬 및 /dev-workflow:merge-to-domain 슬래시 명령이 등록되어 콘솔 자동완성으로 즉시 실행 가능하다"
+  - "기존 document-consolidation 스킬은 feature 문서 통합만 담당하며 domain 머지 로직이 완전히 제거된다"
+  - "workflow-orchestrator의 Completion Protocol이 신규 머지 파이프라인 호출 경로로 갱신된다"
+  - "5단계 알고리즘(domain 학습 → feature 학습 → 머지 계획 → 적용 → 검증)이 순서대로 실행되며 각 단계가 구조화된 산출물(YAML digest, dry-run plan 등)을 생성한다"
+  - "(1)(2) 단계는 ID 기반 structured digest(YAML)를 산출한다"
+  - "(3) 단계에서 자동 수정과 사용자 결정 항목이 외부 분류 규칙에 따라 분류되며 🏛️ Architect 피드백 루프(1~3 라운드)가 작동한다"
+  - "분류 규칙: 자동 수정(ID renumbering, 헤더 동일 시 표 형식 통일, 충돌 없는 append) / 사용자 결정(새 섹션 신설, 의미 충돌, 기존 결정 무효화, 의존성 맵 재정의) / 애매 시 사용자 결정으로 fallback"
+  - "(4) 적용 단계는 dry-run plan을 회계 형식(수정 전/후 + 참조 갱신 위치)으로 자동 수정 항목까지 노출하고, 사용자 승인 후 domain 수정 및 섹션 10 변경 이력을 자동 기록한다"
+  - "(5) 검증 단계는 🔧 Tech Lead와 📋 PM이 담당하며 🏛️ Architect와 역할이 명시적으로 분리된다"
+  - "실행 모드 결정: feature<3 AND tokens<20K → 순차 / feature≥5 OR tokens>50K → 병렬 / 그 외 → 사용자 3지 선택(자동위임 기본 highlight)"
+  - "토큰 추정은 bytes/3.5 공식을 사용하며 MERGE_TOKEN_DIVISOR 환경 변수로 조정 가능하다"
+  - "병렬 풀 크기 기본 3, 상한 5이며 MERGE_POOL_SIZE 환경 변수로 조정 가능하다"
+  - "병렬 실행 시 사용자 결정 큐는 FIFO로 직렬화되고, 출력도 시작 순서대로 직렬화된다"
+  - "실패 시 in-session resolution이 4지(Tech Lead 위임 / 직접 수정 / skip / abort)로 제시되며, skip된 feature 디렉토리는 보존되고 abort는 사용자 명시 요청 시에만 가능하다"
+  - "머지 성공 후 feature 디렉토리가 통째로 삭제된다 (skip/abort 시 보존)"
+  - "섹션 10 변경 이력은 완료 머지에 대해서만 자동 기록되며 skip/abort는 미기록"
+  - "머지 후보가 없는 빈 상태에서는 한 줄 안내 출력 후 즉시 종료한다"
+  - "머지 세션 종료 시 inline 요약(처리 건수/skip/abort)이 출력된다"
+  - "옵션 플래그가 동작한다: --no-review(Architect 차단, 긴급용), --review-merge=N(라운드 정확값 강제, 디버깅용), --auto(자동 수정 사후 확인 생략, 사용자 결정은 유지)"
+  - "자동 모드 키워드 인식 시 1차 confirm을 거치며, 사전 승인은 세션 1회 동안 영속한다"
+  - "domain.md 토큰 ≥ 80K 시 섹션 단위 분할 학습 fallback이 작동한다"
+  - "첫 머지 시 체크리스트(섹션 10/ID/의존성/frontmatter 부재 시 처리표)가 제공된다"
+  - "단일 `complete` 상태가 머지 후보 표시의 유일한 게이트로 동작한다"
+  - "PLAN 단계에서 기존 도메인 1개에 대한 가상 머지 dry-run을 1회 실행하여 호환성 위험을 식별한다"
+
+assumptions:
+  - "관리자는 git이 설치된 로컬 환경에서 Claude Code 세션을 실행하며, main 브랜치에 작업자들의 complete 상태 변경 사항이 누적되어 있다"
+  - "작업자들은 dev-workflow 표준 흐름(Brainstorm → Plan → Develop → Review)을 통해 feature 문서를 생성했으며 complete 상태로 표시되어 있다"
+  - "domain.md는 기존 dev-workflow 10섹션 표준 구조를 따르며 섹션 10(변경 이력)이 존재하거나 첫 머지 체크리스트에 따라 생성될 수 있다"
+  - "feature 문서들은 ID 기반(REQ-XXX, GOAL-XXX) 식별자를 가지며 머지 시 ID renumbering으로 충돌을 해소할 수 있다"
+  - "Claude Code의 컨텍스트 윈도우는 domain.md(< 80K 토큰) + 다수 feature 문서를 동시 학습할 수 있을 정도로 충분하며, 초과 시 분할 학습 fallback이 작동한다"
+  - "bytes/3.5 휴리스틱은 한국어/영어 혼용 Markdown 문서의 토큰 수를 합리적으로 근사한다"
+  - "git native 메커니즘(staging, branch, log)이 동시 머지 충돌 방지에 충분하다 — 별도 락 불필요"
+  - "🏛️ Architect / 🔧 Tech Lead / 📋 PM 페르소나는 기존 persona-resolution 스킬에서 일관되게 제공된다"
+  - "사용자(관리자)는 dry-run plan을 검토하고 승인/거부 결정을 내릴 수 있으며 in-session resolution 4지 선택에 응답할 수 있다"
+
+open_questions: []
+
+context: |
+  # 배경
+
+  dev-workflow는 Brainstorm → Plan → Develop → Review 흐름으로 feature 단위 설계 문서를 생성하지만, 여러 작업자가 같은 도메인에서 동시에 작업한 결과를 domain.md SSOT(Single Source of Truth)에 통합하는 표준화된 메커니즘이 없었다. 기존 document-consolidation 스킬은 feature 내부의 phase/plan 파일을 feature.md로 합치는 역할만 수행하고, 카테고리(도메인) 수준의 머지는 수동 작업으로 남아 있었다.
+
+  # 동기
+
+  - 여러 작업자가 병렬로 작업한 결과(feature 단위 complete 상태)를 도메인 수준에서 의미 보존 방식으로 통합해야 함
+  - 단순 concat이 아닌 ID 정합성 / 의미 충돌 / 의존성 맵 재정의 / 기존 결정 무효화를 인지하는 intelligent merge가 필요
+  - 관리자 한 명이 통제하는 안전한 파이프라인 — 작업자는 domain.md 직접 편집 불가
+  - 페르소나 피드백(🏛️ Architect 리뷰)과 dry-run → 승인 → 적용의 안전 절차를 강제
+
+  # 핵심 설계 요약
+
+  ## 스킬 / 명령 구조
+  - 신규 스킬: `merge-to-domain` (skills/merge-to-domain/SKILL.md)
+  - 신규 명령: `/dev-workflow:merge-to-domain` (commands/merge-to-domain.md)
+  - 기존 `document-consolidation`은 feature 통합 책임만 유지 — 도메인 머지 로직 제거
+  - `workflow-orchestrator`의 Completion Protocol이 신규 파이프라인을 호출하도록 갱신
+
+  ## 5단계 머지 알고리즘
+  1. **domain 학습** → ID 기반 structured digest(YAML) 산출. 토큰 ≥ 80K 시 섹션 단위 분할 학습 fallback
+  2. **feature 학습** → 각 feature 문서를 동일 형식 structured digest로 변환
+  3. **머지 계획 수립** → 외부 분류 규칙으로 자동 수정 / 사용자 결정 분류 → 🏛️ Architect 피드백 루프(1~3 라운드). 분류 애매 시 사용자 결정으로 fallback
+  4. **적용** → dry-run plan(자동 수정 포함 회계 형식: 수정 전/후 + 참조 갱신 위치) → 사용자 승인 → domain.md 수정 + 섹션 10 변경 이력 자동 기록
+  5. **검증** → 🔧 Tech Lead / 📋 PM 담당 (Architect와 역할 분리)
+
+  ## 분류 규칙 (외부 규칙 문서로 분리)
+  - **자동 수정**: ID renumbering, 헤더 동일 시 표 형식 통일, 충돌 없는 append
+  - **사용자 결정**: 새 섹션 신설, 의미 충돌, 기존 결정 무효화, 의존성 맵 재정의
+  - **애매 시**: 사용자 결정으로 fallback (보수 원칙)
+
+  ## 안전 절차
+  - dry-run은 자동 수정 항목도 회계 형식으로 노출하여 투명성 확보
+  - 실패 시 in-session resolution: Tech Lead 위임 / 직접 수정 / skip / abort 4지 선택
+  - skip된 feature 디렉토리는 보존, abort는 사용자 명시 요청 시에만
+  - 머지 성공 후 feature 디렉토리 통째 삭제, 섹션 10 변경 이력 자동 기록(완료 건만)
+
+  ## 실행 모드 (복합 임계값)
+  - feature<3 AND tokens<20K → 순차
+  - feature≥5 OR tokens>50K → 병렬
+  - 그 외 → 사용자 3지 선택 (자동위임 기본 highlight)
+  - 토큰 추정: bytes/3.5 (MERGE_TOKEN_DIVISOR로 조정)
+  - 풀 크기: 기본 3, 상한 5 (MERGE_POOL_SIZE로 조정)
+  - 사용자 결정 큐 FIFO 직렬화, 출력 시작 순서 직렬화
+
+  ## 직렬화 정책
+  - 카테고리 내: git log main 머지 순서에 따라 누적 base를 직렬로 빌드
+  - 카테고리 간: 병렬 허용 (서로 다른 domain.md는 독립)
+
+  ## 옵션 플래그
+  - `--no-review`: Architect 피드백 차단 (긴급용)
+  - `--review-merge=N`: 라운드 수 정확값 강제 (디버깅용)
+  - `--auto`: 자동 수정 사후 확인 생략 (사용자 결정 항목은 여전히 질문)
+  - 자동 모드 키워드 인식 + 1차 confirm
+  - 사전 승인은 세션 1회 동안 영속
+
+  ## Concurrency
+  - git native 메커니즘(staging, branch, log)에 위임
+  - 별도 락 메커니즘 도입 안 함
+
+  ## 부수 동작
+  - 머지 후보 빈 상태 → 한 줄 출력 후 종료
+  - 머지 세션 종료 시 inline 요약 출력 (처리/skip/abort 건수)
+  - 단일 `complete` 상태가 유일한 머지 후보 게이트 (2단계 게이트 / merge_status frontmatter / _archive 모두 도입 X)
+
+  # 통합 지점
+  - 기존 `document-consolidation`, `workflow-orchestrator`와 명확히 책임 분리
+  - 페르소나 시스템(`persona-resolution`)의 🏛️ Architect / 🔧 Tech Lead / 📋 PM 활용
+  - git 환경에서 동작하며 git 외 VCS는 지원 안 함

@@ -522,12 +522,26 @@ Superpowers `requesting-code-review`에 위임됩니다:
 
 마무리 트리거("마무리해줘", "wrap up" 등) 감지 시 자동 실행:
 
-1. **consolidate-main** — phase/plan 파일을 feature 설계 문서에 통합, domain 병합 제안 또는 feature 디렉토리 삭제
-2. **consolidate-domain** — feature 설계 문서를 category 레벨의 domain.md에 통합 (사용자 선택)
-3. **README 영향 판단** — 변경 내용에 따라 README 업데이트 제안
-4. **커밋+푸시 제안** — 사용자 확인 후 실행
+1. **consolidate-main** — phase/plan 파일을 feature 설계 문서에 통합 + status를 `complete`로 마킹
+2. **README 영향 판단** — 변경 내용에 따라 README 업데이트 제안
+3. **커밋+푸시 제안** — 사용자 확인 후 실행
 
-> 🔧 내부 스킬: `document-consolidation`
+> 🔧 내부 스킬: `document-consolidation` (consolidate-main 모드)
+
+#### 도메인 통합 (선택, 관리자만)
+
+작업자의 Completion이 끝난 뒤, 프로젝트 리더(관리자)는 별도 시점에 다음 명령으로
+도메인 문서 통합을 진행할 수 있습니다 (v1.11.0+):
+
+```
+/dev-workflow:merge-to-domain [카테고리]
+```
+
+`docs/design` 스캔으로 `status: complete` feature를 자동 식별 → intelligent merge.
+5단계 알고리즘(학습→학습→계획→적용→검증) + Architect 라운드 + dry-run 안전 게이트.
+
+> 🔧 내부 스킬: `merge-to-domain` (관리자 전용)
+> ⚠️ 기존 `document-consolidation` Mode 3 (consolidate-domain)은 v1.11.0부터 deprecated — 차기 MINOR 릴리스에서 제거될 수 있습니다 (대체 경로: merge-to-domain).
 
 ---
 
@@ -537,7 +551,10 @@ Superpowers `requesting-code-review`에 위임됩니다:
 commands/
 ├── save.md                 ← /dev-workflow:save 즉시 실행
 ├── resume.md               ← /dev-workflow:resume 즉시 실행
-└── design-summary.md       ← /dev-workflow:design-summary → 설계 문서 통합 요약
+├── design-summary.md       ← /dev-workflow:design-summary → 설계 문서 통합 요약
+├── setup.md                ← /dev-workflow:setup → 권장 플러그인 의존성 설치/검증
+├── add-rule.md             ← /dev-workflow:add-rule → 프로젝트 규칙 추가
+└── merge-to-domain.md      ← /dev-workflow:merge-to-domain → 관리자 도메인 머지 (v1.11.0+)
 ```
 
 > 콘솔 자동완성에서 `/save` 입력 → `dev-workflow:save` 선택 → 엔터로 즉시 실행됩니다.

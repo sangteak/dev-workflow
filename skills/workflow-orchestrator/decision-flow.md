@@ -1,7 +1,7 @@
 # 결정 요청의 단계적 흐름 (Decision Flow SSOT)
 
 > dev-workflow 플러그인에서 사용자 결정을 요청할 때 따르는 단일 SSOT.
-> 적용 스킬: workflow-orchestrator, brainstorming, plan-stage, document-consolidation(§8 적용 예외 조항의 규율을 받음) — 본 파일을 참조로 명시한 스킬.
+> 적용 스킬: workflow-orchestrator, brainstorming, plan-stage, document-consolidation(§8 적용 예외 조항의 규율을 받음), merge-to-domain(결정 박스만 적용 — dry-run 목록이 브리핑 대체 로컬 템플릿, 헤더·대기열은 적용 예외) — 본 파일을 참조로 명시한 스킬.
 > 그 외 스킬의 확인·질문은 orchestrator의 Input Format Rules를 따른다.
 
 ## 1. 메타 원칙

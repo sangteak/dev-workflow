@@ -142,7 +142,28 @@ Session Start Protocol에서 invoke 시, 아래 절차를 실행한다.
 5. `is-issue: true`인 HANDOFF 또는 `issues/` 하위 항목은 `parent-feature` 하위에 들여쓰기로 표시한다
 6. `last-updated` (HANDOFF) 또는 가장 최근 파일 수정일 역순으로 정렬한다
 7. 통합 목록 템플릿으로 출력한다
-8. 잔존 HANDOFF가 있으면 목록 하단에 정리 제안을 출력한다
+8. 각 카테고리의 `status: complete` feature 수를 카운트하여, 0건 초과인 카테고리에 대해 "complete feature 카운트 알림"을 출력한다 (REQ-027)
+9. 잔존 HANDOFF가 있으면 목록 하단에 정리 제안을 출력한다
+
+### complete feature 카운트 알림 (REQ-027 — domain-merge-pipeline 연동)
+
+탐색 중 식별된 각 카테고리의 `status: complete` feature 수를 카운트하여,
+결과가 0건 초과인 카테고리에 대해 통합 목록 출력 직후 아래 형식으로 한 줄 안내를 추가한다:
+
+```
+📦 도메인 머지 대기 중:
+  - dev-workflow: 2건 (rating-system, br-mode-system)
+  - matchmaking: 1건 (queue-system)
+
+관리자라면 `/dev-workflow:merge-to-domain [카테고리]`로 도메인 통합을 진행할 수 있습니다.
+```
+
+**정책:**
+- 0건인 카테고리는 표시하지 않는다
+- 모든 카테고리가 0건이면 알림 자체를 출력하지 않는다
+- 이 알림은 자동 머지 트리거가 아니며, 사용자가 인지하도록 정보만 제공한다
+- 관리자가 아닌 사용자(작업자)에게 노출되어도 무방하다 (정보 메시지 성격)
+- 잔존 HANDOFF 정리 제안이 함께 출력되는 경우, 이 알림이 먼저 출력된다
 
 ### 잔존 HANDOFF 정리
 
