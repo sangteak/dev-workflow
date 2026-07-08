@@ -59,29 +59,41 @@ domain 경계는 사전에 정의하지 않고, 작업이 쌓이며 자연스럽
 문서는 생성에서 통합까지 명확한 생명주기를 따른다.
 
 ```
-[브레인스토밍]        [개발 중]           [개발 완료]
+[브레인스토밍]        [개발 중]           [개발 완료: 작업자]      [도메인 머지: 관리자]
 
-phase1~3.md ──── 독립 유지 ──────→ 삭제 (feature 디렉토리 전체)
-                                   + 핵심 → domain.md 통합
+phase1~3.md ──── 독립 유지 ──────→ 삭제 (consolidate-main)
+                                   + 핵심 → feature.md 통합
 
-feature.md ──── 요구사항 기준 ──→ domain.md에 merge 또는 승격
-                                   + issues/ 통합
-                                   = domain.md가 자기완결적 최종 문서
+feature.md ──── 요구사항 기준 ──→ status: complete로 보존 ──→ domain.md에 merge 또는 승격
+                                                              후 디렉토리 삭제 (merge-to-domain)
+                                                              = domain.md가 자기완결적 최종 문서
 
-plan.md ──────── 멀티세션 참조 ──→ 삭제 (feature 디렉토리 전체)
+plan.md ──────── 멀티세션 참조 ──→ 삭제 (consolidate-main)
 
-HANDOFF.md ──── 세션 간 전달 ───→ 삭제 (feature 디렉토리 전체)
+HANDOFF.md ──── 세션 간 전달 ───→ 삭제 (consolidate-main)
 
 issues/ ──────── hotfix 작업 ───→ 부모에 통합 후 삭제
 ```
 
-feature 완료 시 domain.md에 통합/승격 후 feature 디렉토리를 삭제한다. 기존의 별도 아카이브 정책은 2계층 모델 도입으로 불필요해졌다.
+feature 완료 시 domain.md에 통합/승격 후 feature 디렉토리를 삭제한다. 기존의 별도 아카이브 정책은 2계층 모델 도입으로 불필요해졌다. 통합과 삭제의 행위자·시점은 아래 2단계 파이프라인을 따른다.
 
-### 통합 정책
+### 통합 정책 — 2단계 파이프라인 (작업자/관리자 분리)
 
-통합은 반자동으로 수행한다. REVIEW 완료 시점에 consolidate-main을 실행하여 phase/plan 내용을 feature.md에 통합한 뒤, 작업 내용을 분석하여 domain 병합 필요 여부를 판단 근거와 함께 제안한다. 판단 기준은 (1) domain.md에 없는 새 REQ가 있는가, (2) domain.md와 다른 설계 결정이 있는가의 두 가지다. 사용자가 제안을 override할 수 있다.
+다중 작업자 환경에서 여러 명이 같은 domain.md를 직접 수정하면 머지 충돌·의미 손실·권한 경계 모호 문제가 발생하므로, 통합 책임을 두 단계로 분리한다 (2026-07 domain-merge-pipeline이 구 단일 흐름을 대체).
 
-domain 병합 시 consolidate-domain(Mode 3)이 merge 또는 승격을 실행한 후 feature 디렉토리를 삭제한다. domain 병합을 스킵하는 경우(결함 수정 등) consolidate-main이 직접 feature 디렉토리 삭제를 제안한다. 어떤 경로든 feature 디렉토리는 작업 완료 후 삭제된다.
+**작업자 단계 (consolidate-main):** REVIEW 완료 시점에 phase/plan 내용을 feature.md에 통합하고 `status: complete`로 마킹한다. 중간 산출물(phase/plan/HANDOFF/seed)만 삭제하고 `[기능명].md`는 보존한다 — 이 파일이 도메인 머지 후보다. 작업자는 domain.md를 직접 수정하지 않는다.
+
+**관리자 단계 (merge-to-domain):** 관리자가 `/dev-workflow:merge-to-domain [카테고리]`를 명시적으로 호출하여 complete feature들을 domain.md에 intelligent merge한다. 5단계 알고리즘(domain 학습 → feature 학습 → 머지 계획 → 적용 → 검증)으로 진행하며, 다음 안전장치가 강제된다:
+
+- **Structured digest**: 자유 서술 요약을 금지하고 정책/결정/REQ를 구조화 추출 — 비결정성 차단, 머지 후 statement 매칭 검증의 기준선
+- **Architect 라운드**: 충돌 복잡도에 따라 외부 분류 규칙으로 라운드 등급(1~3)을 결정 — LLM 자기 신뢰 편향 차단
+- **dry-run 게이트**: 자동 수정도 회계 형식으로 노출하고 사용자 승인 후에만 적용. 어떤 자동 모드 플래그로도 생략 불가
+- **첫 머지 호환성 체크리스트**: 신규 머지 흐름 이전에 생성된 도메인 문서(frontmatter·ID·변경 이력 부재)를 첫 머지에서 점진 보완 — 별도 마이그레이션 없음
+- **병렬 2-pass**: 다중 카테고리 병렬 시 서브에이전트는 학습·분류까지만, 사용자 결정과 SSOT 수정은 메인에서 직렬 처리
+
+머지 검증 통과 시 merge-to-domain이 feature 디렉토리를 삭제한다(커밋 2건: 머지+삭제). 관리자 판단의 참고 기준은 (1) domain.md에 없는 새 REQ가 있는가, (2) domain.md와 다른 설계 결정이 있는가의 두 가지다.
+
+구 흐름(consolidate-main이 병합을 제안하고 Mode 3이 실행)은 deprecated이며, 승격·크로스 도메인 pending 소비 경로가 merge-to-domain으로 완전 이관되기 전까지 Mode 3 본문이 잔존한다.
 
 issues/ 통합은 "원래 하나였던 것처럼" 자연스럽게 병합한다. 최종 domain.md는 자기완결적이어야 한다 — 문서 하나로 해당 domain의 전체 맥락을 파악할 수 있어야 한다.
 
@@ -183,7 +195,8 @@ domain.md 도입 후 domain.md 자체가 통합 문서 역할을 하므로, desi
 
 | 파일 | 용도 |
 |---|---|
-| `skills/document-consolidation/SKILL.md` | phase/plan → design 통합, 작업 분석 기반 domain 병합 제안, feature 디렉토리 삭제 (consolidate-main, consolidate-issue, consolidate-domain 3모드) |
+| `skills/document-consolidation/SKILL.md` | phase/plan → feature.md 통합, 중간 산출물 삭제, [기능명].md 보존 (consolidate-main, consolidate-issue — Mode 3은 deprecated) |
+| `skills/merge-to-domain/SKILL.md` | 관리자 도메인 머지 파이프라인 — 5단계 알고리즘, structured digest, Architect 라운드, dry-run 게이트, feature 디렉토리 삭제 (`/dev-workflow:merge-to-domain`) |
 | `skills/design-doc-index/SKILL.md` | 설계 문서 색인 및 크로스레퍼런스, domain.md 우선 인덱싱 |
 | `skills/design-summary/SKILL.md` | 관련 설계 문서 그룹의 통합 요약 생성 (명령 호출 전용) |
 | `skills/brainstorming/SKILL.md` | 카테고리 선택 절차, 설계 문서 크로스레퍼런스 섹션 포함 |
@@ -200,7 +213,8 @@ domain.md 도입 후 domain.md 자체가 통합 문서 역할을 하므로, desi
 | domain.md 판별 | 위치 기반 (category 디렉토리 직속 .md) | 별도 메타데이터 불필요, 구조 자체가 의미 전달 |
 | domain 경계 결정 | 사후 발견 (작업 축적 후 자연 형성) | 사전 정의는 초기 판단 오류 위험 |
 | feature 완료 후 처리 | domain.md 통합 후 feature 디렉토리 삭제 | 아카이브 불필요, git branch 삭제와 동일 |
-| domain 병합 판단 | 작업 내용 분석 기반 선택적 제안 | 결함 수정 등 domain 영향 없는 작업이 존재, 무조건 필수화 기각 |
+| domain 병합 트리거 | 관리자 명시 호출 (`/dev-workflow:merge-to-domain`) — 구 "작업 내용 분석 기반 선택적 제안"을 대체 | 다중 작업자 환경에서 작업자의 domain 직접 수정은 충돌·권한 경계 모호 유발. 관리자 호출 타이밍이 자연스러운 게이트 |
+| 통합 책임 분리 | 작업자(feature까지) / 관리자(domain) 2단계 | 권한 분리, 통합 책임 일원화. complete 상태가 머지 대기 신호 |
 | 크로스 도메인 업데이트 | feature 완료 시점에 즉시 반영 (Eager 기각) | 미완료 feature 폐기 시 의존성 문서 오염 방지 |
 | design/plan 관계 | 같은 feature 디렉토리에 통합 | 기능의 모든 문서를 한곳에서 관리, 서브에이전트 컨텍스트 로딩 효율 |
 | HANDOFF 탐색 | glob 스캔 (인덱스 파일 없음) | 멀티세션 경쟁 조건 없음, 항상 최신, 추가 파일 불필요 |
@@ -216,3 +230,10 @@ domain.md 도입 후 domain.md 자체가 통합 문서 역할을 하므로, desi
 | 경로 해소 메커니즘 | `find -iname` 인라인 명령 | shell=bash 보장, 별도 스크립트 불필요, "코드 없는 플러그인" 정체성 유지 |
 | 경로 해소 규칙 배치 | `development-principles`에 공통 정의 + 각 스킬 참조 | DRY (7곳 중복 회피), 플러그인 자체 완결 (CLAUDE.md 배치 시 배포 불가) |
 | 경로 해소 지시문 | 실행할 명령을 명시 (추상 지시 기각) | Claude 재량 의존 시 이행 불확실 |
+
+## 변경 이력
+
+| 날짜 | 변경 내용 | 영향 범위 | 상태 |
+|------|-----------|-----------|------|
+| 2026-07-08 | 기존 문서 — 신규 머지 시작 이전 | - | - |
+| 2026-07-08 | domain-merge-pipeline 통합 (작성자: 권상택) — 통합 정책을 2단계 파이프라인으로 supersede, 생명주기·결정표·관련 파일 갱신 | 문서 생명주기, 핵심 결정 사항, 관련 파일, 변경 이력 신설 | 완료 |
