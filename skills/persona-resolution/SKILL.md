@@ -85,8 +85,8 @@ DEVELOP/REVIEW는 Superpowers 서브에이전트가 전담한다.
 
   `.claude/personas.md` 로 저장할까요?
 
-  1. Yes
-  2. No
+  1. Yes — 고르면: .claude/personas.md가 생성되어 다음 세션부터 확인 없이 자동 적용됩니다
+  2. No — 고르면: 다음 세션에도 페르소나 확인을 거칩니다
 ```
 
 - 1(Yes) → `.claude/personas.md` 파일을 직접 생성한다
