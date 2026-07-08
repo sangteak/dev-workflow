@@ -365,3 +365,102 @@ git hash-object skills/brainstorming/SKILL.md skills/merge-to-domain/SKILL.md sk
 | skills/design-summary/SKILL.md | `abac3a00951474d681f6315badecd1c3580991b5` |
 
 > 이 5개 파일은 슬림화(삭제/이동/§참조 삽입) 대상이므로 해시가 **바뀌는 것이 정상**이다. 이 표는 "언제 바뀌었는지"를 추적하기 위한 시점 기록이며, F1 자체의 판정 기준(불변)은 위 3튜플 표의 인용문·게이트·크로스레퍼런스 항목이 담당한다.
+
+---
+
+## G4 검증 결과 (Task 6)
+
+> Task 2~5(커밋 `62c1ad1`, `8ee75a6`, `57d96fe`, `cf3a6dd`, `0dceaf4`) + 판단 리뷰 B1 수정(커밋 `cfee58e`) 적용 후, 위 베이스라인 전체를 현재 워크트리에 재실행한 결과. 감사 HEAD: `cfee58e`. 상세 근거는 `.superpowers/sdd/task-6-report.md` 참조.
+
+### Step 1 결과 요약 (3튜플 전수 재검)
+
+| Section | 항목 수 | PASS | FAIL |
+|---|---|---|---|
+| B (decision-flow.md 해시) | 1 | 1 | 0 |
+| C (development-principles 해시) | 1 | 1 | 0 |
+| A (brainstorming) | 26 | 26 | 0 |
+| D (workflow-orchestrator Evaluator/AC) | 12 | 12 | 0 |
+| E (design-doc-index/design-summary) | 4 | 4 | 0 |
+| F2 (게이트 인벤토리, 13개) | 13 | 13 | 0 |
+| F3 (크로스레퍼런스) | 9 | 9 | 0 |
+| **합계** | **66** | **66** | **0** |
+
+**B/C 해시 재확인:** `git hash-object skills/workflow-orchestrator/decision-flow.md skills/development-principles/SKILL.md` → `8bbd4cfd9db724110b62f862cd4d500b2ebc1182` / `8a3aca714b5b3b57bb47c9c54e18cdf5576bfc5f` — 베이스라인과 완전 동일 (무변경 확정).
+
+**A8은 사양대로 대체:** Task 4가 지정한 신규 통합 one-liner `💡 [phase파일명] 저장됨 — /compact 가능 (재논의 대기열은 먼저 처리 — decision-flow.md §6) · 새 세션: /clear → /dev-workflow:resume`가 SKILL.md:345/378/411 3곳에 파일명만 바뀐 채 정확히 동일하게 존재함을 확인.
+
+**F2 게이트 13개 전원 재현:** 6개(Step B 시드확인, Simplifier 스코프정리, merge-to-domain 4종)는 `references/templates.md`로 이동했으나 SKILL.md의 Read 지시로 연결되어 선택지 수·0번 유무 그대로 보존. 나머지 7개는 본문 유지.
+
+**counting-method note:** 크기 비교는 workingtree `wc -c`(CRLF) 방식 하나로 통일 — 베이스라인 원 기록과 동일 방식. `git show|wc -c`(LF)는 개행 문자 차이로 별도 낮은 값이 나오므로 혼용하지 않음. 사이즈는 참고용이며 pass/fail 판정에 사용하지 않음(수치 목표는 설계상 비목표):
+
+| 파일 | 베이스라인(workingtree wc -c) | 현재(workingtree wc -c) |
+|---|---|---|
+| skills/brainstorming/SKILL.md | 33748 | 25387 |
+| skills/merge-to-domain/SKILL.md | 27669 | 25197 |
+| skills/workflow-orchestrator/SKILL.md | 19074 | 18888 |
+| skills/design-doc-index/SKILL.md | 6758 | 6355 |
+| skills/design-summary/SKILL.md | 5888 | 5508 |
+
+### Step 2 결과 요약 (음성 불변식 감사, REQ-009)
+
+`git diff 4dccac4..HEAD -- skills/` (HEAD=`cfee58e`) 전문(1250줄, 7개 파일: brainstorming SKILL.md+신규 references/templates.md, design-doc-index SKILL.md, design-summary SKILL.md, merge-to-domain SKILL.md+신규 references/templates.md, workflow-orchestrator SKILL.md) 전량 hunk 단위 분류:
+
+| 분류 | 개수 |
+|---|---|
+| 삭제 | 0 |
+| verbatim 이동 (references/templates.md에 byte-identical 존재 — Python 문자열 비교로 brainstorming 17/17, merge-to-domain 10/10 블록 확인) | 19개 블록 |
+| 참조 삽입 (표준형 Read 지시 + 폴백 1줄) | 19개 지점 + templates.md 헤더 인트로 2곳 (이 중 Step B 산하 포인터 3줄은 `cfee58e`가 대상 펜스 라벨 명시로 정제 — 신규 hunk 아님, 기존 삽입 줄의 내용 갱신) |
+| Task 4·5의 명시 치환 (Evaluator 프롬프트 압축, AC박스 압축, 상태정규화 1줄 통합×2, 박스 스타일 통일, A8 통합 one-liner×3) | 커밋 단위 2건(57d96fe, cf3a6dd) |
+| 복원 (경로 해소 스텝, 커밋 0dceaf4, net-zero vs 4dccac4) | 1건 |
+| **승인 대기 (미분류)** | **11건** |
+
+**승인 대기 11건 전문 (사전 예고 3카테고리와 정확히 일치 — 신규 미승인 항목 없음):**
+
+① brainstorming/references/templates.md 자체 작성 라벨 (1건):
+> `**Standalone Mode 시드 형식** (templates/seed.yaml 참조):` — templates.md:120 (베이스라인 원문은 라벨 없는 산문)
+
+② brainstorming 자체 작성 폴백 (4건, Task 2 self-review 사전 플래그):
+> SKILL.md:361 `(Read 실패 시 최소 요건: 확인된 요구사항 목록 + 미정의 영역 목록 제시)` [국면2 시작]
+> SKILL.md:393 `(Read 실패 시 최소 요건: 판단/가이드라인/리스크(낮음·중간·높음) 표시)` [국면3 TD]
+> SKILL.md:437 `(Read 실패 시 최소 요건: phase1~3.md + [기능명].md + seed.yaml + plan.md + HANDOFF.md + issues/ 구성)` [국면4 디렉토리]
+> SKILL.md:466 `(Read 실패 시 최소 요건: phase1~3.md + [문제명].md + HANDOFF.md 구성)` [issues 디렉토리]
+
+③ merge-to-domain 자체 작성 폴백 (6건, Task 3 report L118-129 기준):
+> SKILL.md:87 `(Read 실패 시 최소 요건: 추출된 정책/결정/요구사항ID/섹션인덱스 요약 제시 + Yes/수정필요 2택)` [domain 학습 게이트 출력]
+> SKILL.md:99 `(Read 실패 시 최소 요건: policies/decisions/requirement_ids를 F-POL-/F-DEC- ID·statement·source_section 필드로 구조화)` [feature_digest YAML 형식]
+> SKILL.md:111 `(Read 실패 시 최소 요건: feature별 정책/결정/요구사항ID 요약을 나열 + Yes/수정필요 2택)` [feature 학습 게이트 출력]
+> SKILL.md:331 `(Read 실패 시 최소 요건: 기본/자동모드/리뷰차단/커스텀 4택 메뉴 출력)` [인터랙티브 fallback 메뉴]
+> SKILL.md:340 `(Read 실패 시 최소 요건: 한/영 자동모드 키워드 매칭 표 + Yes(자동모드)/No(현재모드유지) 2택 확인 출력)` [자동 모드 키워드 표 + confirm 출력]
+> SKILL.md:423 `(Read 실패 시 최소 요건: 완료/skip/abort 건수와 feature명을 나열)` [재논의(대기열) 노출·요약 출력]
+
+**완전성 확인:** brainstorming 나머지 6개 폴백과 merge-to-domain 나머지 4개 폴백은 각 태스크 브리핑이 지정한 정확 문구를 사용 — 승인대기 아님. workflow-orchestrator/design-doc-index/design-summary에는 "Read 실패 시 최소 요건" 패턴 자체가 없음(0건, grep 재확인). 위 11건 외 신규 미분류 항목 없음.
+
+**경미한 관찰 (FAIL 아님):** merge-to-domain의 「재논의(대기열) 노출·요약 출력」 헤딩명이 실제 내용(머지 세션 완료 요약: 완료/skip/abort 건수)과 다소 어긋남 — merge-to-domain은 재논의 대기열 메커니즘을 명시적으로 미적용(SKILL.md:23)하기 때문. Task 3가 이미 자체 플래그(대체 후보 블록 없음). Read-포인터와 대상 헤딩은 정확히 일치하므로 참조 무결성은 유지됨.
+
+**B1 수정 커밋(`cfee58e`) 재감사:** skills/brainstorming/SKILL.md 3줄 변경 — Step B 산하 4중 펜스 구간의 포인터 3곳에 대상 펜스 라벨을 「」로 명시 (`「Standalone Mode 시드 형식」`, `「시드 추출 후 출력 형식」`, `「명확도 체크리스트 (시드 확인과 함께 표시)」`). 누적 diff(4dccac4..cfee58e)에서는 기존 참조 삽입 줄의 내용 갱신으로 나타나며 신규 hunk를 만들지 않음 → 분류: **참조 삽입(포인터 정제)**, 승인 범주 내. 라벨 3종 모두 templates.md:120/137/153에 verbatim 존재(grep 확인) — dangling 없음. 영향 앵커 재검: A5-2 `**명확도 체크리스트 (시드 확인과 함께 표시):**`(SKILL.md:288) **PASS**, A10-3 `아래 시드 형식으로 대화 내용을 구조화한다 (templates/seed.yaml 참조`(SKILL.md:282) **PASS**, `**시드 추출 후 출력 형식:**` 라벨(SKILL.md:284) **PASS** — 3/3 잔존.
+
+**Step 1+2 결론: FAIL 없음.** 66/66 기계 체크 PASS (B1 수정 후 영향 앵커 3건 재검 포함), 모든 diff hunk가 5개 승인 범주 또는 사전 예고된 승인대기 11건 중 하나로 분류됨.
+
+### 판단 리뷰 (신선한 눈)
+
+> 컨텍스트 없는 리뷰어(opus)가 Task 2~5 결과물을 "이 스킬 문서만 보고 절차를 수행할 수 있는가" 기준으로 판정한 결과 (컨트롤러 전달, 감사 HEAD `cfee58e` 기준 반영).
+
+| 질문 | 판정 | 발견 사항 |
+|---|---|---|
+| Q1 brainstorming standalone 실행 가능성 | **PASS** | 10/10 블록명↔헤딩 해소, dangling 참조 0 |
+| Q1 merge-to-domain standalone 실행 가능성 | **PASS (clean)** | 10/10 블록 해소, 진입 흐름·5단계·게이트·dry-run·2-pass 자기완결 |
+| Q2 Evaluator 프롬프트 실행 완결성 | **PASS** | 역할 로드/입력/판정 지시 도출 가능 |
+| Q3 design-doc-index/design-summary 정합성 | **PASS (clean)** | scan→normalize→filter→output 일관, 고아 참조 0 |
+| Q4 약한 모델 리스크 통합 | — | B1(수정됨)·E1(기록)·박스 드로잉 재현 마찰(Minor, 표시 전용)·경로 해소 홉(문서가 ⚠️로 선제 대응 — 양호) |
+
+**발견 사항 처분 (disposition):**
+
+| ID | 심각도 | 내용 | 처분 |
+|---|---|---|---|
+| B1 | Important | Step B 4중 펜스 블록의 포인터 3곳이 대상 펜스 미명시 → 약한 모델 오출력 위험 | **FIXED** — 커밋 `cfee58e` (포인터에 「펜스 라벨」 명시, 위 재감사 참조) |
+| B2 | Minor | 미답변 조사 포인터는 재Read 마찰만 | 기록-only (기능 영향 없음) |
+| B3 | Minor | 국면4 표준 설계 문서 포맷의 폴백("10섹션 표준")이 가장 얇은데 가장 중요한 산출물을 가드 | 기록-only — 개선 후보로 기록 |
+| E1 | Important | Evaluator 역할 정의 로드에 Read 실패 폴백 부재 | 기록-only — **G4 이전부터 존재한 사전 gap** (Task 4 치환이 제거한 것 아님, 원문에도 없었음) → G4 스코프 밖, 음성 불변식 준수 위해 무수정, **G6(검증 강화) 후보**로 기록 |
+| E2 | Minor | AC 박스 1줄 헤더의 약한 모델 재현 마찰 | 기록-only (표시 전용이라 비파괴) |
+
+**판단 리뷰 결론:** Q1~Q3 전원 PASS. Important 2건 중 B1은 G4 내 수정 완료(`cfee58e`), E1은 사전 gap으로 G6 후보 이관. 나머지는 Minor 기록-only. G4 슬림화로 인한 실행 완결성 훼손 없음.
