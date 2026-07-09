@@ -1,7 +1,7 @@
 ---
 feature: gate-effectiveness
 category: dev-workflow
-status: ready-for-plan
+status: complete
 created: 2026-07-09
 last-updated: 2026-07-09
 dependencies:
@@ -180,3 +180,4 @@ phase2_discovery.md 6절이 원판 — workflow-orchestrator(SKILL.md·bootstrap
 |------|-----------|-----------|------|
 | 2026-07-09 | 초안 작성 (국면 0~4 완료) — 원안(배칭) 폐기·실효성 정비 재정의, 34행 심사 확정, 형식 게이트 3건 처분 | 신규 기능 | ready-for-plan |
 | 2026-07-09 | 구현 완료 — 34행 심사 반영·커밋/푸시 분리·공통 규범 신설·검증 통과, v1.15.0 | 스킬 8종 | 구현 완료 (문서 통합 대기) |
+| 2026-07-09 | 개발 완료 — 문서 통합 (중간 산출물 삭제) | 전체 | 완료 |
