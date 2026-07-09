@@ -84,6 +84,7 @@ description: Use when development is complete (after REVIEW) or when an issue is
 
    git-mode: 확인 없이 정리하고 1줄로 고지한다: `🧹 중간 산출물을 정리했습니다: phase1~3.md, plan.md, seed.yaml[, HANDOFF.md] — [기능명].md는 complete로 보존 (기록은 git 이력에 남음 · 되돌리려면 말씀하세요)` (안전망: development-principles "자동 결정 안전망" 참조)
    no-git-mode: 삭제가 복구 불가능하므로 기존 확인을 유지한다 — "중간 산출물을 삭제합니다 … 진행할까요? 1. Yes — 고르면: 삭제 (기록 없음 주의) 2. No — 고르면: 유지"
+   (VCS 모드가 미확보면 세션 환경 컨텍스트의 "Is directory a git repo" 값으로 즉시 판정한다)
 
 7. **종료 안내**
 

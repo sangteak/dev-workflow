@@ -19,7 +19,7 @@ domain_digest:
     "4. 설계 개요": [50, 120]
 ```
 
-## 「domain 학습 게이트 출력」
+## 「domain digest 사후 고지 출력」
 
 ```
 📄 digest 추출 완료 — 정책 [N]건·결정 [M]건 (오추출은 dry-run 원문 대조와 검증 단계가 잡습니다 · 상세를 보려면 "digest 보여줘")
@@ -39,7 +39,7 @@ feature_digest:
   requirement_ids: [REQ-001, ...]  # feature가 사용하는 REQ ID (domain과 충돌 가능)
 ```
 
-## 「feature 학습 게이트 출력」
+## 「feature digest 사후 고지 출력」
 
 ```
 📄 digest 추출 완료 — 정책 [N]건·결정 [M]건 (오추출은 dry-run 원문 대조와 검증 단계가 잡습니다 · 상세를 보려면 "digest 보여줘")

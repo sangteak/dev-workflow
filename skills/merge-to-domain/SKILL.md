@@ -83,7 +83,7 @@ domain.md를 읽고 다음 형식의 structured digest를 생성하라.
 
 domain digest 산출 직후 답을 요구하지 않는 1줄로 고지한다.
 
-전문은 본 스킬의 references/templates.md 「domain 학습 게이트 출력」을 Read하여 사용하라.
+전문은 본 스킬의 references/templates.md 「domain digest 사후 고지 출력」을 Read하여 사용하라.
 (Read 실패 시 최소 요건: `📄 digest 추출 완료 — 정책 [N]건·결정 [M]건` 형식 1줄 고지 + 이의 제기 시 digest 노출·수정·재추출)
 
 사용자가 이의를 제기하면 해당 digest를 즉시 노출하고 수정 반영 후 재추출한다 (안전망: development-principles "자동 결정 안전망" 참조)
@@ -107,7 +107,7 @@ ID prefix는 `F-POL-`, `F-DEC-`를 사용 (domain과 구분).
 feature digest 산출 직후 답을 요구하지 않는 1줄로 고지한다 (domain과 동일 패턴).
 복수 feature가 있을 경우, **카테고리당 1회로 묶어 고지** (인지 부담 절감).
 
-전문은 본 스킬의 references/templates.md 「feature 학습 게이트 출력」을 Read하여 사용하라.
+전문은 본 스킬의 references/templates.md 「feature digest 사후 고지 출력」을 Read하여 사용하라.
 (Read 실패 시 최소 요건: `📄 digest 추출 완료 — 정책 [N]건·결정 [M]건` 형식 1줄 고지 + 이의 제기 시 digest 노출·수정·재추출)
 
 사용자가 이의를 제기하면 해당 feature의 digest를 즉시 노출하고 수정 반영 후 재추출한다 (안전망: development-principles "자동 결정 안전망" 참조)
@@ -156,7 +156,7 @@ feature digest 산출 직후 답을 요구하지 않는 1줄로 고지한다 (do
 ```
 
 - 2라운드 이후는 직전 라운드의 "발견된 우려" 해소 여부를 재검토한다
-- "발견된 우려" 중 **차단성 우려**가 있으면 등급을 1단계 자동 승급한다 (이미 등급 3이면 유지 — 차단성 우려 잔존 시 PASS 선언 차단). 판별문: "이 우려가 반영되지 않으면 dry-run 승인을 진행할 수 없는가?" — Yes면 차단성, No면 권고성. 권고성 우려는 승급 없이 dry-run 회계에 1줄로 기록한다. `--review-merge=N` 지정 시 자동 승급보다 N이 우선한다
+- "발견된 우려" 중 **차단성 우려**가 있으면 등급을 1단계 자동 승급한다 (이미 등급 3이면 유지 — 차단성 우려 잔존 시 PASS 선언 차단). 판별문: "이 우려가 반영되지 않으면 dry-run 승인을 진행할 수 없는가?" — Yes면 차단성, No면 권고성. 권고성 우려는 승급 없이 dry-run 회계에 1줄로 기록한다. `--review-merge=N` 지정 시 자동 승급보다 N이 우선한다. N은 라운드 수에만 우선한다 — 차단성 우려가 잔존하면 PASS 선언 차단은 N과 무관하게 유지된다.
 - 최종 라운드가 FAIL이면 In-session Resolution(REQ-010) 4지 선택지로 라우팅한다
 
 ---

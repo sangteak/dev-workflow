@@ -169,6 +169,7 @@ Session Start Protocol에서 invoke 시, 아래 절차를 실행한다.
 git-mode: 확인 없이 삭제하고 1줄 고지: "🧹 완료된 작업의 잔존 HANDOFF [n]건을 정리했습니다 (기록은 git에 남음 · 복원하려면 말씀하세요)" (안전망: development-principles "자동 결정 안전망" 참조)
 
 no-git-mode: 기존 확인 게이트 유지
+(VCS 모드가 미확보면 세션 환경 컨텍스트의 "Is directory a git repo" 값으로 즉시 판정한다)
 
 ```
 🧹 완료된 작업에 HANDOFF.md가 남아있습니다:
