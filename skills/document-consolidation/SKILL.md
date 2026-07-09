@@ -80,24 +80,10 @@ description: Use when development is complete (after REVIEW) or when an issue is
    확인 후 다음 단계를 진행합니다. 수정할 부분이 있으면 알려주세요.
    ```
 
-6. **중간 산출물 삭제**
+6. **중간 산출물 정리**
 
-   phase/plan/HANDOFF 등 중간 산출물만 삭제한다. **`[기능명].md`는 `status: complete` 상태로 보존한다** — 이 파일이 merge-to-domain의 머지 후보이며, feature 디렉토리 전체 삭제는 도메인 머지 검증 통과 후 merge-to-domain(REQ-019)이 전담한다.
-
-   ```
-   📋 중간 산출물을 삭제합니다.
-
-   삭제 대상: phase1~3.md, plan.md, HANDOFF.md, seed.yaml
-   보존: docs/design/[카테고리]/[기능명]/[기능명].md (complete — 도메인 머지 대기)
-
-   진행할까요?
-   1. Yes
-   2. No
-   ```
-
-   사용자 승인 후 중간 산출물 삭제.
-
-   > 참고: 사용자가 삭제를 거부한 경우 중간 산출물이 유지된다. 이는 사용자 override를 허용하는 설계이다.
+   git-mode: 확인 없이 정리하고 1줄로 고지한다: `🧹 중간 산출물을 정리했습니다: phase1~3.md, plan.md, seed.yaml[, HANDOFF.md] — [기능명].md는 complete로 보존 (기록은 git 이력에 남음 · 되돌리려면 말씀하세요)` (안전망: development-principles "자동 결정 안전망" 참조)
+   no-git-mode: 삭제가 복구 불가능하므로 기존 확인을 유지한다 — "중간 산출물을 삭제합니다 … 진행할까요? 1. Yes — 고르면: 삭제 (기록 없음 주의) 2. No — 고르면: 유지"
 
 7. **종료 안내**
 
