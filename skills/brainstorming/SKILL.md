@@ -424,15 +424,9 @@ Simplifier 에이전트를 서브에이전트로 1회 실행한다:
 - 수정 요청 시 반영 후 재확인한다
 - 확정 시 `docs/design/[카테고리]/[기능명]/[기능명].md` 파일을 직접 생성한다
   - `docs/design/[카테고리]/[기능명]/` 디렉토리는 phase1 생성 시점에 이미 존재
-- 📎 **Enhanced Mode — Seed YAML 생성:** 설계 문서 확정 후, Seed-Architect 서브에이전트로 최종 시드 YAML을 생성한다.
-  - 입력: 확정된 설계 문서 전문 + phase1~3 핵심 결정 사항
-  - 출력: `docs/design/[카테고리]/[기능명]/seed.yaml`
-  - 이 시드는 Ouroboros `ooo run` 또는 PLAN 단계의 참조 자료로 활용할 수 있다
-  - Standalone Mode에서는 Step B에서 생성한 시드를 설계 문서에 인라인으로 포함하고, 별도 파일은 생성하지 않는다
-- 파일 생성 완료 후 PLAN 단계로 연속 진행을 제안한다:
-  "설계 문서가 `docs/design/[카테고리]/[기능명]/[기능명].md`에 저장되었습니다.
-   PLAN 단계로 바로 진행할까요?"
-- PLAN 진행 시 Persona Resolution은 PLAN 페르소나만 새로 확정한다
+- 📎 **Enhanced Mode — Seed YAML 직접 갱신:** 설계 문서 확정 후, 메인 컨텍스트가 Step B 확정 시드에 국면 2~4의 변경분(신규 결정·non_goals·기술 가이드라인)만 반영해 `docs/design/[카테고리]/[기능명]/seed.yaml`을 직접 작성한다 — 서브에이전트를 재투입하지 않는다 (모든 내용이 이미 사용자 확정 완료 상태이므로 형식 반영만 수행). 이 시드는 PLAN 단계·문서 취합의 참조 자료다
+  - Standalone Mode에서는 Step B 시드를 설계 문서에 인라인으로 포함하고, 별도 파일은 생성하지 않는다 (기존과 동일)
+- 파일 생성 완료 후 PLAN 단계로 자동 진행하며 1줄 고지한다: "💡 설계 문서 저장 완료 — PLAN 단계로 자동 진행합니다 (원치 않으시면 말씀하세요)" (안전망: 고지+이의 시 즉시 중단 — development-principles "자동 결정 안전망" 참조. PLAN 진행 시 Persona Resolution은 PLAN 페르소나만 새로 확정한다)
 
 **디렉토리 구조:**
 전문은 본 스킬의 references/templates.md 「국면 4 디렉토리 구조」을 Read하여 사용하라.
