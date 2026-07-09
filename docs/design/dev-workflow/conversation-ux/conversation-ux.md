@@ -1,9 +1,9 @@
 ---
 feature: conversation-ux
 category: dev-workflow
-status: ready-for-plan
+status: complete
 created: 2026-07-08
-last-updated: 2026-07-08
+last-updated: 2026-07-09
 dependencies:
   - decision-flow.md (v1.10.0 하드닝 — 개정 대상 SSOT)
   - skill-slimming (v1.13.0 — references/ 분할 구조 전제)
@@ -152,3 +152,4 @@ v1.13.0 실사용(G4 도그푸딩 세션)에서 사용자가 스크린샷 기반
 |------|-----------|-----------|------|
 | 2026-07-08 | 초안 작성 (국면 0~4 완료) — 실사용 이슈 6건+백로그 1건, 세션 내 실시간 형식 규범 도그푸딩 확정 | 신규 기능 | ready-for-plan |
 | 2026-07-08 | 구현 완료 — 3부 재편·화면 통일·검증 통과, v1.14.0 | 스킬 5종 + bootstrap | 구현 완료 (문서 통합 대기) |
+| 2026-07-09 | 개발 완료 — 문서 통합 (중간 산출물 삭제) | 전체 | 완료 |
