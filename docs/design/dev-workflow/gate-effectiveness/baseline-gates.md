@@ -396,3 +396,163 @@ feature digest 산출 직후 사용자에게 검토 요청 (domain과 동일 패
 - `skills/merge-to-domain/references/templates.md:52-` — 「feature 학습 게이트 출력」 템플릿 전문 (REQ-004 개정 대상)
 - `skills/workflow-orchestrator/decision-flow.md:8` — "게이트 배칭" 명칭 (REQ-009 대상, Step 2 스윕 용어 4종에는 미포함 — 별도 개정 트래킹)
 - `skills/workflow-orchestrator/bootstrap.md` 전체 2499 bytes — REQ-003 동기화 시 바이트 수 변동 예상, T7에서 재측정 대조
+
+---
+
+## 검증 결과 (Task 7)
+
+> 검증 대상: 커밋 `77b190c`(T3)·`b9abdaa`(T4)·`b851496`(T5)·`a912d19`(T6) 적용 후 worktree 상태. 기준: `plan.md`(권위 문면), 대조 원판: 본 문서 위 §Step 1·§Step 2. 편집 없이 읽기 전용 검증.
+
+### Step 1: 게이트 대조 전수 재검
+
+#### Part A — 유지 게이트 23건
+
+| # | 판정 | 현재 위치 | 근거 (1줄) |
+|---|---|---|---|
+| 1 | PASS | document-consolidation:68-81 (동일) | `📋 문서 통합 결과:` + 수정/진행 자유 텍스트 — Mode1 Step5 |
+| 3 | PASS | document-consolidation:143-156 (157-166에서 상향 이동 — Step6 개정으로 파일 단축) | `📋 이슈 통합 결과:` — 자유 텍스트, Mode2 승인=비가역 삭제 동의 |
+| 4 | PASS | workflow-orchestrator:223-228 (동일) | "README.md 업데이트가 필요해 보입니다. 진행할까요?" — Yes/No |
+| 6 | PASS | workflow-orchestrator:164-176 (동일) | 단계 감지 실패 + 1~4단계 + `0. 해당 없음` = 5지 |
+| 7 | PASS | brainstorming:39-57 (동일) | `📌 결정 요청 : 카테고리 확정` 2지 또는 목록+`0. ✨ 새 카테고리` |
+| 8 | PASS | brainstorming:267-290 (동일) | 시드 추출 후 필수 확인(:272) + 수정 분기(:288) |
+| 9 | PASS | brainstorming:235-247 (동일) | 미답변 질문 3지(전부조사/선택조사/스킵) |
+| 10 | PASS | brainstorming:311-326 + 국면2/3 전환 :365-372·:397-404 | 자연어 승인 ×4, 불변 phase 파일 생성 직전 |
+| 11 | PASS | brainstorming:328-345 (동일) | 트리거 3조건(:332-335) + 사용자 결정 자유 텍스트(:343) |
+| 13 | PASS | plan-stage:14-45 (동일) | "계속할까요?"(:41) + 확인 없이 미진행(:45) |
+| 14 | PASS | plan-stage:47-64 (동일) | 순차 질의응답(:59), OPEN_QUESTIONS 존재 시 |
+| 15 | PASS | plan-stage:203-220 (동일) | 재협의 4지 + 응답 없이 미진행(:220) |
+| 16 | PASS | plan-stage:224-251 (동일) | CAUTION 필수 루프(:228) — 화면·선택지·발동 무변경(루프 규칙 :248만 33-b 정비 반영) |
+| 19 | PASS | persona-resolution:36-56 (동일) | 자유 텍스트(:47), personas.md 없을 때만 |
+| 21 | PASS | rules-injection:106-120 (동일) | `⚠️ 규칙 위반 발견` 2지(자동수정/보고만) |
+| 22 | PASS | rules-injection:151-174 (동일) | "어떻게 처리할까요?" 3지(:168-174) |
+| 25 | PASS | merge-to-domain:38-41 (동일) | 1개/2개 이상/0개 3분기 유지 |
+| 26 | PASS | merge-to-domain:41 (동일) | 도메인 0개 시 신규 생성 확인 |
+| 27 | PASS | merge-to-domain:219-250 (+1) | 3지(순차/병렬/자동위임)(:241-248) |
+| 28 | PASS | merge-to-domain:388-391 (+1) | 의미 충돌 = 항상 사용자 결정(:390) |
+| 29 | PASS | merge-to-domain:168-175 (+1) | dry-run 회계 + Yes/No 승인(:175), :348 불가침 보호 지속 |
+| 30 | PASS | merge-to-domain:397-403 (+1) | no-git 한정 2지(:403) |
+| 31 | PASS | merge-to-domain:364-370 (+1) | 실패 시 4지(:367-370) |
+
+**Part A: 23 PASS / 0 FAIL** (라인 이동은 #3 및 merge-to-domain 5건 ±수줄 — 모두 같은 파일 내 선행 편집에 의한 자연 이동, 구조 무변경)
+
+#### Part B — 처분 변경 12건
+
+| # | 항목 | 판정 | 근거 요지 |
+|---|---|---|---|
+| 표#2 | document-consolidation Mode1 Step6 | PASS | git-mode 사후고지+안전망 참조 / no-git-mode 확인 유지 — plan T6 S1 verbatim |
+| 표#12 | brainstorming PLAN 연속진행 | PASS | :429 자동 진행+1줄 고지 — plan T5 S2 verbatim |
+| 표#18 | context-handling HANDOFF 복구 확인 | PASS (부기†) | :236·:246 자동 시작+고지, "계속할까요?" 0건 |
+| 표#20 | persona-resolution 저장 제안 | **정당 일탈** | plan verbatim + 안전망 참조 append(승인된 일탈 ②), 질문형 게이트 재도입 없음 |
+| 표#32 | merge-to-domain 자동모드 confirm | PASS | confirm 게이트 소멸, 비차단 고지(templates.md:97) |
+| 표#17 | context-handling 잔존 HANDOFF 삭제 | PASS | git-mode 자동+고지 / no-git-mode 확인 유지 — plan T6 S2 조건부 분기 |
+| 표#5 | workflow-orchestrator 커밋/푸시 분리 + bootstrap | PASS | Step 3/3.5 분리(SKILL.md:237-242) + bootstrap.md:30 verbatim |
+| 표#23 | merge-to-domain domain 학습 게이트 | PASS | :82-89 사후 고지 전환 + templates.md:25 고지 문면 |
+| 표#24 | merge-to-domain feature 학습 게이트 | PASS | :105-113 domain과 대칭, 카테고리당 1회 |
+| 표#33-a | merge-to-domain Architect 등급표 | PASS | :145 신규 행 + :159 차단성 우려 승급 규정 — plan T4 S3 verbatim |
+| 표#33-b | plan-stage Step4 루프 규칙 | PASS | :248 조기 종료 예외 포함 — plan T5 S3 verbatim, "절대 생략" 0건 |
+| 표#34 | brainstorming Seed-Architect 재투입 | PASS | :427 직접 작성, 재투입 없음 — plan T5 S1 verbatim |
+
+† 표#18 부기: :236·:246 말미에 plan verbatim 밖 `(안전망: development-principles "자동 결정 안전망" 참조)` 추가 — 승인된 일탈 ②(persona-resolution 안전망 참조 append)와 동일 성격의 순수 참조 추가이며 신 규범과 모순 없음(질문형 아님). FAIL 아님으로 분류.
+
+decision-flow.md 지정 2줄(plan T3 S3): :8 "게이트 실효성 정비와의 관계" 치환, :225 말미 업종 특화 어휘 문장 추가 — 둘 다 verbatim 확인(정당 일탈 ① 영역). "게이트 배칭" 구 명칭 skills/ 전체 0건.
+
+**Part B: 11 PASS / 0 FAIL / 정당 일탈 2건**(표#20, 표#18 부기) — 둘 다 T6 리뷰 승인 범위(plan 공백 해소), 신 규범과 모순 없음.
+
+### Step 2: 구 독트린 스윕 전수
+
+**명령 1:** `grep -rn "생략할 수 없다\|학습 게이트\|커밋+푸시\|절대 생략" skills/` — 8건
+
+```
+skills\workflow-orchestrator\SKILL.md:95   (커밋+푸시, 유지 정당 — 마무리 시퀀스 위임 서술)
+skills\workflow-orchestrator\SKILL.md:198  (커밋+푸시, 유지 정당 — 실행 위치 제약)
+skills\workflow-orchestrator\SKILL.md:204  (커밋+푸시, 유지 정당 — 시퀀스 경계)
+skills\merge-to-domain\SKILL.md:86         (학습 게이트, templates.md 헤딩명 지칭 Read 지시 — plan T4 S5가 보존 지시, 본문은 사후고지로 개정 완료)
+skills\merge-to-domain\SKILL.md:110        (학습 게이트, 상동 — feature)
+skills\merge-to-domain\SKILL.md:348        (생략할 수 없다, dry-run 부분만 잔존 — 학습 게이트 부분 삭제 완료, 표#29 보호 문구)
+skills\merge-to-domain\references\templates.md:22  (학습 게이트, 헤딩명만 보존 — 펜스 내용은 고지 문면으로 교체 완료)
+skills\merge-to-domain\references\templates.md:42  (학습 게이트, 상동 — feature)
+```
+
+베이스라인 "개정 대상" 11곳 중 8곳(:56, :283, bootstrap:30, SKILL.md:237/:238, plan-stage:248)은 완전 소멸, 3곳(SKILL.md:86/:110, templates.md:22/:42의 헤딩·Read 지시)은 plan T4 S5 지시대로 헤딩명만 잔존(본문 개정 완료). 유지 정당 3곳(SKILL.md:95/198/204) 그대로 생존. **신규 히트 0건.**
+
+**명령 2:** `grep -rn "계속할까요" skills/` — 2건
+
+```
+skills\workflow-orchestrator\decision-flow.md:14  (결정 카운터 정의 예시 — plan이 decision-flow 지정 2줄 외 무접촉으로 제한)
+skills\plan-stage\SKILL.md:41                      (유지 게이트 #13 화면 문면 자체 — 개정 대상 아님)
+```
+
+context-handling/SKILL.md 내 0건 — plan T6 S5 완료 조건(`grep -c … context-handling/SKILL.md` → 0) 충족. skills/ 전체 잔존 2건은 둘 다 정당(회귀 아님).
+
+**명령 3:** `wc -c skills/workflow-orchestrator/bootstrap.md` → **2539** (베이스라인 2499 + 40B, plan 제약 "T1 기록 +100B 이내" 충족, 브리프 기준 ≤2599 충족)
+
+**명령 4:** `git -C D:/02_Workspace/98_Github/dev-workflow status --porcelain -- skills/` → **빈 결과** (main 무오염 확인)
+
+**Step 2 종합: 0 regressions confirmed.** 개정 대상 11곳 전부 해소 또는 plan 승인 형태(헤딩명 보존)로 개정 완료, 유지 정당 3곳 생존, 신규 모순 히트 0건.
+
+### main 무오염
+
+- worktree `git status --porcelain -- skills/` → 빈 결과 (전부 커밋됨)
+- main 체크아웃 `git -C D:/02_Workspace/98_Github/dev-workflow status --porcelain -- skills/` → 빈 결과
+- **판정: PASS — main 리포지토리 무오염 확인**
+
+### 종합 판정
+
+| 항목 | 결과 |
+|---|---|
+| Part A (유지 23건) | 23 PASS / 0 FAIL |
+| Part B (처분 변경 12건) | 11 PASS / 0 FAIL / 정당 일탈 2건 |
+| 스윕 (구 독트린) | 0 regressions |
+| `계속할까요` (context-handling 한정) | 0건 PASS |
+| bootstrap.md 바이트 수 | 2539 ≤ 2599 PASS |
+| main 무오염 | PASS |
+
+**전 항목 PASS — 회귀 없음.** (위 표는 T3~T6 시점 `a912d19` 기준 — 이후 수정 커밋 `e27e475` 재검 결과는 아래 「수정 커밋 재검」 참조, 전 항목 PASS 유지)
+
+---
+
+### 드라이런 로그
+
+**설정:** 개정된 workflow-orchestrator SKILL.md + bootstrap.md **만** 읽는 신선 서브에이전트에게 가상 마무리 시나리오(문서 취합 완료 상태 가정)를 진행시킴.
+
+**결과: 핵심 통과** — 커밋/푸시 2단 분리 발동 확인.
+
+- 턴 5 **[WAIT #1]**: "마무리가 완료되었습니다. 커밋을 진행할까요?" — 커밋 확인에서 정지 (푸시 언급 없음)
+- (커밋 실행)
+- 턴 6 **[WAIT #2]**: "커밋 완료: [요지 1줄]. 원격에 푸시할까요?" — 푸시 별도 확인에서 재정지
+- "커밋만 하고 마치는 선택을 허용한다"(SKILL.md L242) 명시 확인 — 푸시 No 경로 실재
+- "커밋+푸시" 잔존 2곳(L95·L198)은 범위 지정 문장("Completion Protocol에서만")이라 2단 분리와 무모순
+- bootstrap.md 불변식("커밋·푸시는 Completion Protocol에서만 — 각각 별도 확인")과 정합
+
+**모호 2건 발견:**
+- 드라이런-① Step 3/3.5 확인 문구에 번호 선택지(1. Yes / 2. No) 병기 여부 미명시 → **`e27e475`에서 수정** (Yes/No 형식 포인터 1줄 추가)
+- 드라이런-② Step 2.5 no-op 시(README 업데이트 불필요 등) 출력 여부 미확정 → **기록-only, §9 후보**
+
+### 판단 리뷰 (신선한 눈)
+
+**설정:** 컨텍스트 없는 서브에이전트에게 개정 8파일 제공, 4개 판정 질문 + 약모델 리스크 검사.
+
+| 질문 | 판정 | 발견 |
+|---|---|---|
+| Q1 고지/게이트 구분 (새 고지가 질문형 아닌지) | 정상 | 신설 고지 전부 선언문. 커밋/푸시는 의도대로 질문형 (게이트로 유지된 항목) |
+| Q2 안전망 참조 해소 | 클린 | 참조 8지점 전부 development-principles "자동 결정 안전망" 실재 절로 해소 |
+| Q3 라운드 판별문 예/아니오 실행 가능성 | 실행 가능 | Minor **F2**: 3단 트리 3번 "설계할 수 없으면"의 판정 기준 부재 |
+| Q4 두 트랙(생략 vs 유지) 상호 모순 | 1건 | **Important F1**: "학습 게이트" 명칭 4곳 잔존 — 내용은 고지인데 이름이 게이트 (앵커-헤딩) + Minor **F3**: `--review-merge=N` 우선 vs PASS 차단 관계 미명시 |
+| Q5 약모델 리스크 | 3건 | Minor **F4**: ①VCS 모드 미확보 시점 분기 기준 공백 ②자동모드 고지 3중 참조 홉 ③PLAN 고지 괄호 인라인 출력 위험 |
+
+### 수정 커밋 재검 (`e27e475`)
+
+F1·F3·F4-①·드라이런-① 4건 수정 반영 — 재검 3항목 전부 PASS:
+
+1. **`git show e27e475 --stat`**: 5파일 +8/-5 (context-handling +1, document-consolidation +1, merge-to-domain SKILL 3줄 치환, templates 2줄 치환, workflow-orchestrator +1). diff 전문 검토 결과 **게이트 선택지 수 변화 0** — 삽입은 전부 부가 명시(VCS "Is directory a git repo" 즉시 판정 ×2, "N은 라운드 수에만 우선한다 — 차단성 우려 잔존 시 PASS 선언 차단은 N과 무관" 1줄, Step 3·3.5 Yes/No 형식 포인터 1줄) + 앵커-헤딩 개명 4곳. 질문 신설·선택지 증감 없음
+2. **`grep -rn "학습 게이트" skills/` → 0건.** 앵커-헤딩 쌍 dangling 없음: 「domain/feature digest 사후 고지 출력」 — SKILL.md:86(domain)·:110(feature) Read 지시 ↔ templates.md:22·:42 헤딩, 2×2 정확 대응
+3. **스윕 재확인 (T1 분류 무손상):** 4용어 스윕 재실행 → 잔존 4건 = 유지 정당 3곳(workflow-orchestrator SKILL.md:95/:198/:204 — T1 분류 그대로 생존) + dry-run 불가침 1곳(merge-to-domain SKILL.md:348, 표#29 보호 문구 — 학습 게이트 부분은 T4에서 분리 제거된 상태 유지). 위 §Step 2 검증 시점에 "plan 승인 헤딩명 보존"으로 분류했던 학습 게이트 히트 4곳은 `e27e475` 개명으로 **전부 소멸** — 신규범 모순 잔존 최종 0건. `계속할까요` 2건(decision-flow:14 정의 예시·plan-stage:41 유지 게이트 #13 문면) 불변, bootstrap.md 2539B 불변, main 무오염 재확인(porcelain 0줄)
+
+### 기록-only 잔여 (§9 후보)
+
+수정 없이 기록만 남기는 관측 4건 — T8 §9 기록 시 이관:
+
+- **F2**: 게이트 신설 체크리스트 3단 트리 3번 "안전망을 설계할 수 없으면 게이트를 둔다"의 '설계 불가' 판정 기준 부재
+- **F4-②**: merge-to-domain 자동모드 고지의 3중 참조 홉 (SKILL → templates → Input Format Rules)
+- **F4-③**: brainstorming PLAN 자동 진행 고지의 괄호 주석이 약모델에서 인라인 출력될 위험
+- **드라이런-②**: Completion Step 2.5(README 불필요 시) 무언 처리 여부 미확정
