@@ -337,7 +337,7 @@ else:
 
 ARGUMENTS에 다음 키워드가 발견되면 자동 모드로 진입하고 고지한다:
 
-전문은 본 스킬의 references/templates.md 「자동 모드 키워드 표 + confirm 출력」을 Read하여 사용하라.
+전문은 본 스킬의 references/templates.md 「자동 모드 키워드 표 + 진입 고지 출력」을 Read하여 사용하라.
 (Read 실패 시 최소 요건: 한/영 자동모드 키워드 매칭 표 + 진입 고지 1줄)
 
 진입 고지: (위 Read 지시와 동일 블록)

@@ -168,6 +168,7 @@ phase2_discovery.md 6절이 원판 — workflow-orchestrator(SKILL.md·bootstrap
 2. 플랜 공백 해소 2건 (a912d19): 축약 규칙의 낡은 "계속할까요?" 예시 갱신(브리프 자체 체크 충족), persona-resolution 안전망 참조 절 append
 3. 검증 발견 수정 4건 (e27e475): 「학습 게이트 출력」→「digest 사후 고지 출력」 앵커-헤딩 4곳 동기 개명(신선한 눈 Important — 명칭이 옛 규범 재서술) · N 우선과 PASS 차단 관계 1줄 · VCS 모드 미확보 시 즉시 판정 1줄 ×2 · Step 3/3.5 Yes/No 형식 포인터 1줄
 4. 구현 사고 2건 (전부 복구): T2에서 main 체크아웃 오염(커밋 자가 정정+잔재 컨트롤러 폐기), T4에서 Read 디스패치 2줄 인라인 실수(커밋 전 자가 복원)
+5. 최종 리뷰 발견 수정: README 구 게이트 서술 2곳 갱신·orchestrator 위치-제약 서술 3줄 표기 정렬(커밋·푸시)·자동모드 confirm 헤딩 앵커쌍 개명 — 구 독트린 스윕이 skills/ 한정이라 README가 사각이었던 plan 결함의 보완
 
 ### 9.3 도그푸딩 관측 루프 (차기 개선 입력)
 

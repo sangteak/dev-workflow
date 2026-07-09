@@ -84,7 +84,7 @@ Socratic   × 🎮 Game Designer  → "왜 이 메커니즘이 필요한가?"
 | **PLAN** | dev-workflow | 실현 가능성 평가, 설계 방향 수립, 태스크 분해 |
 | **DEVELOP** | Superpowers | Git worktree 기반 서브에이전트 구현 (git/no-git 모드) |
 | **REVIEW** | Superpowers | 코드 품질 리뷰 + 스펙 적합성 검증 |
-| **COMPLETION** | dev-workflow | 문서 취합(feature→domain 통합), README 업데이트, 커밋+푸시 |
+| **COMPLETION** | dev-workflow | 문서 취합 → 커밋·푸시(각각 확인) |
 
 ---
 
@@ -521,7 +521,8 @@ Superpowers `requesting-code-review`에 위임됩니다:
 1. **consolidate-main** — phase/plan 파일을 feature 설계 문서에 통합 + status를 `complete`로 마킹
 2. **README 영향 판단** — 변경 내용에 따라 README 업데이트 제안
 3. **커밋 규칙 주입** — rules-injection (`applies-to: completion` 규칙을 커밋 메시지 작성에 반영)
-4. **커밋+푸시 제안** — 사용자 확인 후 실행
+4. **커밋 제안** — 사용자 확인 후 커밋 실행
+5. **푸시 제안** — 커밋 성공 후 별도 확인 (커밋만 하고 마칠 수 있음)
 
 > 🔧 내부 스킬: `document-consolidation` (consolidate-main 모드)
 
