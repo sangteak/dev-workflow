@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture
 
-이 프로젝트는 **코드 없는 문서 기반 플러그인**이다. 모든 로직은 Markdown 스킬 파일(`skills/*/SKILL.md`)에 정의된다.
+이 프로젝트는 **코드 없는 문서 기반 플러그인**이다. 모든 로직은 Markdown 스킬 문서에 정의된다 — 본문은 `skills/*/SKILL.md`, 출력 템플릿·서브에이전트 프롬프트 등 참조 자료는 `skills/*/references/*.md`(v1.13.0 분할), 상시 규범은 `skills/workflow-orchestrator/decision-flow.md`·`bootstrap.md`.
 
 ### Core Components
 

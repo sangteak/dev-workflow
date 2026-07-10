@@ -434,7 +434,7 @@ Simplifier 에이전트를 서브에이전트로 1회 실행한다:
 
 **표준 설계 문서 포맷:**
 전문은 본 스킬의 references/templates.md 「국면 4 표준 설계 문서 포맷」을 Read하여 사용하라.
-(Read 실패 시 최소 요건: 10섹션 표준(frontmatter status: ready-for-plan))
+(Read 실패 시 최소 요건: 10섹션 표준 — ①배경과 동기 ②목표와 비목표 ③확정된 요구사항 ④설계 개요 ⑤의존성 맵 ⑥기술 결정 및 대안 검토 ⑦제약조건과 가정 ⑧기술 가이드라인 ⑨구현 결과 및 일탈 사항 ⑩변경 이력 + frontmatter status: ready-for-plan)
 
 ---
 

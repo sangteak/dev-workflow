@@ -420,7 +420,7 @@ skip된 feature는 디렉토리 보존 (위 In-session Resolution 참조).
 
 세션 종료 시 다음 형식의 inline 요약 출력 (휘발 허용):
 
-전문은 본 스킬의 references/templates.md 「재논의(대기열) 노출·요약 출력」을 Read하여 사용하라.
+전문은 본 스킬의 references/templates.md 「머지 세션 종료 요약 출력」을 Read하여 사용하라.
 (Read 실패 시 최소 요건: 완료/skip/abort 건수와 feature명을 나열)
 
 ---
