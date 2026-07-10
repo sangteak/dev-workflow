@@ -115,7 +115,7 @@
 모호한 항목은 open_questions에 배치하라.
 ```
 
-**Standalone Mode 시드 형식** (templates/seed.yaml 참조):
+**시드 YAML 형식** (templates/seed.yaml 참조):
 
 ```yaml
 goal: "[핵심 목표 1문장]"
@@ -306,7 +306,7 @@ docs/design/[카테고리]/[기능명]/
 ├── phase2_discovery.md      ← 국면 2 완료 시 생성, 불변
 ├── phase3_validation.md     ← 국면 3 완료 시 생성, 불변
 ├── [기능명].md              ← 국면 4 확정 시 생성, 최종 설계 문서
-├── seed.yaml                ← 📎 Enhanced Mode: 국면 4에서 생성, Standalone: 없음 (인라인)
+├── seed.yaml                ← 국면 4에서 생성
 ├── plan.md                  ← PLAN 단계에서 생성
 ├── HANDOFF.md               ← 미완료 시 존재
 ├── issues/                  ← 서브 문제 발생 시

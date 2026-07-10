@@ -9,7 +9,7 @@ description: "권장 플러그인 의존성 설치 및 검증"
 | 이름 | 마켓플레이스 소스 | 설치명 | 등록 명령 | 설치 명령 | 필수/권장 | 역할 |
 |---|---|---|---|---|---|---|
 | Superpowers | (공식 — 등록 불필요) | superpowers | — | `claude plugin install superpowers@claude-plugins-official` | 필수 | 개발/리뷰 자동화 |
-| Ouroboros | Q00/ouroboros | ouroboros | `claude plugin marketplace add Q00/ouroboros` | `claude plugin install ouroboros@ouroboros` | 권장 | 페르소나 강화 브레인스토밍 |
+| Ouroboros | Q00/ouroboros | ouroboros | `claude plugin marketplace add Q00/ouroboros` | `claude plugin install ouroboros@ouroboros` | 권장 | MCP 전용 도구 추가 (validate_seed 등 — 에이전트 역할 정의는 v1.16.0부터 플러그인에 내장되어 미설치여도 동일 동작) |
 
 ## 플러그인 디렉토리 구조 참조
 
@@ -61,7 +61,7 @@ claude plugin list 2>&1
 
 현재 상태:
   [✅ 또는 ☐] Superpowers ([설치됨 또는 미설치]) — 개발/리뷰 자동화
-  [✅ 또는 ☐] Ouroboros ([설치됨 또는 미설치]) — 페르소나 강화 브레인스토밍
+  [✅ 또는 ☐] Ouroboros ([설치됨 또는 미설치]) — MCP 전용 도구 추가 (미설치여도 에이전트 기반 동작은 동일)
 
 설치할 항목이 있습니다.
   1. 전체 설치
