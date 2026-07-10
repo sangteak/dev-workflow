@@ -7,7 +7,7 @@
 형식이 예상과 다르더라도 DO/DON'T 섹션을 찾아 따르라.
 
 --- 에이전트 역할 정의 ---
-[Ouroboros agents/ontologist.md 전문]
+[본 스킬 references/agent-roles.md 「Ontologist」 블록 전문]
 
 --- 현재 주제 ---
 [사용자의 초기 요구사항]
@@ -40,7 +40,7 @@
 형식이 예상과 다르더라도 DO/DON'T 섹션을 찾아 따르라.
 
 --- 에이전트 역할 정의 ---
-[Ouroboros agents/socratic-interviewer.md 전문]
+[본 스킬 references/agent-roles.md 「Socratic Interviewer」 블록 전문]
 
 --- 도메인 컨텍스트 ---
 너의 도메인: [페르소나명 + 도메인 설명]
@@ -106,7 +106,7 @@
 형식이 예상과 다르더라도 DO/DON'T 섹션을 찾아 따르라.
 
 --- 에이전트 역할 정의 ---
-[Ouroboros agents/seed-architect.md 전문]
+[본 스킬 references/agent-roles.md 「Seed-Architect」 블록 전문]
 
 --- 인터뷰 결과 ---
 [Step A의 Q&A 전체 내용]
@@ -168,7 +168,7 @@ context: "[배경 설명]"
 형식이 예상과 다르더라도 DO/DON'T 섹션을 찾아 따르라.
 
 --- 에이전트 역할 정의 ---
-[Ouroboros agents/simplifier.md 전문]
+[본 스킬 references/agent-roles.md 「Simplifier」 블록 전문]
 
 --- 현재 요구사항 목록 ---
 [phase1_exploration.md의 요구사항 전체]
