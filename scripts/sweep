@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# 규범 변경 스윕 — 패턴은 인자, 범위는 고정 (repo 개발용)
+#
+# development-principles "규범 변경 스윕 (절차 규범)"의 실행 도구.
+# 실측된 스윕 실수 2건(tasks/lessons.md 2026-07-09)은 모두 패턴 오류가 아닌 "범위 사각"이었다
+# — 패턴은 작업마다 다르므로 인자로 받고, 범위만 여기 고정한다.
+#
+# 사용법:
+#   scripts/sweep '<grep-ERE-패턴>' [패턴...]
+# 종료 코드: 전체 잔존 0건이면 0, 1건 이상이면 1 ("구 규범 문장 잔존 0" 검증 항목에 사용)
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$repo_root"
+
+if [ $# -lt 1 ]; then
+  echo "사용법: scripts/sweep '<grep-ERE-패턴>' [패턴...]"
+  exit 2
+fi
+
+# 고정 범위: 규범이 재서술될 수 있는 모든 텍스트 — skills/ 밖(README·commands·CLAUDE.md)을
+# 반드시 포함한다 (lessons.md: skills/ 한정 스윕이 README 2곳을 놓친 실측)
+SCOPE=(skills commands hooks docs README.md CLAUDE.md)
+
+total=0
+for pat in "$@"; do
+  echo "── 패턴: $pat"
+  hits="$(grep -rnE -e "$pat" "${SCOPE[@]}" 2>/dev/null || true)"
+  if [ -n "$hits" ]; then
+    printf '%s\n' "$hits"
+    n="$(printf '%s\n' "$hits" | wc -l | tr -d '[:space:]')"
+  else
+    n=0
+  fi
+  echo "   잔존: ${n}건"
+  total=$((total + n))
+done
+
+echo "── 합계: ${total}건"
+[ "$total" -eq 0 ]

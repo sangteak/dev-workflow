@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# 릴리스 버전 범프 + SSOT 동기 검증 (repo 개발용 — 플러그인 배포 대상 아님)
+#
+# plugin.json 과 marketplace.json(plugins[].version)의 버전을 함께 갱신한다.
+# 근거: 두 파일 수동 편집이 릴리스마다 반복되어 왔고(CLAUDE.md §Versioning),
+#       기계 검증 없는 2-파일 동기화는 드리프트 시 플러그인 업데이트 감지가 침묵 저하된다.
+#
+# 사용법:
+#   scripts/bump-version <MAJOR.MINOR.PATCH>   두 파일의 버전을 함께 갱신
+#   scripts/bump-version --check               일치 여부만 검증 (불일치 시 종료 코드 1)
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$repo_root"
+
+PLUGIN=".claude-plugin/plugin.json"
+MARKET=".claude-plugin/marketplace.json"
+
+get_ver() { grep -o '"version": *"[^"]*"' "$1" | head -1 | sed 's/.*"version": *"\([^"]*\)".*/\1/'; }
+
+pv="$(get_ver "$PLUGIN")"
+mkv="$(get_ver "$MARKET")"
+
+if [ "${1:-}" = "--check" ]; then
+  if [ "$pv" = "$mkv" ] && [ -n "$pv" ]; then
+    echo "OK: $pv (plugin.json == marketplace.json)"
+    exit 0
+  fi
+  echo "MISMATCH: plugin.json=$pv marketplace.json=$mkv"
+  exit 1
+fi
+
+NEW="${1:-}"
+if ! printf '%s' "$NEW" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+  echo "사용법: scripts/bump-version <MAJOR.MINOR.PATCH> | --check"
+  exit 2
+fi
+
+# 각 파일에 version 키가 정확히 1개인지 확인 — 스키마가 바뀌면 엉뚱한 키를 치환하지 않도록 중단
+for f in "$PLUGIN" "$MARKET"; do
+  n="$(grep -c '"version":' "$f")"
+  if [ "$n" -ne 1 ]; then
+    echo "ABORT: $f 의 version 키가 ${n}개 (1개 전제) — 스크립트를 스키마에 맞게 갱신할 것"
+    exit 3
+  fi
+done
+
+sed -i "s/\"version\": *\"[^\"]*\"/\"version\": \"$NEW\"/" "$PLUGIN" "$MARKET"
+
+pv="$(get_ver "$PLUGIN")"
+mkv="$(get_ver "$MARKET")"
+if [ "$pv" != "$NEW" ] || [ "$mkv" != "$NEW" ]; then
+  echo "ABORT: 치환 후 검증 실패 (plugin.json=$pv marketplace.json=$mkv) — 파일을 확인할 것"
+  exit 4
+fi
+echo "OK: → $NEW (plugin.json·marketplace.json 동기 갱신)"
