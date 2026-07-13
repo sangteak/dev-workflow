@@ -1,3 +1,4 @@
 scripts/* text eol=lf
 hooks/session-start text eol=lf
 hooks/inject-rules text eol=lf
+mcp/** text eol=lf
