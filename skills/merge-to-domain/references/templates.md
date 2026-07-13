@@ -1,42 +1,33 @@
 > merge-to-domain SKILL.md의 참조 자료 (verbatim). 본문 디스패치 지점의 Read 지시로 로드된다.
 
-## 「domain_digest YAML 형식」
+## 「digest 필드 정의와 LLM 후처리」
 
-```yaml
-domain_digest:
-  policies:
-    - id: POL-001
-      statement: "..."
-      source_section: "..."
-      immutability_level: high | medium | low
-  decisions:
-    - id: DEC-001
-      statement: "..."
-      supersedes: null  # 또는 이전 결정 ID
-  requirement_ids: [REQ-001, REQ-002, ...]
-  section_index:
-    "1. 배경": [1, 15]
-    "4. 설계 개요": [50, 120]
-```
+digest의 원본은 dev-workflow MCP 서버 `digest_extract` 도구의 출력(JSON)이다 — LLM이 직접 추출하거나 재작성하지 않는다.
+
+**도구 출력 필드 (결정적 — 값 수정 금지):**
+
+| 필드 | 내용 |
+|---|---|
+| `policies[]` | `{id, statement, source_section}` — domain은 `POL-NNN`, feature는 `F-POL-NNN`. 문서에 명시된 ID는 보존 (재부여 없음) |
+| `decisions[]` | `{id, statement, source_section}` — domain은 `DEC-NNN`, feature는 `F-DEC-NNN`. "결정" 헤딩 아래 항목이 여기로 분류된다 |
+| `requirement_ids[]` | 문서 등장 순 `REQ-NNN` (중복 제거, 재부여 없음 — feature의 REQ는 domain과 충돌 가능) |
+| `section_order[]` | H2 섹션 등장 순서 |
+| `line_count` | 라인 수 — merge_verify의 `pre_line_count` 입력으로 사용 |
+
+**LLM 후처리 필드 (도구 출력에 부여 — 의미 판단):**
+
+| 필드 | 부여 규칙 |
+|---|---|
+| `immutability_level` | domain 정책별 `high`/`medium`/`low` — 문서가 명시적으로 불변·강제·금지를 선언한 정책은 high, 권장·기본값은 medium, 예시·참고는 low. (3) 머지 계획의 충돌 분류에서 변형 허용 수준 판단에 사용 |
+| `decisions[].supersedes` | 이전 결정을 명시적으로 대체하는 경우 해당 결정 ID, 기본 null |
+| 항목 재분류 | 도구는 헤딩 신호만으로 policy/decision을 나눈다 — 문맥상 재분류가 필요하면 LLM이 조정하되 id·statement는 유지한다 |
+
+후처리는 도구 출력 JSON에 필드를 덧붙이는 방식으로만 수행한다 — id·statement·순서 변경 금지.
 
 ## 「domain digest 사후 고지 출력」
 
 ```
 📄 digest 추출 완료 — 정책 [N]건·결정 [M]건 (오추출은 dry-run 원문 대조와 검증 단계가 잡습니다 · 상세를 보려면 "digest 보여줘")
-```
-
-## 「feature_digest YAML 형식」
-
-```yaml
-feature_digest:
-  policies:
-    - id: F-POL-001
-      statement: "..."
-      source_section: "..."
-  decisions:
-    - id: F-DEC-001
-      statement: "..."
-  requirement_ids: [REQ-001, ...]  # feature가 사용하는 REQ ID (domain과 충돌 가능)
 ```
 
 ## 「feature digest 사후 고지 출력」

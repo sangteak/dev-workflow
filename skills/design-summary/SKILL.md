@@ -84,7 +84,7 @@ description: Generate a narrative system overview from related design documents.
 - 병렬 풀 크기: 기본 3, 상한 5 (merge-to-domain 병렬 모드와 동일 상수 — 스킬별 독립 보유)
 - 할당: 문서 1개당 서브에이전트 1개
 - 반환 형식: 아래 8개 항목을 **헤더 그대로** 갖춘 markdown — 항목 생략·헤더 변형 금지, 해당 내용이 없는 항목은 `없음`으로 명시
-- 대형 문서 게이트: 단일 문서가 80K 토큰 초과 추정(바이트/3.5) 시 섹션 분할로 읽는다 (merge-to-domain REQ-026과 동일 기준)
+- 대형 문서 게이트: 단일 문서가 80K 토큰 초과 추정(바이트/3.5) 시 섹션 분할로 읽는다 (80K/3.5 기준 상수는 merge-to-domain 구 REQ-026에서 승계 — 그쪽 분할 학습 자체는 digest_extract 도구 호출로 대체됨)
 
 서브에이전트에 전달하는 추출 지시 (표준화된 항목):
 ```

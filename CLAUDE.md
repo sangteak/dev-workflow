@@ -8,14 +8,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture
 
-이 프로젝트는 **코드 없는 문서 기반 플러그인**이다. 모든 로직은 Markdown 스킬 문서에 정의된다 — 본문은 `skills/*/SKILL.md`, 출력 템플릿·서브에이전트 프롬프트 등 참조 자료는 `skills/*/references/*.md`(v1.13.0 분할), 상시 규범은 `skills/workflow-orchestrator/decision-flow.md`·`bootstrap.md`.
+이 프로젝트는 **문서 기반 플러그인**이다. 로직 대부분은 Markdown 스킬 문서에 정의된다 — 본문은 `skills/*/SKILL.md`, 출력 템플릿·서브에이전트 프롬프트 등 참조 자료는 `skills/*/references/*.md`(v1.13.0 분할), 상시 규범은 `skills/workflow-orchestrator/decision-flow.md`·`bootstrap.md`. 예외로 merge-to-domain의 기계 단계(digest 추출·머지 검증·체크포인트)는 `mcp/`의 MCP 서버가 담당한다 (Node 18+ 필요, 부재 시 머지 기능만 비활성).
 
 ### Core Components
 
-- **`.claude-plugin/`** — 플러그인 메타데이터 (`plugin.json`, `marketplace.json`)
+- **`.claude-plugin/`** — 플러그인 메타데이터 (`plugin.json`, `marketplace.json`) + `mcpServers` 등록
 - **`hooks/`** — 세션 시작 시 `workflow-orchestrator` 스킬을 자동 주입하는 bash 스크립트
 - **`skills/`** — 핵심 스킬 (아래 참조)
 - **`commands/`** — 콘솔 자동완성용 독립 명령 파일 (save, resume, design-summary, setup, add-rule, merge-to-domain)
+- **`mcp/`** — dev-workflow MCP 서버 (`digest_extract`·`merge_verify`·`merge_checkpoint` — 머지 기계 단계, 번들 커밋 `mcp/dist/index.js`)
 - **`docs/design/`** — 설계 문서 저장소 (카테고리/기능 구조)
 
 ### Skills

@@ -344,6 +344,8 @@ DEVELOP 단계에서 Superpowers는 `git worktree`를 사용해 격리된 브랜
 /plugin install ouroboros@ouroboros
 ```
 
+> **선택 요건:** 도메인 머지 도구(`/dev-workflow:merge-to-domain`의 MCP 서버)는 **Node.js 18+**가 필요합니다 — 없으면 해당 기능만 비활성되며, 나머지 워크플로우는 영향이 없습니다. `/dev-workflow:setup`이 자동으로 진단합니다.
+
 ### Update
 
 ```bash
