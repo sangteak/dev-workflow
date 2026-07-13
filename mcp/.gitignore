@@ -1,0 +1,4 @@
+# 의존성·빌드 캐시 (dist/는 배포 산출물이므로 커밋 유지 — ignore 금지)
+node_modules/
+test-dist/
+*.tsbuildinfo

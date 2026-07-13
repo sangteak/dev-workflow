@@ -8,5 +8,11 @@
   "homepage": "https://github.com/sangteak/dev-workflow",
   "repository": "https://github.com/sangteak/dev-workflow",
   "license": "MIT",
-  "keywords": ["workflow", "brainstorming", "planning", "persona", "gamedev", "unreal", "document-management", "decision-flow-sequencing"]
+  "keywords": ["workflow", "brainstorming", "planning", "persona", "gamedev", "unreal", "document-management", "decision-flow-sequencing"],
+  "mcpServers": {
+    "dev-workflow": {
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp/dist/index.js"]
+    }
+  }
 }
