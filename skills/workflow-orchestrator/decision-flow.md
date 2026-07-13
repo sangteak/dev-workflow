@@ -170,6 +170,7 @@
 |---|---|---|
 | brainstorming | 국면 0~4 각각 | 해당 phase 파일 작성 직전 |
 | plan-stage | Step 1~4 전체가 하나의 국면 | Superpowers writing-plans 핸드오프 직전 |
+| plan-stage 재계획 진입 | 진입 1회가 하나의 국면 (Step 1~4 국면 규칙 재사용) | writing-plans 핸드오프 직전 |
 | 기타 적용 스킬 | 해당 스킬 실행 1회 | 스킬 종료 직전 |
 
 > §8 적용 예외에 해당하는 스킬(예: document-consolidation)은 결정 흐름이 활성화되지 않으므로 본 표의 대상이 아니다.

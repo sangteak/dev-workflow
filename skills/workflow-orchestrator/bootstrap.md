@@ -30,3 +30,4 @@ You have a structured development workflow (dev-workflow plugin).
 - 커밋·푸시는 Completion Protocol에서만 — 각각 별도 확인 (푸시는 원격 공개라 분리 승인)
 - 결정 요청은 한 번에 하나씩 — 노출된 선택지에만 답할 수 있고, 모드 전환("다 보여줘"/"알아서")은 명시적 요청으로만 (위임·번복 의도는 수용 — 응답 주권)
 - 결정 요청 형식 상세는 `[플러그인 루트]/skills/workflow-orchestrator/decision-flow.md`를 Read하여 따른다 (폴백: `📌 결정 요청 : [제목]` + 번호 선택지(결과 1줄 병기) + `💡 추천` 줄 · 헤더 `📋 확정 N/M` · 자가 응답 금지)
+- DEVELOP 중 계획 밖 결함 수정은 이슈 카드 선행 — 이슈는 한 번에 하나 (상세: orchestrator 「Issue Lifecycle」)
