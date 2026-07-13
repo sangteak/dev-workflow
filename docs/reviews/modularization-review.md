@@ -103,8 +103,8 @@ MCP 도구의 한계를 명시해 둔다: **도구는 모델이 호출해야 작
 ### Tier 1 — 강권고 (3건, 모두 계약 보수)
 
 1. **T1-1. Ouroboros 역할 9종 내장 이행 (verification-realignment REQ-005~008 강행 확인)** — ✅ **v1.16.0에서 이행 완료** (`128575a`·`a2f0ee0`·`06a6268`: 스킬별 `references/agent-roles.md` 3개 신설, 2-Path 재편). 리뷰 권고 내용: brainstorming 6종·plan-stage 2종·orchestrator Evaluator 1종의 외부 플러그인 동적 탐색(`find "$HOME/.claude/plugins" ...`) 의존을 verbatim 내장으로 교체해 find 탐색·경로 미확보·폴백 미준수 3문제 구조 제거, Path C 분기(Ouroboros 부재 시 내부 패턴으로 대체하는 Standalone 경로) 소멸. **추가 발견이었던 orchestrator Evaluator 완충 문구 부재도 배송분에 반영 확인** (SKILL.md 146행). **잔여**: Standalone 잔존 문면 후속 철거. **리스크**: 원본 드리프트 1건뿐 — 확정 설계가 "메이저 업데이트 인지 시 수동 1회 대조"로 처리
-2. **T1-2. Contrarian/Hacker 프롬프트 템플릿 신설 + Hacker 트리거 정의** (신규 발견, **유효 — 미이행**) — `skills/brainstorming/references/templates.md` 전수 확인 결과 Ontologist·Socratic·Seed-Architect·Simplifier·미답변조사 5개 블록은 실재하나 **Contrarian/Hacker 블록만 부재** (v1.16.0 배송 후 재실측으로도 부재 확인 — v1.16.0 미편입 확정, 후속 배송 대상). Step C가 "비판 담당은 Contrarian 서브에이전트"라고 지시하는데 프롬프트 계약이 미명세. 기존 템플릿 패턴 복제 + Hacker 발동 조건 1문장 정형화
-3. **T1-3. design-summary 서브에이전트 계약 명세** — 4개 이상 문서 병렬 추출 시 (a) 에이전트 정체(범용, 역할 파일 불필요) 명시, (b) 병렬 풀 크기(merge-to-domain 검증 상수 3~5 재사용), (c) 반환 형식(8항목 고정 헤더 markdown 펜스 강제), (d) 대형 문서 게이트 부재를 보수. PATCH성 — 독립 배송 가능
+2. **T1-2. Contrarian/Hacker 프롬프트 템플릿 신설 + Hacker 트리거 정의** (신규 발견) — ✅ **본 브랜치에서 이행** — `skills/brainstorming/references/templates.md` 전수 확인 결과 Ontologist·Socratic·Seed-Architect·Simplifier·미답변조사 5개 블록은 실재하나 **Contrarian/Hacker 블록만 부재** (v1.16.0 배송 후 재실측으로도 부재 확인 — v1.16.0 미편입 확정, 후속 배송 대상). Step C가 "비판 담당은 Contrarian 서브에이전트"라고 지시하는데 프롬프트 계약이 미명세. 기존 템플릿 패턴 복제 + Hacker 발동 조건 1문장 정형화
+3. **T1-3. design-summary 서브에이전트 계약 명세** — ✅ **본 브랜치에서 이행** — 4개 이상 문서 병렬 추출 시 (a) 에이전트 정체(범용, 역할 파일 불필요) 명시, (b) 병렬 풀 크기(merge-to-domain 검증 상수 3~5 재사용), (c) 반환 형식(8항목 고정 헤더 markdown 펜스 강제), (d) 대형 문서 게이트 부재를 보수. PATCH성 — 독립 배송 가능
 
 ### Tier 2 — 조건부/유보
 
@@ -132,8 +132,8 @@ MCP 도구의 한계를 명시해 둔다: **도구는 모델이 호출해야 작
 
 ### Tier 1 — 강권고 (3건)
 
-1. **T1-1. 릴리스 버전 범프+동기 검증 스크립트** (`scripts/bump-version <ver>`, repo 개발용, **유효 — 미이행**) — plugin.json + marketplace.json 이중 버전의 결정적 치환+검증. git log 실측상 릴리스마다 2파일 수동 편집 반복(8165ae0, a6a2ec4, df1a2fe — v1.16.0 범프 `6430033`도 수동 편집으로 반복 확인). pre-commit 인프라가 없으므로 강제 게이트가 아닌 **릴리스 태스크 호출형**으로 시작, CI 도입 시 게이트로 승격
-2. **T1-2. 규범 스윕 범위 고정 래퍼** (`scripts/sweep <grep-패턴>`, repo 개발용, **유효 — 미이행**) — 실측된 실수 2건이 모두 패턴 오류가 아닌 **범위 사각**(lessons.md 2026-07-09 두 건: 무변경 줄 사각, `skills/` 한정으로 README 2곳 사각). 패턴은 매번 다르지만 범위는 불변 — 정확히 스크립트가 잘하는 부분만 고정. verification-realignment REQ-009 규범은 v1.16.0에서 자연어 절차로 배송됨(`d74e1e8`, development-principles) — 이 스크립트는 그 규범의 실행 문면을 `Run: scripts/sweep '<패턴>'`으로 표준화하는 후속. 같은 설계가 기각한 것은 "훅 자동화"이고 이것은 plan 태스크 호출형 도구라 확정 규범과 양립
+1. **T1-1. 릴리스 버전 범프+동기 검증 스크립트** (`scripts/bump-version <ver>`, repo 개발용) — ✅ **본 브랜치에서 이행** — plugin.json + marketplace.json 이중 버전의 결정적 치환+검증. git log 실측상 릴리스마다 2파일 수동 편집 반복(8165ae0, a6a2ec4, df1a2fe — v1.16.0 범프 `6430033`도 수동 편집으로 반복 확인). pre-commit 인프라가 없으므로 강제 게이트가 아닌 **릴리스 태스크 호출형**으로 시작, CI 도입 시 게이트로 승격
+2. **T1-2. 규범 스윕 범위 고정 래퍼** (`scripts/sweep <grep-패턴>`, repo 개발용) — ✅ **본 브랜치에서 이행** — 실측된 실수 2건이 모두 패턴 오류가 아닌 **범위 사각**(lessons.md 2026-07-09 두 건: 무변경 줄 사각, `skills/` 한정으로 README 2곳 사각). 패턴은 매번 다르지만 범위는 불변 — 정확히 스크립트가 잘하는 부분만 고정. verification-realignment REQ-009 규범은 v1.16.0에서 자연어 절차로 배송됨(`d74e1e8`, development-principles) — 이 스크립트는 그 규범의 실행 문면을 `Run: scripts/sweep '<패턴>'`으로 표준화하는 후속. 같은 설계가 기각한 것은 "훅 자동화"이고 이것은 plan 태스크 호출형 도구라 확정 규범과 양립
 3. **T1-3. docs/design 경로 해소 공용 스크립트** (`scripts/resolve-docs-dir`, 플러그인 동봉) — 동일 find 원라이너가 **9개 스킬 11곳 + session-start hook에 복제**돼 있음을 실측(탐색 규칙 변경 시 11곳 스윕 필요 = lessons의 실수 패턴 그 자체). 단 **MCP `workspace_scan`이 경로 해소를 내장할 것이므로 "MCP 미가용 폴백 + hook 공용 구현" 지위로 설계**하고, MCP 서버가 같은 로직을 내부 재사용해 이중 소스를 금지. 배송 여부는 §8 질문 5에 연동
 
 ### Tier 2 — 조건부/유보 (hook 후보 포함)
