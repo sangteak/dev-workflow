@@ -252,3 +252,19 @@ CAUTION 항목은 반드시 Persona Feedback Loop를 통해 접근 방향 합의
 
 **plan 파일 저장 경로:** `docs/design/[카테고리]/[기능명]/plan.md`
 Superpowers가 다른 경로에 생성할 경우, 위 경로로 이동한다.
+
+---
+
+## 재계획 진입 (명시 라우팅 전용)
+
+크리티컬 이슈의 "제자리 재계획" 경로에서 workflow-orchestrator가 명시적으로 invoke한다 (orchestrator 「Issue Lifecycle」 참조). **Stage Detection으로 진입하지 않는다** — plan.md가 이미 존재하므로 자동 감지가 불가한 경로다.
+
+전제: 설계 문서 §4/§6/§10 갱신이 완료되고 사용자 리뷰를 통과한 상태.
+
+절차 (Step 1~4 전체를 재실행하지 않는다 — 변경분만):
+
+1. **변경분 Feasibility** — 갱신된 설계 부분에 한정해 페르소나 3인 판정 (Step 2의 판정 기준·출력 형식 재사용, 📎 Architect 구조 분석 재사용 가능)
+2. **기존 plan 차분 분류** — 기존 plan.md의 태스크를 3분류해 사용자 확인을 받는다: **유효**(완료됐거나 그대로 진행) / **폐기**(바뀐 설계와 충돌 — 사유 기록) / **신규 필요**. 완료 태스크의 워크트리 커밋과 문서가 어긋나지 않게 한다
+3. **Superpowers writing-plans 재호출** — 차분 분류를 컨텍스트로 전달해 plan.md를 재작성한다 (유효 태스크는 완료 표시 유지)
+
+국면 규칙: 재계획 진입 1회가 하나의 국면이다 (decision-flow.md 국면 대응표 참조).
