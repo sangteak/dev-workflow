@@ -346,17 +346,6 @@ affects:
 |------|-----------|-----------|------|
 ```
 
-## 「issues/ 이슈 디렉토리 구조」
-
-```
-docs/design/[카테고리]/[기능명]/issues/[문제명]/
-├── phase1_exploration.md
-├── phase2_discovery.md
-├── phase3_validation.md
-├── [문제명].md              ← 이슈 설계 문서
-└── HANDOFF.md               ← 이슈 미완료 시
-```
-
 ## 「국면 4 디렉토리 구조」
 
 ```
@@ -368,6 +357,5 @@ docs/design/[카테고리]/[기능명]/
 ├── seed.yaml                ← 국면 4에서 생성
 ├── plan.md                  ← PLAN 단계에서 생성
 ├── HANDOFF.md               ← 미완료 시 존재
-├── issues/                  ← 서브 문제 발생 시
-│   └── [문제명]/
+├── issues/NNN-[문제명].md  ← 이슈 카드 (orchestrator Issue Lifecycle)
 ```
