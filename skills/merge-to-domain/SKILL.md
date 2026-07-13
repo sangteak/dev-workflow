@@ -198,6 +198,12 @@ feature digest 산출 직후 답을 요구하지 않는 1줄로 고지한다 (do
 3. 섹션 10 변경 이력 자동 추가 (REQ-020): `| YYYY-MM-DD | {feature-name} 통합 (작성자: {git_author}) | {affected_sections} | 완료 |`
 4. (5) 검증 단계로 이동
 
+### 크로스 도메인 pending 소비 (구 Mode 3 이관)
+
+(4) 적용 시 `[카테고리]/_pending/[대상domain].pending.md` 파일이 대상 도메인 문서를 향해 존재하면:
+- pending 키워드를 dry-run의 [자동 수정 항목]에 포함해 함께 반영한다 (코드베이스를 참조하며 정확성 확보)
+- 반영 후 pending 파일을 삭제하고, `_pending/`이 비면 디렉토리도 삭제한다
+
 ---
 
 ## (5) 검증
@@ -222,9 +228,10 @@ feature digest 산출 직후 답을 요구하지 않는 1줄로 고지한다 (do
 
 **통과 시 (feature 단위 확정):**
 1. 머지 결과(domain.md 수정 + 섹션 10)를 즉시 커밋한다 — 메시지 규약: `docs(merge): {category} ← {feature}` (dry-run 승인이 이 커밋에 대한 동의다)
-2. 직후 커밋으로 feature 디렉토리를 삭제한다 — 메시지 규약: `docs(merge): remove {feature} after merge` (REQ-019 — no-git-mode는 삭제 직전 확인 1회). 되돌릴 때는 머지+삭제 커밋 2건을 쌍으로 revert한다
-3. 다음 feature로 진행한다 (누적 base = **해당 대상 도메인 문서**의 방금 커밋된 상태)
-4. no-git-mode: 커밋 단계는 생략하며 수정된 파일 자체가 누적 base가 된다. 해당 도메인 문서의 체크포인트는 정리하고, 다음 feature의 (4) 적용 직전에 `merge_checkpoint`(create)로 재생성한다
+2. 삭제 전 issues 잔존 검사: feature 디렉토리에 미해소 이슈 카드(`issues/NNN-*.md`) 또는 구형 이슈 디렉토리가 있으면 삭제를 중단하고 확인한다 — "미해소 이슈가 남아 있습니다: [목록]. 함께 삭제할까요? 1. Yes (기록은 git에 남음) 2. No (이 feature를 skip)"
+3. 직후 커밋으로 feature 디렉토리를 삭제한다 — 메시지 규약: `docs(merge): remove {feature} after merge` (REQ-019 — no-git-mode는 삭제 직전 확인 1회). 되돌릴 때는 머지+삭제 커밋 2건을 쌍으로 revert한다
+4. 다음 feature로 진행한다 (누적 base = **해당 대상 도메인 문서**의 방금 커밋된 상태)
+5. no-git-mode: 커밋 단계는 생략하며 수정된 파일 자체가 누적 base가 된다. 해당 도메인 문서의 체크포인트는 정리하고, 다음 feature의 (4) 적용 직전에 `merge_checkpoint`(create)로 재생성한다
 
 **실패 항목 발견 시:**
 1. in-session resolution 4지 선택지 노출 (REQ-010)
