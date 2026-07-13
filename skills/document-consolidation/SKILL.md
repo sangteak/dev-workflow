@@ -40,7 +40,7 @@ description: Use when development is complete (after REVIEW) or when an issue is
    - `[해소된 경로]/[카테고리]/[기능명]/phase2_discovery.md`
    - `[해소된 경로]/[카테고리]/[기능명]/phase3_validation.md`
    - `[해소된 경로]/[카테고리]/[기능명]/plan.md`
-   - `[해소된 경로]/[카테고리]/[기능명]/seed.yaml` (존재 시, Enhanced Mode에서 생성)
+   - `[해소된 경로]/[카테고리]/[기능명]/seed.yaml` (존재 시 — v1.16.0부터 항상 생성, 구버전 산출물은 부재 가능)
    - `[해소된 경로]/[카테고리]/[기능명]/HANDOFF.md` (존재 시)
 
 2. **섹션별 매핑 규칙에 따라 design 문서 업데이트**

@@ -288,7 +288,7 @@ else:
 ### 카테고리 간 병렬 (REQ-014)
 
 서로 다른 카테고리는 서브에이전트 풀로 병렬 처리.
-풀 크기 기본값 3, 상한 5 (고정 — brainstorming Enhanced Mode 검증 범위).
+풀 크기 기본값 3, 상한 5 (고정 — brainstorming 서브에이전트 검증 범위).
 처리 완료 시 다음 후보를 즉시 투입 (rolling pool).
 
 ---
