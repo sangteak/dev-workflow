@@ -310,9 +310,15 @@ DEVELOP 단계에서 Superpowers는 `git worktree`를 사용해 격리된 브랜
 
 `.claude/personas.md`를 생성하면 프로젝트에 맞는 페르소나를 사용할 수 있습니다. 세션 종료 시 자동으로 저장을 제안합니다.
 
-#### 이슈/핫픽스 서브워크플로우
+#### 이슈 카드
 
-완료된 기능에 문제가 발생하면 `issues/` 하위에서 별도 워크플로우를 진행하고, 완료 후 부모 설계 문서에 병합합니다.
+DEVELOP 중 계획 밖 문제가 발견되면, 수정 전에 이슈 카드부터 만듭니다(한 번에 하나 — 분석 먼저, 수정은 그다음).
+
+- **경미/중간**: 경량 사이클로 즉시 처리 — 분석 → 수정 → 부모 설계 문서 §10에 요지 반영 → 카드 삭제
+- **크리티컬**: "설계 문서 §2(목표·비목표)가 그대로 유효한가?" 판별로 분기 — 유효하면 제자리 재계획, 무효화되면 아카이브 후 새 feature로 승계
+- 이미 완료(complete)된 기능에서 문제가 발견되면 이슈 카드가 아니라 별도 feature로 처리합니다
+
+> 🔧 내부 스킬: `workflow-orchestrator` 「Issue Lifecycle」
 
 ---
 
@@ -542,7 +548,7 @@ Superpowers `requesting-code-review`에 위임됩니다:
 5단계 알고리즘(학습→학습→계획→적용→검증) + Architect 라운드 + dry-run 안전 게이트.
 
 > 🔧 내부 스킬: `merge-to-domain` (관리자 전용)
-> ⚠️ 기존 `document-consolidation` Mode 3 (consolidate-domain)은 v1.11.0부터 deprecated — 차기 MINOR 릴리스에서 제거될 수 있습니다 (대체 경로: merge-to-domain).
+> ℹ️ `document-consolidation`은 v1.18.0부터 consolidate-main 단일 모드입니다 (도메인 통합은 `merge-to-domain`이 전담).
 
 ---
 
