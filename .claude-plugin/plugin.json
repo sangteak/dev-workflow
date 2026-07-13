@@ -1,7 +1,7 @@
 {
   "name": "dev-workflow",
   "description": "Structured development workflow: Brainstorming → Plan → Develop → Review with persona-based feedback loops",
-  "version": "1.17.0",
+  "version": "1.17.1",
   "author": {
     "name": "sangteak"
   },
@@ -9,10 +9,5 @@
   "repository": "https://github.com/sangteak/dev-workflow",
   "license": "MIT",
   "keywords": ["workflow", "brainstorming", "planning", "persona", "gamedev", "unreal", "document-management", "decision-flow-sequencing"],
-  "mcpServers": {
-    "dev-workflow": {
-      "command": "node",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp/dist/index.js"]
-    }
-  }
+  "mcpServers": "./.mcp.json"
 }
