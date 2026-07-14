@@ -51,7 +51,7 @@ emit_context() {
 #   두 파일 모두 완료 시 삭제되므로 존재 자체가 진행 중 신호)
 handoff_note=""
 if [ "$hook_source" != "compact" ]; then
-    handoff_files=$("${SCRIPT_DIR}/lib/detect-remnants" "$PROJECT_ROOT" HANDOFF.md plan.md phase1_exploration.md)
+    handoff_files=$("${SCRIPT_DIR}/lib/detect-remnants" "$PROJECT_ROOT" HANDOFF.md plan.md phase1_exploration.md 2>/dev/null || true)
     if [ -n "$handoff_files" ]; then
         files_escaped=$(escape_for_json "$handoff_files")
         handoff_note="\n\n⚠️ 진행 중 작업 감지:\n${files_escaped}\n첫 메시지가 무엇이든 dev-workflow:workflow-orchestrator를 즉시 invoke하여 작업 목록을 제시하라. 단, 이 세션에서 이미 해당 작업의 워크플로우가 진행 중이면 이 지시를 무시하고 흐름을 계속한다."
