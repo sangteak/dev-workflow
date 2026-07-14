@@ -346,3 +346,18 @@ auto-fix: false
 ````
 
 출력: `✅ .claude/rules/examples/ 에 샘플 3종 생성됨. 사용하려면 examples/ 밖으로 복사하세요.`
+
+## statusline 통합 제안 (opt-in — 기존 사용자 한정)
+
+의존성 검증 완료 후 실행한다:
+
+1. 아래 3위치에서 `statusLine` 설정 존재를 검사한다 (grep `"statusLine"`):
+   - `~/.claude/settings.json` · 프로젝트 `.claude/settings.json` · 프로젝트 `.claude/settings.local.json`
+2. **셋 다 없으면 → 이 섹션 전체를 조용히 스킵한다.** 신규 설치를 제안하지 않는다 (설계 결정: 설치 강요 금지)
+3. 하나라도 있으면 1회 제안한다:
+   "기존 statusline에 dev-workflow 미완료 상태 표시를 추가할 수 있습니다. 안내를 볼까요?
+   1. Yes — 고르면: 붙여넣기용 스크립트와 설정 예시를 출력합니다 (설정 파일은 직접 수정하셔야 합니다)
+   2. No — 고르면: 스킵합니다"
+4. Yes 선택 시: `[플러그인 루트]/hooks/statusline/dev-workflow-status` 파일 내용을 코드 블록으로 출력하고 안내한다:
+   - "이 내용을 예: `~/.claude/dev-workflow-status.sh`로 저장 후, 기존 statusLine 스크립트 출력에 이 스크립트의 출력을 이어 붙이세요"
+   - 설정 파일을 도구로 직접 수정하지 않는다 — 제안문 출력+사용자 직접 반영이 기본 (설정 파일 수술 위험 회피)

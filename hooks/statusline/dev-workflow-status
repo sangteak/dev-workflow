@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# dev-workflow statusline — 미완료 feature 존재 사실만 표시 (bash 등급 어휘: "미완료 N건")
+# 자체 완결형: 사용자 settings에 복사되므로 플러그인 경로를 참조하지 않는다.
+# 감지 로직은 hooks/lib/detect-remnants의 인라인 사본 (의도적 중복 — 경로 결합 회피)
+set -u
+input=$(cat 2>/dev/null || true)
+if command -v jq >/dev/null 2>&1; then
+    cwd=$(printf '%s' "$input" | jq -r '.workspace.current_dir // .cwd // empty' 2>/dev/null || true)
+else
+    cwd=$(printf '%s' "$input" | sed -n 's/.*"cwd"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -1)
+fi
+[ -z "$cwd" ] && { echo "[dev-workflow]"; exit 0; }
+docs_dir=$(find "$cwd" -maxdepth 2 -iname "docs" -type d 2>/dev/null | head -1 || true)
+remnants=""
+if [ -n "$docs_dir" ]; then
+    remnants=$(find "$docs_dir" -maxdepth 6 -name "_archive" -prune -o \( -name "HANDOFF.md" -o -name "plan.md" \) -print 2>/dev/null | head -5 || true)
+fi
+if [ -n "$remnants" ]; then
+    count=$(printf '%s\n' "$remnants" | sed 's|/[^/]*$||' | sort -u | wc -l | tr -d ' ')
+    first=$(printf '%s\n' "$remnants" | head -1 | sed 's|.*/docs/design/||; s|/[^/]*$||')
+    if [ "$count" -gt 1 ]; then echo "[dev-workflow] ⚠ 미완료 ${count}건: ${first} 외";
+    else echo "[dev-workflow] ⚠ 미완료 1건: ${first}"; fi
+else
+    echo "[dev-workflow] ✓ 미완료 없음"
+fi
+exit 0
