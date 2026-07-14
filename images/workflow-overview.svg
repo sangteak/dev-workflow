@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" fill="none">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="960" y2="520">
+    <linearGradient id="bg" x1="0" y1="0" x2="960" y2="600">
       <stop offset="0%" stop-color="#0f172a"/>
       <stop offset="100%" stop-color="#1e293b"/>
     </linearGradient>
@@ -34,7 +34,7 @@
   </defs>
 
   <!-- Background -->
-  <rect width="960" height="520" rx="16" fill="url(#bg)"/>
+  <rect width="960" height="600" rx="16" fill="url(#bg)"/>
 
   <!-- Title -->
   <text x="480" y="48" text-anchor="middle" fill="#e2e8f0" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">개발 워크플로우 파이프라인</text>
@@ -61,6 +61,11 @@
   <line x1="394" y1="112" x2="416" y2="112" stroke="#475569" stroke-width="2.5" stroke-dasharray="6 3"/>
   <polygon points="416,106 428,112 416,118" fill="#475569"/>
 
+  <!-- Dev-cycle container (DEVELOP ⇄ REVIEW + issue cards) -->
+  <rect x="412" y="62" width="388" height="182" rx="14" fill="rgba(148,163,184,0.05)" stroke="rgba(148,163,184,0.4)" stroke-width="1.5"/>
+  <rect x="430" y="55" width="84" height="14" fill="#0f172a"/>
+  <text x="472" y="66" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">개발 사이클</text>
+
   <!-- Stage 3: DEVELOP -->
   <g filter="url(#shadow)">
     <rect x="428" y="80" width="160" height="64" rx="12" fill="url(#develop)"/>
@@ -68,9 +73,13 @@
     <text x="508" y="128" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-family="Segoe UI, Arial, sans-serif" font-size="11">Superpowers</text>
   </g>
 
-  <!-- Arrow 3→4 -->
-  <line x1="588" y1="112" x2="610" y2="112" stroke="#475569" stroke-width="2.5" stroke-dasharray="6 3"/>
-  <polygon points="610,106 622,112 610,118" fill="#475569"/>
+  <!-- Arrow 3→4 (forward) -->
+  <line x1="588" y1="100" x2="610" y2="100" stroke="#475569" stroke-width="2.5" stroke-dasharray="6 3"/>
+  <polygon points="610,94 622,100 610,106" fill="#475569"/>
+
+  <!-- Arrow 4→3 (fix loop, reverse) -->
+  <line x1="622" y1="126" x2="600" y2="126" stroke="#64748b" stroke-width="2" stroke-dasharray="4 3"/>
+  <polygon points="600,120 588,126 600,132" fill="#64748b"/>
 
   <!-- Stage 4: REVIEW -->
   <g filter="url(#shadow)">
@@ -90,6 +99,18 @@
     <text x="871" y="128" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-family="Segoe UI, Arial, sans-serif" font-size="11">dev-workflow</text>
   </g>
 
+  <!-- Dev-cycle caption -->
+  <text x="605" y="164" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">태스크마다 구현 → 리뷰 → 수정 반복</text>
+
+  <!-- Issue card (exception path inside the dev cycle) -->
+  <rect x="452" y="176" width="306" height="54" rx="8" fill="rgba(249,115,22,0.08)" stroke="#f97316" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="605" y="198" text-anchor="middle" fill="#fb923c" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">이슈 카드 — 계획 밖 문제 발견 시</text>
+  <text x="605" y="216" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">경미·중간: 즉시 수정 · 크리티컬: 재계획</text>
+
+  <!-- Critical issue → back to PLAN -->
+  <path d="M 452 203 L 384 203 L 384 156" stroke="#f97316" stroke-width="1.5" stroke-dasharray="5 4" fill="none"/>
+  <polygon points="378,156 384,144 390,156" fill="#f97316"/>
+
   <!-- Persona badges -->
   <rect x="60" y="152" width="120" height="24" rx="12" fill="rgba(245,158,11,0.2)" stroke="#f59e0b" stroke-width="1"/>
   <text x="120" y="168" text-anchor="middle" fill="#fbbf24" font-family="Segoe UI, Arial, sans-serif" font-size="10">페르소나 활성</text>
@@ -98,117 +119,130 @@
   <text x="314" y="168" text-anchor="middle" fill="#60a5fa" font-family="Segoe UI, Arial, sans-serif" font-size="10">페르소나 활성</text>
 
   <!-- Divider -->
-  <line x1="40" y1="200" x2="920" y2="200" stroke="#334155" stroke-width="1"/>
+  <line x1="40" y1="272" x2="920" y2="272" stroke="#334155" stroke-width="1"/>
 
   <!-- Detail: BRAINSTORM Phases -->
-  <text x="120" y="228" text-anchor="middle" fill="#f59e0b" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">브레인스토밍 단계</text>
+  <text x="120" y="300" text-anchor="middle" fill="#f59e0b" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">브레인스토밍 단계</text>
 
   <g>
-    <rect x="30" y="244" width="180" height="34" rx="8" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1"/>
-    <text x="40" y="265" fill="#fbbf24" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">Phase 0</text>
-    <text x="96" y="265" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">카테고리</text>
+    <rect x="30" y="316" width="180" height="34" rx="8" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1"/>
+    <text x="40" y="337" fill="#fbbf24" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">Phase 0</text>
+    <text x="96" y="337" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">카테고리</text>
   </g>
-  <text x="120" y="292" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="14">|</text>
+  <text x="120" y="364" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="14">|</text>
   <g>
-    <rect x="30" y="298" width="180" height="34" rx="8" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1"/>
-    <text x="40" y="319" fill="#fbbf24" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">Phase 1</text>
-    <text x="96" y="319" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">탐색</text>
+    <rect x="30" y="370" width="180" height="34" rx="8" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1"/>
+    <text x="40" y="391" fill="#fbbf24" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">Phase 1</text>
+    <text x="96" y="391" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">탐색</text>
   </g>
-  <text x="120" y="346" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="14">|</text>
+  <text x="120" y="418" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="14">|</text>
   <g>
-    <rect x="30" y="352" width="180" height="34" rx="8" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1"/>
-    <text x="40" y="373" fill="#fbbf24" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">Phase 2</text>
-    <text x="96" y="373" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">발견</text>
+    <rect x="30" y="424" width="180" height="34" rx="8" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1"/>
+    <text x="40" y="445" fill="#fbbf24" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">Phase 2</text>
+    <text x="96" y="445" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">발견</text>
   </g>
-  <text x="120" y="400" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="14">|</text>
+  <text x="120" y="472" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="14">|</text>
   <g>
-    <rect x="30" y="406" width="180" height="34" rx="8" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1"/>
-    <text x="40" y="427" fill="#fbbf24" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">Phase 3</text>
-    <text x="96" y="427" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">검증</text>
+    <rect x="30" y="478" width="180" height="34" rx="8" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1"/>
+    <text x="40" y="499" fill="#fbbf24" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">Phase 3</text>
+    <text x="96" y="499" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">검증</text>
   </g>
-  <text x="120" y="454" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="14">|</text>
+  <text x="120" y="526" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="14">|</text>
   <g>
-    <rect x="30" y="460" width="180" height="34" rx="8" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/>
-    <text x="40" y="481" fill="#fbbf24" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">Phase 4</text>
-    <text x="96" y="481" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">통합</text>
+    <rect x="30" y="532" width="180" height="34" rx="8" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/>
+    <text x="40" y="553" fill="#fbbf24" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">Phase 4</text>
+    <text x="96" y="553" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">통합</text>
   </g>
 
   <!-- Detail: PLAN Steps -->
-  <text x="314" y="228" text-anchor="middle" fill="#3b82f6" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">계획 단계</text>
+  <text x="314" y="300" text-anchor="middle" fill="#3b82f6" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">계획 단계</text>
 
   <g>
-    <rect x="224" y="244" width="180" height="34" rx="8" fill="rgba(59,130,246,0.1)" stroke="#3b82f6" stroke-width="1"/>
-    <text x="234" y="265" fill="#60a5fa" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">Step 1</text>
-    <text x="286" y="265" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">문서 분석</text>
+    <rect x="224" y="316" width="180" height="34" rx="8" fill="rgba(59,130,246,0.1)" stroke="#3b82f6" stroke-width="1"/>
+    <text x="234" y="337" fill="#60a5fa" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">Step 1</text>
+    <text x="286" y="337" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">문서 분석</text>
   </g>
-  <text x="314" y="292" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="14">|</text>
+  <text x="314" y="364" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="14">|</text>
   <g>
-    <rect x="224" y="298" width="180" height="34" rx="8" fill="rgba(59,130,246,0.1)" stroke="#3b82f6" stroke-width="1"/>
-    <text x="234" y="319" fill="#60a5fa" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">Step 2</text>
-    <text x="286" y="319" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">미해결 질문 처리</text>
+    <rect x="224" y="370" width="180" height="34" rx="8" fill="rgba(59,130,246,0.1)" stroke="#3b82f6" stroke-width="1"/>
+    <text x="234" y="391" fill="#60a5fa" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">Step 2</text>
+    <text x="286" y="391" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">미해결 질문 처리</text>
   </g>
-  <text x="314" y="346" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="14">|</text>
+  <text x="314" y="418" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="14">|</text>
   <g>
-    <rect x="224" y="352" width="180" height="34" rx="8" fill="rgba(59,130,246,0.1)" stroke="#3b82f6" stroke-width="1"/>
-    <text x="234" y="373" fill="#60a5fa" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">Step 3</text>
-    <text x="286" y="373" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">실현 가능성 평가</text>
+    <rect x="224" y="424" width="180" height="34" rx="8" fill="rgba(59,130,246,0.1)" stroke="#3b82f6" stroke-width="1"/>
+    <text x="234" y="445" fill="#60a5fa" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">Step 3</text>
+    <text x="286" y="445" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">실현 가능성 평가</text>
   </g>
-  <text x="314" y="400" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="14">|</text>
+  <text x="314" y="472" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="14">|</text>
   <g>
-    <rect x="224" y="406" width="180" height="50" rx="8" fill="rgba(59,130,246,0.15)" stroke="#3b82f6" stroke-width="1.5"/>
-    <text x="234" y="427" fill="#60a5fa" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">Step 4</text>
-    <text x="286" y="427" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">설계 방향 수립</text>
-    <text x="234" y="445" fill="#64748b" font-family="Segoe UI, Arial, sans-serif" font-size="10">+ Superpowers writing-plans</text>
+    <rect x="224" y="478" width="180" height="50" rx="8" fill="rgba(59,130,246,0.15)" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="234" y="499" fill="#60a5fa" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">Step 4</text>
+    <text x="286" y="499" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="11">설계 방향 수립</text>
+    <text x="234" y="517" fill="#64748b" font-family="Segoe UI, Arial, sans-serif" font-size="10">+ Superpowers writing-plans</text>
   </g>
 
   <!-- Detail: DEVELOP -->
-  <text x="508" y="228" text-anchor="middle" fill="#10b981" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">개발 모드</text>
+  <text x="508" y="300" text-anchor="middle" fill="#10b981" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">개발 모드</text>
 
   <g>
-    <rect x="428" y="254" width="160" height="72" rx="8" fill="rgba(16,185,129,0.1)" stroke="#10b981" stroke-width="1"/>
-    <text x="508" y="278" text-anchor="middle" fill="#34d399" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="600">git-mode</text>
-    <text x="508" y="298" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">worktree +</text>
-    <text x="508" y="314" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">서브에이전트 구현</text>
+    <rect x="428" y="326" width="160" height="72" rx="8" fill="rgba(16,185,129,0.1)" stroke="#10b981" stroke-width="1"/>
+    <text x="508" y="350" text-anchor="middle" fill="#34d399" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="600">git-mode</text>
+    <text x="508" y="370" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">worktree +</text>
+    <text x="508" y="386" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">서브에이전트 구현</text>
   </g>
 
   <g>
-    <rect x="428" y="342" width="160" height="72" rx="8" fill="rgba(16,185,129,0.1)" stroke="#10b981" stroke-width="1"/>
-    <text x="508" y="366" text-anchor="middle" fill="#34d399" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="600">no-git-mode</text>
-    <text x="508" y="386" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">파일 기반 체크포인트</text>
-    <text x="508" y="402" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">서브에이전트 구현</text>
+    <rect x="428" y="414" width="160" height="72" rx="8" fill="rgba(16,185,129,0.1)" stroke="#10b981" stroke-width="1"/>
+    <text x="508" y="438" text-anchor="middle" fill="#34d399" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="600">no-git-mode</text>
+    <text x="508" y="458" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">파일 기반 체크포인트</text>
+    <text x="508" y="474" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">서브에이전트 구현</text>
   </g>
+
+  <text x="508" y="508" text-anchor="middle" fill="#64748b" font-family="Segoe UI, Arial, sans-serif" font-size="10">각 태스크: 구현 → 리뷰 → 수정</text>
 
   <!-- Detail: REVIEW -->
-  <text x="702" y="228" text-anchor="middle" fill="#8b5cf6" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">리뷰</text>
+  <text x="702" y="300" text-anchor="middle" fill="#8b5cf6" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">리뷰</text>
 
   <g>
-    <rect x="622" y="254" width="160" height="56" rx="8" fill="rgba(139,92,246,0.1)" stroke="#8b5cf6" stroke-width="1"/>
-    <text x="702" y="278" text-anchor="middle" fill="#a78bfa" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">코드 품질</text>
-    <text x="702" y="296" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">Superpowers 코드 리뷰</text>
+    <rect x="622" y="326" width="160" height="56" rx="8" fill="rgba(139,92,246,0.1)" stroke="#8b5cf6" stroke-width="1"/>
+    <text x="702" y="350" text-anchor="middle" fill="#a78bfa" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">코드 품질</text>
+    <text x="702" y="368" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">Superpowers 코드 리뷰</text>
   </g>
 
   <g>
-    <rect x="622" y="322" width="160" height="56" rx="8" fill="rgba(139,92,246,0.1)" stroke="#8b5cf6" stroke-width="1"/>
-    <text x="702" y="346" text-anchor="middle" fill="#a78bfa" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">스펙 적합성</text>
-    <text x="702" y="364" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">설계 문서 vs 코드</text>
+    <rect x="622" y="394" width="160" height="56" rx="8" fill="rgba(139,92,246,0.1)" stroke="#8b5cf6" stroke-width="1"/>
+    <text x="702" y="418" text-anchor="middle" fill="#a78bfa" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">스펙 적합성</text>
+    <text x="702" y="436" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">설계 문서 vs 코드</text>
+  </g>
+
+  <g>
+    <rect x="622" y="462" width="160" height="56" rx="8" fill="rgba(139,92,246,0.1)" stroke="#8b5cf6" stroke-width="1"/>
+    <text x="702" y="486" text-anchor="middle" fill="#a78bfa" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">수락 기준 검증</text>
+    <text x="702" y="504" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">Evaluator AC 확인</text>
   </g>
 
   <!-- Detail: COMPLETION -->
-  <text x="871" y="228" text-anchor="middle" fill="#ef4444" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">마무리</text>
+  <text x="871" y="300" text-anchor="middle" fill="#ef4444" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">마무리</text>
 
   <g>
-    <rect x="816" y="254" width="110" height="34" rx="8" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="1"/>
-    <text x="871" y="275" text-anchor="middle" fill="#f87171" font-family="Segoe UI, Arial, sans-serif" font-size="10">문서 취합</text>
+    <rect x="816" y="326" width="110" height="34" rx="8" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="1"/>
+    <text x="871" y="347" text-anchor="middle" fill="#f87171" font-family="Segoe UI, Arial, sans-serif" font-size="10">이슈 잔존 검사</text>
   </g>
-  <text x="871" y="302" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="14">|</text>
+  <text x="871" y="374" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="14">|</text>
   <g>
-    <rect x="816" y="308" width="110" height="34" rx="8" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="1"/>
-    <text x="871" y="329" text-anchor="middle" fill="#f87171" font-family="Segoe UI, Arial, sans-serif" font-size="10">README 업데이트</text>
+    <rect x="816" y="380" width="110" height="34" rx="8" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="1"/>
+    <text x="871" y="401" text-anchor="middle" fill="#f87171" font-family="Segoe UI, Arial, sans-serif" font-size="10">문서 취합</text>
   </g>
-  <text x="871" y="356" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="14">|</text>
+  <text x="871" y="428" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="14">|</text>
   <g>
-    <rect x="816" y="362" width="110" height="34" rx="8" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="1"/>
-    <text x="871" y="383" text-anchor="middle" fill="#f87171" font-family="Segoe UI, Arial, sans-serif" font-size="10">커밋 + 푸시</text>
+    <rect x="816" y="434" width="110" height="34" rx="8" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="1"/>
+    <text x="871" y="455" text-anchor="middle" fill="#f87171" font-family="Segoe UI, Arial, sans-serif" font-size="10">README 업데이트</text>
+  </g>
+  <text x="871" y="482" text-anchor="middle" fill="#475569" font-family="Segoe UI, Arial, sans-serif" font-size="14">|</text>
+  <g>
+    <rect x="816" y="488" width="110" height="34" rx="8" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="1"/>
+    <text x="871" y="509" text-anchor="middle" fill="#f87171" font-family="Segoe UI, Arial, sans-serif" font-size="9">커밋·푸시 (각각 확인)</text>
   </g>
 
 </svg>

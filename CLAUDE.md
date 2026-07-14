@@ -17,6 +17,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **`skills/`** — 핵심 스킬 (아래 참조)
 - **`commands/`** — 콘솔 자동완성용 독립 명령 파일 (save, resume, design-summary, setup, add-rule, merge-to-domain)
 - **`mcp/`** — dev-workflow MCP 서버 (`digest_extract`·`merge_verify`·`merge_checkpoint` — 머지 기계 단계, 번들 커밋 `mcp/dist/index.js`)
+- **`scripts/`** — repo 개발용 릴리스 스크립트 (`bump-version`: `plugin.json`·`marketplace.json` 버전 동시 갱신·동기 검증, `sweep`: 규범 변경 후 구 문구 잔존 검사) — 플러그인 배포 대상 아님
 - **`docs/design/`** — 설계 문서 저장소 (카테고리/기능 구조)
 
 ### Skills
@@ -73,7 +74,7 @@ docs/design/
 
 - **`marketplace.json`의 `plugins[].version`이 SSOT** — 플러그인 시스템이 업데이트 판단에 사용
 - **`plugin.json`의 `version`** — 동일 버전으로 동기화 유지
-- 릴리스 시 두 파일 모두 버전을 함께 올릴 것
+- 릴리스 시 두 파일 모두 버전을 함께 올릴 것 — `scripts/bump-version <MAJOR.MINOR.PATCH>`로 동시 갱신하고, `scripts/bump-version --check`로 일치를 검증한다 (수동 편집 금지)
 
 ### SemVer 기준 (MAJOR.MINOR.PATCH)
 
