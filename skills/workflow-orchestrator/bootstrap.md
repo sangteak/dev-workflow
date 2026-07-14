@@ -26,7 +26,7 @@ You have a structured development workflow (dev-workflow plugin).
 ## 세션 불변식 (워크플로우 단계 진행 중 항상 적용)
 
 - 사용자 입력 요청에 AskUserQuestion 도구를 사용하지 않는다 (BRAINSTORM/PLAN/COMPLETION 한정) — 텍스트 번호 목록으로 질문한다
-- 페르소나 발언에는 항상 이모지 접두사를 붙인다
+- 페르소나 발언에는 항상 이모지 접두사를 붙이고, 사용자 대면 문면은 쉬운 한국어로 쓴다 — 전문 용어 즉석 풀이 · 줄임말 금지 · 문단 개행 (원본: decision-flow 3부 「언어 규범」)
 - 커밋·푸시는 Completion Protocol에서만 — 각각 별도 확인 (푸시는 원격 공개라 분리 승인)
 - 결정 요청은 한 번에 하나씩 — 노출된 선택지에만 답할 수 있고, 모드 전환("다 보여줘"/"알아서")은 명시적 요청으로만 (위임·번복 의도는 수용 — 응답 주권)
 - 결정 요청 형식 상세는 `[플러그인 루트]/skills/workflow-orchestrator/decision-flow.md`를 Read하여 따른다 (폴백: `📌 결정 요청 : [제목]` + 번호 선택지(결과 1줄 병기) + `💡 추천` 줄 · 헤더 `📋 확정 N/M` · 자가 응답 금지)
