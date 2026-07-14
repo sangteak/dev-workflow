@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="960" y2="600">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="600" rx="16" fill="url(#bg)"/>
+
+  <!-- Title -->
+  <text x="480" y="44" text-anchor="middle" fill="#e2e8f0" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">이슈 카드 처리 흐름</text>
+
+  <!-- Step 1: 문제 발견 -->
+  <g filter="url(#shadow)">
+    <rect x="300" y="78" width="360" height="48" rx="10" fill="rgba(71,85,105,0.25)" stroke="#475569" stroke-width="1.5"/>
+    <text x="480" y="99" text-anchor="middle" fill="#e2e8f0" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">개발 사이클 중 계획 밖 문제 발견</text>
+    <text x="480" y="117" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">직접 실행 테스트·검증에서 나온 문제 포함</text>
+  </g>
+
+  <line x1="480" y1="126" x2="480" y2="144" stroke="#475569" stroke-width="2" stroke-dasharray="6 3"/>
+  <polygon points="474,142 486,142 480,152" fill="#475569"/>
+
+  <!-- Step 2: 이슈 카드 생성 -->
+  <rect x="300" y="152" width="360" height="52" rx="10" fill="rgba(249,115,22,0.08)" stroke="#f97316" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="480" y="173" text-anchor="middle" fill="#fb923c" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="600">이슈 카드 생성 — 코드 수정 전 선행</text>
+  <text x="480" y="192" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">한 번에 하나 · 심각도 기록 (경미/중간/크리티컬)</text>
+
+  <!-- Severity branch -->
+  <line x1="480" y1="204" x2="480" y2="222" stroke="#475569" stroke-width="2" stroke-dasharray="6 3"/>
+  <line x1="180" y1="222" x2="700" y2="222" stroke="#475569" stroke-width="2" stroke-dasharray="6 3"/>
+  <line x1="180" y1="222" x2="180" y2="244" stroke="#475569" stroke-width="2" stroke-dasharray="6 3"/>
+  <polygon points="174,242 186,242 180,252" fill="#475569"/>
+  <line x1="700" y1="222" x2="700" y2="244" stroke="#475569" stroke-width="2" stroke-dasharray="6 3"/>
+  <polygon points="694,242 706,242 700,252" fill="#475569"/>
+  <text x="320" y="216" text-anchor="middle" fill="#34d399" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="600">경미 · 중간</text>
+  <text x="600" y="216" text-anchor="middle" fill="#f87171" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="600">크리티컬</text>
+
+  <!-- Path A: 경량 사이클 -->
+  <rect x="40" y="252" width="280" height="112" rx="10" fill="rgba(16,185,129,0.1)" stroke="#10b981" stroke-width="1.5"/>
+  <text x="180" y="276" text-anchor="middle" fill="#34d399" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="600">경량 사이클 — 즉시 처리</text>
+  <text x="180" y="300" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">① 분석 — 원인·영향 범위·수정 방향</text>
+  <text x="180" y="318" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">② 수정 — 같은 워크트리에서 구현·테스트</text>
+  <text x="180" y="336" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">③ 반영 — 설계 문서 요지 기록 → 카드 삭제</text>
+
+  <line x1="180" y1="364" x2="180" y2="384" stroke="#10b981" stroke-width="2" stroke-dasharray="4 3"/>
+  <polygon points="174,382 186,382 180,392" fill="#10b981"/>
+  <rect x="116" y="392" width="128" height="28" rx="14" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="1"/>
+  <text x="180" y="410" text-anchor="middle" fill="#34d399" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">개발 재개</text>
+
+  <!-- Path B: 크리티컬 판별 -->
+  <rect x="520" y="252" width="360" height="64" rx="10" fill="rgba(239,68,68,0.08)" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="700" y="276" text-anchor="middle" fill="#f87171" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="600">크리티컬 → 판별</text>
+  <text x="700" y="300" text-anchor="middle" fill="#e2e8f0" font-family="Segoe UI, Arial, sans-serif" font-size="11">“설계 문서의 목표·비목표가 그대로 유효한가?”</text>
+
+  <!-- Verdict split -->
+  <line x1="700" y1="316" x2="700" y2="334" stroke="#475569" stroke-width="2" stroke-dasharray="6 3"/>
+  <line x1="560" y1="334" x2="840" y2="334" stroke="#475569" stroke-width="2" stroke-dasharray="6 3"/>
+  <line x1="560" y1="334" x2="560" y2="354" stroke="#475569" stroke-width="2" stroke-dasharray="6 3"/>
+  <polygon points="554,352 566,352 560,362" fill="#475569"/>
+  <line x1="840" y1="334" x2="840" y2="354" stroke="#475569" stroke-width="2" stroke-dasharray="6 3"/>
+  <polygon points="834,352 846,352 840,362" fill="#475569"/>
+  <text x="622" y="329" text-anchor="middle" fill="#60a5fa" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="600">Yes — 구조만 바뀜</text>
+  <text x="782" y="329" text-anchor="middle" fill="#fbbf24" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="600">No — 목표가 바뀜</text>
+
+  <!-- Outcome 1: 제자리 재계획 -->
+  <rect x="420" y="362" width="280" height="132" rx="10" fill="rgba(59,130,246,0.1)" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="560" y="386" text-anchor="middle" fill="#60a5fa" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="600">제자리 재계획</text>
+  <text x="560" y="403" text-anchor="middle" fill="#64748b" font-family="Segoe UI, Arial, sans-serif" font-size="10">같은 feature·워크트리·브랜치 유지</text>
+  <text x="560" y="426" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">① 설계 문서 갱신안 리뷰</text>
+  <text x="560" y="444" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">② 변경분만 실현 가능성 재평가</text>
+  <text x="560" y="462" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">③ 기존 plan 태스크 차분 (유효/폐기/신규)</text>
+  <text x="560" y="480" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">④ plan 재작성</text>
+
+  <line x1="560" y1="494" x2="560" y2="512" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4 3"/>
+  <polygon points="554,510 566,510 560,520" fill="#3b82f6"/>
+  <rect x="496" y="520" width="128" height="28" rx="14" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="1"/>
+  <text x="560" y="538" text-anchor="middle" fill="#34d399" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">개발 재개</text>
+
+  <!-- Outcome 2: 아카이브 + 승계 -->
+  <rect x="716" y="362" width="224" height="132" rx="10" fill="rgba(245,158,11,0.08)" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="828" y="386" text-anchor="middle" fill="#fbbf24" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="600">아카이브 + 승계</text>
+  <text x="828" y="403" text-anchor="middle" fill="#64748b" font-family="Segoe UI, Arial, sans-serif" font-size="10">목표가 바뀜 = 사실상 새 기능</text>
+  <text x="828" y="426" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">① 기존 feature를 보관(_archive)</text>
+  <text x="828" y="444" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">② 새 feature로 승계</text>
+  <text x="828" y="462" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">③ 브레인스토밍부터 재시작</text>
+  <text x="828" y="480" text-anchor="middle" fill="#94a3b8" font-family="Segoe UI, Arial, sans-serif" font-size="10">(기존 설계·커밋 이력은 참조·승계)</text>
+
+  <line x1="828" y1="494" x2="828" y2="512" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4 3"/>
+  <polygon points="822,510 834,510 828,520" fill="#f59e0b"/>
+  <rect x="750" y="520" width="156" height="28" rx="14" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1"/>
+  <text x="828" y="538" text-anchor="middle" fill="#fbbf24" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600">새 기능으로 재시작</text>
+
+  <!-- Footnote -->
+  <text x="480" y="576" text-anchor="middle" fill="#64748b" font-family="Segoe UI, Arial, sans-serif" font-size="10">감지·분류 제안까지는 자동 — 경로 전환 실행은 항상 사용자 확인 후 진행됩니다</text>
+
+</svg>

@@ -6,7 +6,7 @@ description: Use when entering BRAINSTORM or PLAN stage to resolve personas. App
 # Persona Resolution
 
 BRAINSTORM 또는 PLAN 단계 진입 시 실행한다 (단계 감지 이후 — 페르소나는 이 두 단계에서만 사용).
-HANDOFF 복구 시에는 HANDOFF의 "확정된 페르소나"를 그대로 적용하고 본 스킬을 생략한다.
+HANDOFF 복구 시에는 HANDOFF의 "확정된 페르소나"를 그대로 적용하고 본 스킬을 생략한다 — 단 현재 단계의 페르소나 줄이 HANDOFF에 없으면 본 스킬을 정상 실행한다 (원본 규칙: 본 문장 — context-handling이 참조).
 
 ---
 
@@ -29,7 +29,7 @@ HANDOFF 복구 시에는 HANDOFF의 "확정된 페르소나"를 그대로 적용
 ### [Case B] personas.md 없을 시
 
 Step 2로 이동한다. 저장된 사용 의사가 없고 기본 페르소나는 도메인 추정치이므로,
-이 경우에만 확인을 거친다 (저장 제안에 의해 프로젝트당 사실상 1회).
+이 경우에만 확인을 거친다 (자동 저장에 의해 프로젝트당 사실상 1회).
 
 ---
 
@@ -59,8 +59,10 @@ Step 2로 이동한다. 저장된 사용 의사가 없고 기본 페르소나는
 
 ## 기본 페르소나 정의 (Fallback)
 
+이 표가 기본 페르소나의 유일한 원본이다 — README 등 사용자 문서는 예시만 싣는다. 표기: 브레인스토밍 3번째 페르소나는 "🔧 TD"로 통일한다 (PLAN의 "🔧 Tech Lead"는 별개 페르소나다).
+
 페르소나는 BRAINSTORM과 PLAN 단계에서만 사용한다.
-DEVELOP/REVIEW는 Superpowers 서브에이전트가 전담한다.
+DEVELOP/REVIEW는 Superpowers 서브에이전트가 전담한다 (단 이슈 카드 관점 1줄 예외 — orchestrator 「Issue Lifecycle」).
 
 | 단계 | 페르소나 A | 페르소나 B | 페르소나 C |
 |---|---|---|---|
@@ -69,15 +71,15 @@ DEVELOP/REVIEW는 Superpowers 서브에이전트가 전담한다.
 
 ---
 
-## Session End: Persona Save Suggestion
+## Session End: Persona Auto-Save
 
-`.claude/personas.md` 가 없는 상태에서 아래 시점에 도달하면 저장을 제안한다:
+`.claude/personas.md` 가 없는 상태에서 아래 시점에 도달하면 자동 저장을 실행한다:
 - 브레인스토밍 국면 4 완료 (설계 문서 확정 직후)
 - 전체 워크플로우 완료 (REVIEW 완료 또는 태스크 완료)
 
-저장 제안 조건 충족 시 확인 없이 `.claude/personas.md`를 생성하고 1줄 고지한다: "💾 이번 세션 페르소나를 .claude/personas.md로 자동 저장했습니다 — 다음 세션부터 확인 없이 적용됩니다 (원치 않으면 말씀하세요 — 삭제해 드립니다)" (안전망: 파일 삭제로 즉시 되돌림 가능 · development-principles "자동 결정 안전망" 참조)
+자동 저장 조건 충족 시 확인 없이 `.claude/personas.md`를 생성하고 1줄 고지한다: "💾 이번 세션 페르소나를 .claude/personas.md로 자동 저장했습니다 — 다음 세션부터 확인 없이 적용됩니다 (원치 않으면 말씀하세요 — 삭제해 드립니다)" (안전망: 파일 삭제로 즉시 되돌림 가능 · development-principles "자동 결정 안전망" 참조)
 
-**저장 제안 조건:**
-- 세션 중 페르소나가 한 번이라도 확정된 경우에만 제안
-- 이미 `.claude/personas.md` 존재하는 경우 제안하지 않음
-- 사용자가 "저장 필요 없어" 류의 발언을 한 경우 제안하지 않음
+**자동 저장 조건:**
+- 세션 중 페르소나가 한 번이라도 확정된 경우에만 저장
+- 이미 `.claude/personas.md` 존재하는 경우 저장하지 않음
+- 사용자가 "저장 필요 없어" 류의 발언을 한 경우 저장하지 않음
