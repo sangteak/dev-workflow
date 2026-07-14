@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# 공용 잔존 감지 — 소비자: session-start(3종 집합), completion-nudge(2종 집합)
+# 사용: detect-remnants <PROJECT_ROOT> <파일명1> [파일명2...]
+# 출력: 매칭 경로 목록 (_archive 제외, 최대 5건). 항상 exit 0.
+set -u
+PROJECT_ROOT="${1:-}"; shift || true
+[ -z "$PROJECT_ROOT" ] || [ "$#" -eq 0 ] && exit 0
+docs_dir=$(find "$PROJECT_ROOT" -maxdepth 2 -iname "docs" -type d 2>/dev/null | head -1 || true)
+[ -z "$docs_dir" ] && exit 0
+name_expr=( -name "$1" ); shift
+for f in "$@"; do name_expr+=( -o -name "$f" ); done
+find "$docs_dir" -maxdepth 6 -name "_archive" -prune -o \( "${name_expr[@]}" \) -print 2>/dev/null | head -5 || true
+exit 0
