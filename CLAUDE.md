@@ -13,7 +13,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Core Components
 
 - **`.claude-plugin/`** — 플러그인 메타데이터 (`plugin.json`, `marketplace.json`) + `mcpServers` 등록
-- **`hooks/`** — 세션 시작 시 `workflow-orchestrator` 스킬을 자동 주입하는 bash 스크립트
+- **`hooks/`** — 세션 시작 시 `workflow-orchestrator` 스킬을 자동 주입하는 bash 스크립트 + 마무리 어휘 감지 시 라우팅 지시를 주입하는 completion-nudge 훅 (공용 잔존 감지: `hooks/lib/detect-remnants`)
 - **`skills/`** — 핵심 스킬 (아래 참조)
 - **`commands/`** — 콘솔 자동완성용 독립 명령 파일 (save, resume, design-summary, setup, add-rule, merge-to-domain)
 - **`mcp/`** — dev-workflow MCP 서버 (`digest_extract`·`merge_verify`·`merge_checkpoint` — 머지 기계 단계, 번들 커밋 `mcp/dist/index.js`)
@@ -109,6 +109,7 @@ docs/design/
 | setup | — (자체 로직) | — | 권장 플러그인 의존성 설치 및 검증 |
 | add-rule | rules-injection | {{ARGUMENTS}} | 프로젝트별 규칙을 워크플로우 스테이지에 자동 주입하는 룰 추가 |
 | merge-to-domain | merge-to-domain | {{ARGUMENTS}} | 관리자가 도메인 머지 파이프라인 호출 (카테고리명/플래그/공란 지원) |
+| finish | workflow-orchestrator (references/completion-protocol.md 직접 Read) | — | 마무리 시퀀스(Completion Protocol) 직행 실행 — 호출 자체가 완료 선언 |
 
 - 자동 트리거 스킬(orchestrator, persona-resolution 등)에는 커맨드를 추가하지 않는다
 - 하드코딩 ARGUMENTS: 콘솔 자동완성 즉시 실행 시 아규먼트 입력 불가 문제 해결

@@ -509,7 +509,7 @@ Superpowers `subagent-driven-development`에 위임됩니다:
 
 - **git-mode**: worktree를 생성하여 격리된 환경에서 구현
 - **no-git-mode**: 현재 디렉토리에서 직접 작업, 파일 기반 체크포인트
-- 모든 태스크 완료 후 커밋하지 않고 Completion Protocol로 전달
+- 모든 태스크가 끝나도 바로 커밋하지 않습니다 — 아래 COMPLETION 단계로 넘어가 마무리를 기다립니다
 
 > 🔧 내부 스킬: Superpowers `subagent-driven-development`
 
@@ -525,13 +525,23 @@ Superpowers `requesting-code-review`에 위임됩니다:
 
 ### COMPLETION
 
-마무리 트리거("마무리해줘", "wrap up" 등) 감지 시 자동 실행:
+개발이 끝나면 커밋 전에 문서 정리·README 반영·커밋 메시지 규칙 적용까지 마치는 마무리 절차가 실행됩니다. 아래 세 가지 방법 중 아무거나 사용하면 됩니다.
 
-1. **consolidate-main** — phase/plan 파일을 feature 설계 문서에 통합 + status를 `complete`로 마킹
+1. **자연어로 요청** — "마무리해줘", "wrap up" 같은 말 한마디면 충분합니다.
+2. **`/dev-workflow:finish` 명령** — 감지를 거치지 않고 즉시 마무리 절차로 들어갑니다.
+3. **개발 완료 직후 안내에 응답** — 태스크가 다 끝나면 Claude가 먼저 마무리 여부를 묻습니다. 이때 승낙하면 됩니다.
+
+개발 중 발견한 결함을 먼저 처리하느라 마무리 타이밍을 놓쳤다면, Claude의 응답 끝에 `🔔 마무리 대기: [기능명] — /dev-workflow:finish 또는 "마무리해줘"` 줄이 남아있는 동안은 위 세 가지 방법 중 아무 때나 골라 마무리할 수 있습니다. 이 줄이 사라졌다면 이미 마무리가 완료된 상태입니다.
+
+마무리 절차가 실행되면 다음 순서로 진행됩니다:
+
+1. **문서 취합** — phase/plan 파일을 feature 설계 문서에 통합 + status를 `complete`로 마킹
 2. **README 영향 판단** — 변경 내용에 따라 README 업데이트 제안
 3. **커밋 규칙 주입** — rules-injection (`applies-to: completion` 규칙을 커밋 메시지 작성에 반영)
 4. **커밋 제안** — 사용자 확인 후 커밋 실행
 5. **푸시 제안** — 커밋 성공 후 별도 확인 (커밋만 하고 마칠 수 있음)
+
+터미널 상태 표시줄(statusline)을 쓰고 있다면, `/dev-workflow:setup` 실행 시 "마무리를 기다리는 기능이 있다"는 표시를 상태 표시줄에 통합할지 선택할 수 있습니다 (선택 사항, 기존 statusline 사용자 한정).
 
 > 🔧 내부 스킬: `document-consolidation` (consolidate-main 모드)
 
