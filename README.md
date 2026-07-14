@@ -82,9 +82,13 @@ Socratic   × 🎮 Game Designer  → "왜 이 메커니즘이 필요한가?"
 |:---:|:---:|---|
 | **BRAINSTORM** | dev-workflow | 아이디어 탐색, 요구사항 발굴, 페르소나 피드백 (5 phases) |
 | **PLAN** | dev-workflow | 실현 가능성 평가, 설계 방향 수립, 태스크 분해 |
-| **DEVELOP** | Superpowers | Git worktree 기반 서브에이전트 구현 (git/no-git 모드) |
-| **REVIEW** | Superpowers | 코드 품질 리뷰 + 스펙 적합성 검증 |
-| **COMPLETION** | dev-workflow | 문서 취합 → 커밋·푸시(각각 확인) |
+| **DEVELOP** | Superpowers | 서브에이전트 구현 (git-mode: worktree 격리 / no-git-mode: 파일 기반 체크포인트) — 태스크마다 구현→리뷰→수정 반복 |
+| **REVIEW** | Superpowers | 전체 브랜치 최종 리뷰 (코드 품질 + 스펙 적합성) + 수락 기준(Evaluator) 검증 |
+| **COMPLETION** | dev-workflow | 이슈 잔존 검사 → 문서 취합 → README 반영 → 커밋·푸시(각각 확인) |
+
+DEVELOP과 REVIEW는 **하나의 개발 사이클**입니다. 리뷰는 개발이 끝난 뒤 오는 별도 절차가 아니라 두 해상도로 개발 안에 박혀 있습니다 — 태스크마다 구현→리뷰→수정 루프가 돌고, 모든 태스크가 끝나면 전체 브랜치를 한 번 더 훑는 최종 리뷰가 관문 역할을 합니다.
+
+이 사이클 안에서 계획에 없던 문제가 발견되면(직접 실행 테스트·검증 포함) 코드를 고치기 전에 **이슈 카드**를 먼저 만듭니다. 경미·중간 문제는 사이클 안에서 즉시 수정하고, 크리티컬한 문제는 목표가 여전히 유효하면 계획 단계로 되돌아가 재계획하며, 목표 자체가 무효화됐으면 아카이브 후 새 기능으로 승계합니다. 상세 동작은 [이슈 카드](#이슈-카드)를 참조하세요.
 
 ---
 
@@ -161,6 +165,22 @@ DEVELOP 단계에서 Superpowers는 `git worktree`를 사용해 격리된 브랜
 |---|---|
 | Git 저장소 (git-mode) | worktree로 격리된 브랜치 생성 → 서브에이전트 구현 → 메인 브랜치 병합 |
 | Git 아님 (no-git-mode) | worktree 생성 없이 현재 디렉토리에서 직접 구현 → 파일 기반 체크포인트로 진행 상황 관리 |
+
+### 이슈 카드
+
+개발 사이클(DEVELOP~REVIEW) 중 계획에 없던 문제가 발견되면 — 직접 실행 테스트나 검증에서 나온 문제를 포함해 — 코드를 고치기 전에 **이슈 카드부터** 만듭니다. "일단 고치고 보자"가 남기는 무질서한 수정을 막고, 분석이 항상 수정에 선행하도록 강제하는 장치입니다.
+
+<p align="center">
+  <img src="images/issue-lifecycle.svg" alt="Issue Card Flow" width="90%"/>
+</p>
+
+- **카드 선행**: 계획 밖 결함을 수정하려는 순간 카드를 먼저 생성 — 한 번에 하나씩 (분석 먼저, 수정은 그다음)
+- **경미/중간**: 경량 사이클로 즉시 처리 — 분석 → 수정 → 부모 설계 문서에 요지 반영 → 카드 삭제
+- **크리티컬**: "설계 문서의 목표·비목표가 그대로 유효한가?" 판별로 분기 — 유효하면 계획 단계로 돌아가 재계획, 무효화됐으면 아카이브 후 새 feature로 승계
+- 이미 완료(complete)된 기능에서 발견된 문제는 이슈 카드가 아니라 별도 feature로 처리합니다
+- 마무리(COMPLETION) 진입 시 미해소 카드가 남아 있으면 먼저 확인을 요청합니다
+
+> 🔧 내부 스킬: `workflow-orchestrator` 「Issue Lifecycle」
 
 ### Project Rules Injection (`.claude/rules/`)
 
@@ -309,16 +329,6 @@ DEVELOP 단계에서 Superpowers는 `git worktree`를 사용해 격리된 브랜
 #### 페르소나 커스터마이징
 
 `.claude/personas.md`를 생성하면 프로젝트에 맞는 페르소나를 사용할 수 있습니다. 파일이 없는 경우, 설계 문서 확정 또는 워크플로우 완료 시점에 이번 세션 페르소나가 `.claude/personas.md`로 자동 저장됩니다 (1줄 고지 후, 원치 않으면 삭제 가능).
-
-#### 이슈 카드
-
-DEVELOP 중 계획 밖 문제가 발견되면, 수정 전에 이슈 카드부터 만듭니다(한 번에 하나 — 분석 먼저, 수정은 그다음).
-
-- **경미/중간**: 경량 사이클로 즉시 처리 — 분석 → 수정 → 부모 설계 문서 §10에 요지 반영 → 카드 삭제
-- **크리티컬**: "설계 문서 §2(목표·비목표)가 그대로 유효한가?" 판별로 분기 — 유효하면 제자리 재계획, 무효화되면 아카이브 후 새 feature로 승계
-- 이미 완료(complete)된 기능에서 문제가 발견되면 이슈 카드가 아니라 별도 feature로 처리합니다
-
-> 🔧 내부 스킬: `workflow-orchestrator` 「Issue Lifecycle」
 
 ---
 
@@ -529,6 +539,7 @@ Superpowers `requesting-code-review`에 위임됩니다:
 
 마무리 트리거("마무리해줘", "wrap up" 등) 감지 시 자동 실행:
 
+0. **이슈 잔존 검사** — `issues/` 하위 미해소 카드가 있으면 목록을 제시하고 확인 (처리 후 마무리 / 보류하고 마무리)
 1. **consolidate-main** — phase/plan 파일을 feature 설계 문서에 통합 + status를 `complete`로 마킹
 2. **README 영향 판단** — 변경 내용에 따라 README 업데이트 제안
 3. **커밋 규칙 주입** — rules-injection (`applies-to: completion` 규칙을 커밋 메시지 작성에 반영)
