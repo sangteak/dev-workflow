@@ -19,7 +19,7 @@ consolidate-main 단일 모드로 동작한다.
 자동 실행하지 않는다. 아래 시점에 **제안**하고 사용자 승인 후 실행한다:
 - REVIEW 완료 시: "문서 통합을 진행할까요?" (consolidate-main)
 
-**예외:** `workflow-orchestrator` Completion Protocol에서 invoke된 경우, 이 규칙을 적용하지 않는다. **즉시 실행한다.**
+**예외:** Completion Protocol(진입 경로 무관 — orchestrator 자연어 감지, `/dev-workflow:finish` command, 훅 주입 후 라우팅)에서 invoke된 경우, 이 규칙을 적용하지 않는다. **즉시 실행한다.**
 
 > ℹ️ 이슈 반영은 workflow-orchestrator 「Issue Lifecycle」이 사이클 내에서 즉시 수행한다 — **반영은 이슈 사이클 전속, 통합(consolidation)은 Completion 시점 전속**. 구 Mode 2(consolidate-issue)·Mode 3(consolidate-domain)은 v1.18.0에서 제거됨 (도메인 통합: merge-to-domain / 크로스 도메인 pending 소비: merge-to-domain으로 이관 완료).
 
