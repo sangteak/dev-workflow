@@ -6,7 +6,7 @@ description: Use when entering BRAINSTORM or PLAN stage to resolve personas. App
 # Persona Resolution
 
 BRAINSTORM 또는 PLAN 단계 진입 시 실행한다 (단계 감지 이후 — 페르소나는 이 두 단계에서만 사용).
-HANDOFF 복구 시에는 HANDOFF의 "확정된 페르소나"를 그대로 적용하고 본 스킬을 생략한다.
+HANDOFF 복구 시에는 HANDOFF의 "확정된 페르소나"를 그대로 적용하고 본 스킬을 생략한다 — 단 현재 단계의 페르소나 줄이 HANDOFF에 없으면 본 스킬을 정상 실행한다 (원본 규칙: 본 문장 — context-handling이 참조).
 
 ---
 
@@ -58,6 +58,8 @@ Step 2로 이동한다. 저장된 사용 의사가 없고 기본 페르소나는
 ---
 
 ## 기본 페르소나 정의 (Fallback)
+
+이 표가 기본 페르소나의 유일한 원본이다 — README 등 사용자 문서는 예시만 싣는다. 표기: 브레인스토밍 3번째 페르소나는 "🔧 TD"로 통일한다 (PLAN의 "🔧 Tech Lead"는 별개 페르소나다).
 
 페르소나는 BRAINSTORM과 PLAN 단계에서만 사용한다.
 DEVELOP/REVIEW는 Superpowers 서브에이전트가 전담한다.
