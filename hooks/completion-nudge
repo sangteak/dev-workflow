@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# UserPromptSubmit hook — 조건부 정밀 주입 (completion-trigger REQ-001)
+# 발동: 미완료 잔존(plan.md/HANDOFF.md, _archive 제외) ∧ 마무리 어휘.
+# 미충족 시 빈 출력. 항상 exit 0 (차단 금지 — deny형 개입 배제 독트린).
+set -u
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+PROJECT_ROOT="${CLAUDE_PROJECT_DIR:-$PWD}"
+
+hook_input=$(cat 2>/dev/null || true)
+# prompt 추출: jq 우선, 부재 시 sed 폴백 (이스케이프 포함 프롬프트는 폴백에서 부분 매칭될 수 있으나
+# 오탐 비용이 주입 몇 줄이므로 수용 — 판정은 LLM에 위임됨)
+if command -v jq >/dev/null 2>&1; then
+    prompt=$(printf '%s' "$hook_input" | jq -r '.prompt // empty' 2>/dev/null || true)
+else
+    prompt=$(printf '%s' "$hook_input" | sed -n 's/.*"prompt"[[:space:]]*:[[:space:]]*"\(.*\)".*/\1/p' | head -1)
+fi
+[ -z "$prompt" ] && exit 0
+
+# 어휘 미러 — SSOT: skills/workflow-orchestrator/SKILL.md 「마무리 트리거 감지」의 completion-vocab 라인.
+# 변경 시 양쪽 동시 수정 (tests/hooks/test-completion-nudge.sh 케이스 0번이 diff 검증)
+FINISH_WORDS='마무리|완료|정리해|끝내자|wrap up|finish|finalize|done'
+printf '%s' "$prompt" | grep -qiE "$FINISH_WORDS" || exit 0
+
+remnants=$("${SCRIPT_DIR}/lib/detect-remnants" "$PROJECT_ROOT" HANDOFF.md plan.md)
+[ -z "$remnants" ] && exit 0
+
+features=$(printf '%s\n' "$remnants" | sed 's|.*/docs/design/||; s|/[^/]*$||' | sort -u | paste -sd ', ' -)
+cat <<EOF
+<completion-signal>
+사용자 입력에 마무리 어휘가 감지되었고, 미완료 feature가 남아 있다: ${features}
+판정하라: 이 발화가 세션 전체 작업의 마무리 의도라면 — 자체 판단으로 정리하지 말고
+dev-workflow:workflow-orchestrator의 Completion Protocol로 라우팅하라.
+특정 코드·파일에 대한 정리/수정 요청이면 이 신호는 해당 없음 — 무시하고 요청을 그대로 처리하라.
+</completion-signal>
+EOF
+exit 0
