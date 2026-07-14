@@ -41,7 +41,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 |---|---|---|
 | BRAINSTORM | dev-workflow 스킬 | ✅ 사용 |
 | PLAN | dev-workflow 스킬 | ✅ 사용 |
-| DEVELOP | Superpowers `subagent-driven-development` | ❌ 없음 |
+| DEVELOP | Superpowers `subagent-driven-development` | ❌ 없음 (이슈 카드 관점 1줄 예외) |
 | REVIEW | Superpowers `requesting-code-review` | ❌ 없음 |
 | COMPLETION | dev-workflow (Completion Protocol 작업자 측) + dev-workflow (merge-to-domain, 관리자 측) | ❌ 없음 |
 
@@ -92,7 +92,7 @@ docs/design/
 - **VCS 감지**: 세션 환경 컨텍스트의 "Is directory a git repo" 값 사용 (`.git` 리터럴 검사는 linked worktree 오탐으로 미사용) — Yes → git-mode (worktree 사용), No → no-git-mode (파일 기반 체크포인트)
 - **HANDOFF 복구**: 세션 시작 시 `docs/design/**/HANDOFF.md` glob 탐색 → 발견 시 목록 제시
 - **Phase 파일 불변성**: phase1/2/3.md는 생성 후 수정 불가. 개발 완료 시 document-consolidation이 중간 산출물(phase/plan/HANDOFF)만 삭제하고 `[기능명].md`는 complete로 보존 — feature 디렉토리 전체 삭제는 도메인 머지 후 merge-to-domain이 수행
-- **이슈 카드**: DEVELOP 중 계획 밖 결함은 카드 선행(한 번에 하나) — 경미는 경량 사이클로 즉시 반영·카드 삭제, 크리티컬은 판별문으로 제자리 재계획/아카이브+승계 분기. 닫힌 feature의 문제는 별도 feature (상세: orchestrator 「Issue Lifecycle」)
+- **이슈 카드**: DEVELOP 중 계획 밖 결함은 카드 선행(한 번에 하나) — 경미는 경량 사이클로 즉시 반영·카드 삭제, 크리티컬은 판별문으로 제자리 재계획/아카이브+승계 분기. 닫힌 feature의 문제는 별도 feature (상세: orchestrator 「Issue Lifecycle」) 카드 분석 확인 시 PLAN 세트 페르소나 관점 1줄 병기 (personas.md 없으면 생략)
 - **자기개선 루프**: 수정받을 때마다 `tasks/lessons.md`에 기록, 세션 시작 시 내부적으로 검토
 
 ### Commands (슬래시 명령 별칭)
