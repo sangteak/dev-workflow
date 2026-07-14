@@ -62,7 +62,7 @@ Step 2로 이동한다. 저장된 사용 의사가 없고 기본 페르소나는
 이 표가 기본 페르소나의 유일한 원본이다 — README 등 사용자 문서는 예시만 싣는다. 표기: 브레인스토밍 3번째 페르소나는 "🔧 TD"로 통일한다 (PLAN의 "🔧 Tech Lead"는 별개 페르소나다).
 
 페르소나는 BRAINSTORM과 PLAN 단계에서만 사용한다.
-DEVELOP/REVIEW는 Superpowers 서브에이전트가 전담한다 (단 DEVELOP은 이슈 카드 관점 1줄 예외 — orchestrator 「Issue Lifecycle」).
+DEVELOP/REVIEW는 Superpowers 서브에이전트가 전담한다 (단 이슈 카드 관점 1줄 예외 — orchestrator 「Issue Lifecycle」).
 
 | 단계 | 페르소나 A | 페르소나 B | 페르소나 C |
 |---|---|---|---|
