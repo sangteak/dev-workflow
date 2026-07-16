@@ -73,3 +73,36 @@ grep 6종(Step 1) + 의미 미러 수동 검토(Step 2) 결과. 항목 형식: `
 - [x] 구 스켈레톤(배경 1~2문장) 서술: decision-flow.md 229행, workflow-orchestrator SKILL.md 폴백(372행 인근), bootstrap.md 폴백(32행), README 결정 요청 서술(476행) → E 섹션 모두 등재 (+ decision-flow.md 244·250·106-118·260-269, brainstorming SKILL.md 44행 보충 발견)
 
 누락 없음 — 전부 인벤토리에 등재됨.
+
+---
+
+## T6 전수 검증 (2026-07-16)
+
+T0의 grep 6종을 워크트리 현재 상태(T5 완료 후)에 재실행하고, 모든 히트를 본 인벤토리(A~G 섹션) 및 컨트롤러 화이트리스트와 대조했다.
+
+### 재-grep 결과 요약
+
+- 총 히트 26건 (6개 패턴 누적, 파일:행 중복 없음 기준)
+- **교체 확인 (완료된 신규 문면):** 15건 — A 섹션(decision-flow.md:129·151·153·155·292 — 149-153 원본 교체 범위 + 파생 신설 절), B 섹션(templates.md:207·234, plan-stage/SKILL.md:96), D 섹션(brainstorming/SKILL.md:122), E 섹션(brainstorming/SKILL.md:44, decision-flow.md:262 — 질문형/로컬 템플릿 유지 스켈레톤), C 계열 § 상호참조(brainstorming/SKILL.md:77·122·373)
+- **화이트리스트 확인 (G 섹션 유지 판정):** 6건 히트 — context-handling/SKILL.md:257(구 253, 재구성 미러 재배치)·decision-flow.md:129·design-summary/SKILL.md:8/76/103·merge-to-domain/SKILL.md:60 (agent-roles 2건은 grep 무매치이나 G 섹션 유지 판정에 포함되어 화이트리스트 8건 전부 확인)
+- **신규 발견 (인벤토리·화이트리스트 어디에도 명시적으로 없음):** 2건 — 아래 상세, **둘 다 수정 불요 판단**(조치는 컨트롤러 확인 후)
+
+1. `skills/workflow-orchestrator/decision-flow.md:165` — "**취합:** 발언 원문을 그대로 나열한다 — 본체 재요약 금지..." (「블라인드 라운드 공통 절차」 섹션, T0 이전부터 존재하던 원본 문장). T0 grep-3(`원문 그대로`)가 decision-flow.md에서 "2건"으로 집계했으나(T0 리포트), 인벤토리 A-11 행은 149-153 범위만 명시해 153행만 흡수하고 이 165행(구 163행)은 별도 행 없이 누락됐다. **판단:** 이 문장은 애초에 구 안티패턴이 아니라 블라인드 라운드의 기존 정상 동작(T3가 전 라운드로 일반화한 원칙의 원형)이라 교체 대상이 아니었음 — 조치 불요, 인벤토리 문서화 누락(무해)으로 기록.
+2. `skills/context-handling/SKILL.md:285` — "결정 흐름이 활성이면 \"결정 흐름 상태\" 섹션 갱신 (재논의 대기열은 항목 전문 기록 — decision-flow.md §6)" (HANDOFF 저장(save) 시 불릿, T0 이전부터 존재). G 섹션이 명시한 context-handling:253(구, 현 257) 유지 판정과 **동일 성격**(스킬 간 내부 상호참조 §6, 사용자 대면 아님)이나 별도 행으로 등재되지 않았다. **판단:** 253행과 동일 사유로 유지 대상 — 조치 불요, 화이트리스트 문구를 "context-handling:253·285(동일 사유)"로 확장 기록 권고.
+
+기타 관찰(조치 불요, 참고용): A-11 신규 문면(decision-flow.md:153) 자체에 "② 결정 요청 재구성"이라는 라벨이 포함되어 grep-1(`재구성`)에서 재적중한다 — task-3-brief.md 19행 verbatim 지시분이며 T3 리포트가 이미 Concerns로 자진 고지(2026-07-16, bb367b1). B 섹션 교체문이 "결정 박스로 별도 조립" 표현으로 "재구성" 단어를 회피한 것과 다른 어휘 선택이나, 별도 조치 대상은 아님(plan-mandated).
+
+**소진 판정: 잔존 발견 0건 (미소명 잔존 없음).** 위 2건은 "발견되지 않은 교체 대상"이 아니라 "인벤토리 문서화가 누락된, 이미 화이트리스트 취지에 부합하는 무해 항목"이다.
+
+### Step 2 — scripts/sweep + 훅 회귀 테스트
+
+- `scripts/sweep` (인자 없음, 브리프 원문 그대로) → **실행 실패**: "사용법: scripts/sweep '<grep-ERE-패턴>' [패턴...]", exit 2. 스크립트가 패턴을 필수 인자로 요구하는 설계(고정 스코프 + 가변 패턴)라 브리프의 무인자 호출은 성립하지 않는다.
+- 재시도: T0의 6개 패턴을 인자로 명시 전달(`bash scripts/sweep '재구성' '고쳐 쓰' '원문 그대로|원문을 그대로|원문 나열' '배경 1-2문장|배경 1~2문장|배경:\*\*' '§' '결론 1줄 \+ 근거 최대 3개|결론 1줄\+근거'`) → 실행 성공, exit 1(비영), **합계 224건 잔존**.
+  - **결론: 이 224건은 code-level 위반이 아니라 대부분 예상된 노이즈다.** scripts/sweep의 고정 스코프(`skills commands hooks docs README.md CLAUDE.md`)가 `docs/` 전체를 포함해, grounded-output 자신의 설계 문서(phase1~3·plan.md·sweep-inventory.md 등, 패턴을 논의 대상으로 인용)와 이 기능과 무관한 타 도메인 문서(modularization-review.md·persona-improvement.md 등, "§"·"재구성" 등을 별건 문맥에서 사용)까지 전부 잡는다. skills/ 범위로 좁힌 부분집합은 본 절 상단의 재-grep 결과(26건, 전부 교체 확인·화이트리스트)와 일치 — 실질 위반 0건.
+  - scripts/sweep는 "리터럴 식별자 rename" 같은 좁은 스윕에 적합한 범용 도구이며, 이번처럼 자연어 패턴이 설계 문서 전반에 정당하게 반복 등장하는 케이스에는 스코프가 과대해 그대로 판정 지표로 쓰기 부적합함을 확인(사유 보고).
+- `bash tests/hooks/test-completion-nudge.sh` → **PASS=7 FAIL=0** (전 케이스 통과, 이번 개정은 훅 어휘 미변경 — 회귀 확인 완료)
+
+### Step 3 — main 무오염 확인
+
+- `git -C /d/02_Workspace/98_Github/dev-workflow log --oneline -5` → `80e5f1b`·`51b37dc`·`08f6300`·`64f680b`·`1186fa0` (grounded-output 관련 커밋 없음 — 무오염 확인)
+- `git log --oneline origin/main..HEAD` (워크트리 브랜치) → 9개 커밋(`481eb81` 시드부터 `b02ac74` T5까지, T0~T5 전 계보 확인)
