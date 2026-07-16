@@ -12,22 +12,22 @@ grep 6종(Step 1) + 의미 미러 수동 검토(Step 2) 결과. 항목 형식: `
 
 ## B. 재구성 미러 (원본을 참조/복제하는 서술)
 
-- [ ] skills/brainstorming/references/templates.md:205-209 — "출력 재구성 (메인 컨텍스트): ... 결정 요청이 필요하면 메인 컨텍스트가 decision-flow.md 형식으로 재구성한다." (Step C Contrarian 프롬프트 뒤) → 처리: T4 (교체)
-- [ ] skills/brainstorming/references/templates.md:236-242 — "출력 재구성 (메인 컨텍스트): ⚡ 교착 돌파 제안 [Hacker]: ... 결정 요청은 decision-flow 형식을 따른다." (Step C Hacker 프롬프트 뒤) → 처리: T4 (교체)
-- [ ] skills/brainstorming/SKILL.md:97 — "4. 출력 제약: 사용자를 향한 결정 요청 문구를 포함하지 않는다 — 의견·비판·대안만 반환한다 (결정 요청은 메인 컨텍스트가 decision-flow 형식으로 재구성한다)" → 처리: T4 (교체)
+- [x] skills/brainstorming/references/templates.md:205-209 — "출력 재구성 (메인 컨텍스트): ... 결정 요청이 필요하면 메인 컨텍스트가 decision-flow.md 형식으로 재구성한다." (Step C Contrarian 프롬프트 뒤) → 처리: T4 (교체) · T4 완료: "전달 (메인 컨텍스트): 발언 원문을 고쳐 쓰지 않고 그대로 나열하고, 검증 주석(↳)만 단다 — decision-flow.md 「원문 전달 원칙」. 결정 요청이 필요하면 본체가 결정 박스로 별도 조립한다."로 교체 (2026-07-16)
+- [x] skills/brainstorming/references/templates.md:236-242 — "출력 재구성 (메인 컨텍스트): ⚡ 교착 돌파 제안 [Hacker]: ... 결정 요청은 decision-flow 형식을 따른다." (Step C Hacker 프롬프트 뒤) → 처리: T4 (교체) · T4 완료: ⚡ 헤더는 프리픽스로 유지하고 본문을 동일한 「원문 전달 원칙」 포인터로 교체 (2026-07-16)
+- [x] skills/brainstorming/SKILL.md:97 — "4. 출력 제약: 사용자를 향한 결정 요청 문구를 포함하지 않는다 — 의견·비판·대안만 반환한다 (결정 요청은 메인 컨텍스트가 decision-flow 형식으로 재구성한다)" → 처리: T4 (교체) · T4 완료: "(결정 요청은 본체가 결정 박스로 별도 조립한다 — 발언 문면은 무수정 나열)"로 교체 (2026-07-16)
 - [ ] skills/plan-stage/SKILL.md:96 — "판정 취합은 본 절의 판정 출력 형식(로컬 템플릿)을 따른다 — §7 취합의 원문 나열은 의견 수집 라운드에 적용된다." → 처리: T5 (교체 — "판정 취합=본체 재요약" 취지 재검토 필요)
 
 ## C. 사용자 대면 절 기호(§) 노출 (💡 안내줄)
 
-- [ ] skills/brainstorming/SKILL.md:328 — "💡 phase1_exploration.md 저장됨 — /compact 가능 (재논의 대기열은 먼저 처리 — decision-flow.md §6) · 새 세션: /clear → /dev-workflow:resume" → 처리: T4 (교체 — § 제거/평이화)
-- [ ] skills/brainstorming/SKILL.md:361 — "💡 phase2_discovery.md 저장됨 — /compact 가능 (재논의 대기열은 먼저 처리 — decision-flow.md §6) · 새 세션: /clear → /dev-workflow:resume" → 처리: T4 (교체)
-- [ ] skills/brainstorming/SKILL.md:395 — "💡 phase3_validation.md 저장됨 — /compact 가능 (재논의 대기열은 먼저 처리 — decision-flow.md §6) · 새 세션: /clear → /dev-workflow:resume" → 처리: T4 (교체)
+- [x] skills/brainstorming/SKILL.md:328 — "💡 phase1_exploration.md 저장됨 — /compact 가능 (재논의 대기열은 먼저 처리 — decision-flow.md §6) · 새 세션: /clear → /dev-workflow:resume" → 처리: T4 (교체 — § 제거/평이화) · T4 완료: "(재논의 대기열은 먼저 처리 — 결정 규범 문서의 상태 보존 절)"로 교체 (2026-07-16)
+- [x] skills/brainstorming/SKILL.md:361 — "💡 phase2_discovery.md 저장됨 — /compact 가능 (재논의 대기열은 먼저 처리 — decision-flow.md §6) · 새 세션: /clear → /dev-workflow:resume" → 처리: T4 (교체) · T4 완료: 동일 문구로 교체 (2026-07-16)
+- [x] skills/brainstorming/SKILL.md:395 — "💡 phase3_validation.md 저장됨 — /compact 가능 (재논의 대기열은 먼저 처리 — decision-flow.md §6) · 새 세션: /clear → /dev-workflow:resume" → 처리: T4 (교체) · T4 완료: 동일 문구로 교체 (2026-07-16)
 
 ## D. 블라인드 인라인 정형 ("결론 1줄 + 근거 최대 3개")
 
 - [x] skills/workflow-orchestrator/decision-flow.md:160 — "**프롬프트 구성:** ... + [정형 형식: 결론 1줄 + 근거 최대 3개] + ..." → 처리: T1/T2/T3 (교체 — 원본) · T3 완료: `[정형 형식: 결론 1줄 + 근거 최대 3개]` → `[생산 규격 펜스 전문 — "--- 생산 규격 ---" 구획 (3부 「검증 규범」 원본 복제 — 정형 형식·출처 의무 포함)]`으로 단일화 (2026-07-16)
-- [ ] skills/brainstorming/SKILL.md:122 — "**블라인드 라운드:** 정형 형식 — 결론 1줄 + 근거 최대 3개. 취합·센티널·순서 회전은 decision-flow §7 「블라인드 라운드 공통 절차」가 원본이다." → 처리: T4 (교체)
-- [ ] skills/brainstorming/references/templates.md:419 — "이 도메인 관점의 독립 의견을 정형 형식으로 반환하라: 결론 1줄 + 근거 최대 3개 (불릿)." (Step C Contrarian 이후, 별도 매칭 — 블라인드 프롬프트 조립 지점) → 처리: T4 (교체, Step 2 grep으로도 잡히나 D 계열 확정 목록에 함께 등재)
+- [x] skills/brainstorming/SKILL.md:122 — "**블라인드 라운드:** 정형 형식 — 결론 1줄 + 근거 최대 3개. 취합·센티널·순서 회전은 decision-flow §7 「블라인드 라운드 공통 절차」가 원본이다." → 처리: T4 (교체) · T4 완료: "**모든 라운드:** 생산 규격(decision-flow.md 「검증 규범」 펜스) 적용 — 본체는 원문 나열 + 검증 주석."로 교체(취합·센티널·순서 회전 트레일러는 내부 상호참조로 무수정 보존), 이어지는 "대화형 라운드" 문장 첫 부분도 "정형은 생산 규격을 따르되 새 기여 요소 규칙은 유지:"로 교체 (2026-07-16)
+- [x] skills/brainstorming/references/templates.md:419 — "이 도메인 관점의 독립 의견을 정형 형식으로 반환하라: 결론 1줄 + 근거 최대 3개 (불릿)." (Step C Contrarian 이후, 별도 매칭 — 블라인드 프롬프트 조립 지점) → 처리: T4 (교체, Step 2 grep으로도 잡히나 D 계열 확정 목록에 함께 등재) · T4 완료: "--- 지시 ---" 앞에 "--- 생산 규격 ---" 구획을 신설해 `[생산 규격 펜스 전문 — "--- 생산 규격 ---" 구획 (decision-flow.md 3부 「검증 규범」 원본 복제)]` 포인터를 삽입하고, 지시문을 "이 도메인 관점의 독립 의견을 위 생산 규격에 따라 반환하라."로 교체 (2026-07-16)
 
 ## E. 구 스켈레톤(배경 1~2문장) 서술
 
@@ -39,13 +39,13 @@ grep 6종(Step 1) + 의미 미러 수동 검토(Step 2) 결과. 항목 형식: `
 - [ ] skills/workflow-orchestrator/SKILL.md:363-380 — "### 결정 요청 폴백 형식 (decision-flow.md Read 실패 시) ... 📌 결정 요청 : [결정명] / **배경:** [1-2문장 — 왜 묻는지/무엇이 문제인지] / 1. [선택지]..." (Input Format Rules 폴백 스켈레톤) → 처리: T5 (교체)
 - [ ] skills/workflow-orchestrator/bootstrap.md:32 — "결정 요청 형식 상세는 `[플러그인 루트]/skills/workflow-orchestrator/decision-flow.md`를 Read하여 따른다 (폴백: `📌 결정 요청 : [제목]` + 번호 선택지(결과 1줄 병기) + `💡 추천` 줄 · 헤더 `📋 확정 N/M` · 자가 응답 금지)" → 처리: T5 (교체 — 압축형 폴백, 세션 부트스트랩 훅 산출물이라 별도 확인 필요)
 - [ ] README.md:476 — "워크플로우 진행 중 결정할 사항이 생기면 dev-workflow가 사용자에게 질문합니다. 기본은 **한 번에 하나씩** 묻는 방식이고..." (결정 요청 서술 — 서사형, 리터럴 스켈레톤 미노출) → 처리: T7 (교체 — 구 형식 서술이면 신 형식으로, 아니면 유지 사유 기록)
-- [ ] skills/brainstorming/SKILL.md:40-48 — "**추천이 명확한 경우:** 📌 결정 요청 : 카테고리 확정 / **배경:** 이 기능의 설계 문서가 저장될 분류 폴더입니다... / 1. Yes — 고르면: ... / 2. No — 고르면: ..." (국면 0 카테고리 결정 실사용 예) → 처리: T4 (교체)
+- [x] skills/brainstorming/SKILL.md:40-48 — "**추천이 명확한 경우:** 📌 결정 요청 : 카테고리 확정 / **배경:** 이 기능의 설계 문서가 저장될 분류 폴더입니다... / 1. Yes — 고르면: ... / 2. No — 고르면: ..." (국면 0 카테고리 결정 실사용 예) → 처리: T4 (교체 지정이었으나 T4 검토 결과 유지) · T4 확정: 유지 (로컬 템플릿 — 등급 규칙상 기존 유지 지정, decision-flow.md §8 「로컬 템플릿 우선」의 "국면 0 카테고리 확정 → 로컬 템플릿 유지" 경계 예시와 일치) (2026-07-16)
 
 ## F. Step 2 의미 미러 (grep이 못 잡은 것)
 
-- [ ] skills/brainstorming/SKILL.md:202-207 — "서브에이전트 결과를 **통합 정제**하여 사용자에게 제시한다: 1. 모든 서브에이전트의 질문을 수집한다 2. 의미가 겹치는 질문을 병합한다(출처 페르소나를 태그로 보존) 3. 주제별로 그룹핑하고 번호를 매긴다 4. 각 질문에 응답 힌트를 추가한다" (Step A 인터뷰 — 서브에이전트 산출 질문 취합) → 처리: T4 (교체)
-- [ ] skills/brainstorming/references/templates.md:32 — "**배경/힌트:** [이 관점에서 왜 묻는지 1줄]" (Step A-0 Ontologist 출력 형식) → 처리: T4 (교체 — decision-flow.md §3 스켈레톤의 국지적 사본, SSOT 변경 시 동반 갱신)
-- [ ] skills/brainstorming/references/templates.md:69 — "**배경/힌트:** [답변 시 고려할 관점 1줄 — 초심자 언어]" (Step A Socratic 출력 형식) → 처리: T4 (교체 — 동일 사유)
+- [x] skills/brainstorming/SKILL.md:202-207 — "서브에이전트 결과를 **통합 정제**하여 사용자에게 제시한다: 1. 모든 서브에이전트의 질문을 수집한다 2. 의미가 겹치는 질문을 병합한다(출처 페르소나를 태그로 보존) 3. 주제별로 그룹핑하고 번호를 매긴다 4. 각 질문에 응답 힌트를 추가한다" (Step A 인터뷰 — 서브에이전트 산출 질문 취합) → 처리: T4 (교체 지정이었으나 T4 검토 결과 유지) · T4 확정: **유지** — 범위 상이. 이 절차는 Step A "질문"(2부 「질문 규칙」 트랙 — 답이 결정으로 기록되지 않음) 다건을 취합하는 것이며, 원문 전달 원칙(decision-flow.md §7)이 규율하는 "페르소나 발언(의견·비판·대안, [✔]/[추측] 검증 태그 대상)"이 아니다. 병합 시 출처 페르소나 태그를 이미 보존하고 있어 grounded 원칙과 배치되지 않는다 — G섹션 design-summary류 "범위 상이" 판정과 동일 패턴. **판단 근거가 브리프에 명시되지 않아 오케스트레이터 재검토 권장** (2026-07-16)
+- [x] skills/brainstorming/references/templates.md:32 — "**배경/힌트:** [이 관점에서 왜 묻는지 1줄]" (Step A-0 Ontologist 출력 형식) → 처리: T4 (교체 지정이었으나 T4 검토 결과 유지) · T4 확정: 유지 (질문 트랙은 4요소 대상 아님 — decision-flow.md 「질문형」 스켈레톤이 배경/힌트 1줄 형식을 그대로 지정하며, 4요소 확장은 결정 트랙 전용) (2026-07-16)
+- [x] skills/brainstorming/references/templates.md:69 — "**배경/힌트:** [답변 시 고려할 관점 1줄 — 초심자 언어]" (Step A Socratic 출력 형식) → 처리: T4 (교체 지정이었으나 T4 검토 결과 유지) · T4 확정: 유지 (질문 트랙은 4요소 대상 아님 — 동일 사유) (2026-07-16)
 
 ---
 
