@@ -1,7 +1,7 @@
 ---
 feature: grounded-output
 category: dev-workflow
-status: ready-for-plan
+status: complete
 created: 2026-07-16
 last-updated: 2026-07-16
 dependencies:
@@ -87,6 +87,7 @@ affects:
 | 적용 범위 | decision-flow 원본 편입 | 기존 적용 경계 자동 상속 | 별도 범위 조항 / 단계 도입 | 새 충돌면 / 구·신 형식 이원화 |
 | 형식 검사 훅 | 미도입 (필요 시 릴리스 시점 검사) | 교정형=지연+굿하트, 로그형=기존 결론 충돌 | 교정형 / 관측 전용 훅 | 상동 |
 | 관측·환류 | 소비자 로컬 루프 + 수동 제보 | 자동 회수 통로 없음 (로컬 마켓플레이스·단일 관리자) | 관리자 도그푸딩 한정 / 자동 수집 | 소비자 로컬 가치 포기 / 통로 부재·기존 결론 충돌 |
+| 생산 규격 적용 경로 (구현 중 확정) | 의견·비판·판정 프롬프트 3곳 한정 | "모든 프롬프트" 포괄 시 질문 생성과 정형 충돌 (최종 리뷰 지적) | 전 프롬프트 일괄 적용 | 질문 산출과 "결론 1줄" 정형 양립 불가 |
 
 ## 7. 제약조건과 가정
 
@@ -111,7 +112,15 @@ affects:
 
 ## 9. 구현 결과 및 일탈 사항
 
-> 구현 완료 후 작성
+**구현 완료 (2026-07-16, 커밋 범위 80e5f1b..4739eaf 이후 취합):** REQ-001~007·009~011 전부 반영 — decision-flow.md(4요소 스켈레톤·출신 등급·검증 규범·생산 규격 펜스·원문 전달 원칙·상태 보존 3항목), references/grounding.md 신규, brainstorming(Contrarian 래퍼 교체·전달 블록 2곳·절 기호 3곳), plan-stage·orchestrator·bootstrap·context-handling 동기화, README 현행화. 검증: 스윕 인벤토리 26히트 검산 소진, 훅 테스트 8/8, 최종 리뷰 Ready-Yes, Evaluator AC 6/6 PASS.
+
+**일탈 사항 (전부 개선 방향 일탈):**
+- 발언 제시 방식이 계획 확정 전 재논의로 변경됨 — "본체 압축 고쳐 쓰기" → "생산 규격+원문 나열+본체 주석" (사용자 발의, 뭉개짐 실사고 근거)
+- plan의 생산 규격 도입문("모든 페르소나 프롬프트")이 과대 포괄 — 최종 리뷰 지적으로 적용 경로 3곳 한정 명시로 보정 (질문 생성 프롬프트 제외)
+- plan T0의 절 기호 grep 스코프 협소 — plan 범위 밖 파일 2곳(completion-protocol·orchestrator 본문)의 사용자 대면 § 리터럴을 최종 리뷰가 적발, 브랜치 내 수정 (교훈 기록: 스윕 스코프는 규범 적용 표면 전체)
+- plan-stage 판정 프롬프트의 로컬 정형·생산 규격 우선순위 1줄 추가 (이중 지시 해소)
+- 계획 밖 이슈 1건 해소: completion-nudge가 에이전트 완료 알림에 오탐 (세션 중 12회 실측) → task-notification 필터 + 회귀 테스트 케이스 7
+- 잔여 후속 (다음 릴리스): REQ-008 소비자 피드백 루프(분리 확정), 생산 규격 포인터 문구 통일·templates 자기중복 표기(Minor), Hacker 프롬프트 생산 규격 펜스 추가 여부(관측 후)
 
 ## 10. 변경 이력
 
@@ -120,3 +129,4 @@ affects:
 | 2026-07-16 | 최초 작성 (브레인스토밍 국면 1~4 완료, 버전 목표 MINOR) | decision-flow.md·brainstorming·plan-stage·orchestrator·commands | ready-for-plan |
 | 2026-07-16 | PLAN 재협의: REQ-008 후속 MINOR 분리 · 영향 목록에 context-handling 추가 (HANDOFF 서식 미러) | 구현 범위·영향 목록 | ready-for-plan |
 | 2026-07-16 | 이슈 001 해소: completion-nudge가 에이전트 완료 알림에 오탐 → 하네스 주입 블록(task-notification) 필터 추가 + 회귀 테스트 케이스 7 (세션 중 12회 오탐 실측) | hooks/completion-nudge·tests | 해소 |
+| 2026-07-16 | 개발 완료 — 문서 통합 (진입: 자연어 감지) | 전체 | 완료 |
