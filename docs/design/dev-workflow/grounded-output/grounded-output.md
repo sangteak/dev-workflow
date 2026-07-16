@@ -119,3 +119,4 @@ affects:
 |------|-----------|-----------|------|
 | 2026-07-16 | 최초 작성 (브레인스토밍 국면 1~4 완료, 버전 목표 MINOR) | decision-flow.md·brainstorming·plan-stage·orchestrator·commands | ready-for-plan |
 | 2026-07-16 | PLAN 재협의: REQ-008 후속 MINOR 분리 · 영향 목록에 context-handling 추가 (HANDOFF 서식 미러) | 구현 범위·영향 목록 | ready-for-plan |
+| 2026-07-16 | 이슈 001 해소: completion-nudge가 에이전트 완료 알림에 오탐 → 하네스 주입 블록(task-notification) 필터 추가 + 회귀 테스트 케이스 7 (세션 중 12회 오탐 실측) | hooks/completion-nudge·tests | 해소 |

@@ -36,5 +36,7 @@ check "4.영어 wrap up" "FIRE" "$(fire "$TMP/projA" "lets wrap up this feature"
 check "5.어휘 밖 미탐" "SILENT" "$(fire "$TMP/projA" "오늘은 여기까지 하고 넘어가자")"
 # 6. _archive만 잔존 → 침묵
 check "6.archive 제외" "SILENT" "$(fire "$TMP/projC" "마무리하자")"
+# 7. 잔존 O + 에이전트 완료 알림(하네스 주입) → 침묵 (사용자 발화 아님 — 이슈 카드 001)
+check "7.알림 오탐 차단" "SILENT" "$(fire "$TMP/projA" "<task-notification>Agent finished 완료</task-notification>")"
 
 echo "PASS=$PASS FAIL=$FAIL"; [ "$FAIL" -eq 0 ]
