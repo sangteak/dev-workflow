@@ -82,15 +82,17 @@ T0의 grep 6종을 워크트리 현재 상태(T5 완료 후)에 재실행하고,
 
 ### 재-grep 결과 요약
 
-- 총 히트 26건 (6개 패턴 누적, 파일:행 중복 없음 기준)
-- **교체 확인 (완료된 신규 문면):** 15건 — A 섹션(decision-flow.md:129·151·153·155·292 — 149-153 원본 교체 범위 + 파생 신설 절), B 섹션(templates.md:207·234, plan-stage/SKILL.md:96), D 섹션(brainstorming/SKILL.md:122), E 섹션(brainstorming/SKILL.md:44, decision-flow.md:262 — 질문형/로컬 템플릿 유지 스켈레톤), C 계열 § 상호참조(brainstorming/SKILL.md:77·122·373)
-- **화이트리스트 확인 (G 섹션 유지 판정):** 6건 히트 — context-handling/SKILL.md:257(구 253, 재구성 미러 재배치)·decision-flow.md:129·design-summary/SKILL.md:8/76/103·merge-to-domain/SKILL.md:60 (agent-roles 2건은 grep 무매치이나 G 섹션 유지 판정에 포함되어 화이트리스트 8건 전부 확인)
+- 재grep 총 26히트 (패턴 누적 — 유니크 파일:행 22곳)
+- **교체 확인 (완료된 신규 문면):** 15건 — A 섹션(decision-flow.md:151·153·155·292 — 149-153 원본 교체 범위 + 파생 신설 절), B 섹션(templates.md:207·234, plan-stage/SKILL.md:96), D 섹션(brainstorming/SKILL.md:122), E 섹션(brainstorming/SKILL.md:44, decision-flow.md:262 — 질문형/로컬 템플릿 유지 스켈레톤), C 계열 § 상호참조(brainstorming/SKILL.md:77·122·373)
+- **화이트리스트 확인 (G 섹션 유지 판정):** 9건 히트 — context-handling/SKILL.md:82·88(§ HTML 주석)·257(§ 내부 참조)·decision-flow.md:129·design-summary/SKILL.md:8/76/103·merge-to-domain/SKILL.md:60 (agent-roles 2건은 grep 무매치이나 G 섹션 유지 판정에 포함되어 총 화이트리스트 11건 확인)
 - **신규 발견 (인벤토리·화이트리스트 어디에도 명시적으로 없음):** 2건 — 아래 상세, **둘 다 수정 불요 판단**(조치는 컨트롤러 확인 후)
 
 1. `skills/workflow-orchestrator/decision-flow.md:165` — "**취합:** 발언 원문을 그대로 나열한다 — 본체 재요약 금지..." (「블라인드 라운드 공통 절차」 섹션, T0 이전부터 존재하던 원본 문장). T0 grep-3(`원문 그대로`)가 decision-flow.md에서 "2건"으로 집계했으나(T0 리포트), 인벤토리 A-11 행은 149-153 범위만 명시해 153행만 흡수하고 이 165행(구 163행)은 별도 행 없이 누락됐다. **판단:** 이 문장은 애초에 구 안티패턴이 아니라 블라인드 라운드의 기존 정상 동작(T3가 전 라운드로 일반화한 원칙의 원형)이라 교체 대상이 아니었음 — 조치 불요, 인벤토리 문서화 누락(무해)으로 기록.
 2. `skills/context-handling/SKILL.md:285` — "결정 흐름이 활성이면 \"결정 흐름 상태\" 섹션 갱신 (재논의 대기열은 항목 전문 기록 — decision-flow.md §6)" (HANDOFF 저장(save) 시 불릿, T0 이전부터 존재). G 섹션이 명시한 context-handling:253(구, 현 257) 유지 판정과 **동일 성격**(스킬 간 내부 상호참조 §6, 사용자 대면 아님)이나 별도 행으로 등재되지 않았다. **판단:** 253행과 동일 사유로 유지 대상 — 조치 불요, 화이트리스트 문구를 "context-handling:253·285(동일 사유)"로 확장 기록 권고.
 
 기타 관찰(조치 불요, 참고용): A-11 신규 문면(decision-flow.md:153) 자체에 "② 결정 요청 재구성"이라는 라벨이 포함되어 grep-1(`재구성`)에서 재적중한다 — task-3-brief.md 19행 verbatim 지시분이며 T3 리포트가 이미 Concerns로 자진 고지(2026-07-16, bb367b1). B 섹션 교체문이 "결정 박스로 별도 조립" 표현으로 "재구성" 단어를 회피한 것과 다른 어휘 선택이나, 별도 조치 대상은 아님(plan-mandated).
+
+검산: 교체 확인 15 + 화이트리스트 9 + 신규 발견 2 = 26히트 — 대조표(리포트) 22곳과 유니크 기준 일치.
 
 **소진 판정: 잔존 발견 0건 (미소명 잔존 없음).** 위 2건은 "발견되지 않은 교체 대상"이 아니라 "인벤토리 문서화가 누락된, 이미 화이트리스트 취지에 부합하는 무해 항목"이다.
 
