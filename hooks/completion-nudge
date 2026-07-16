@@ -16,6 +16,10 @@ else
 fi
 [ -z "$prompt" ] && exit 0
 
+# 하네스 주입 블록 제외 — 백그라운드 에이전트 완료 알림(<task-notification>)은 사용자 발화가 아니다.
+# 알림 본문의 "finished/완료"가 어휘에 상시 매칭되는 오탐 차단 (이슈 카드 001, grounded-output)
+case "$prompt" in *"<task-notification>"*) exit 0;; esac
+
 # 어휘 미러 — SSOT: skills/workflow-orchestrator/SKILL.md 「마무리 트리거 감지」의 completion-vocab 라인.
 # 변경 시 양쪽 동시 수정 (tests/hooks/test-completion-nudge.sh 케이스 0번이 diff 검증)
 FINISH_WORDS='마무리|완료|정리해|끝내자|wrap up|finish|finalize|done'
