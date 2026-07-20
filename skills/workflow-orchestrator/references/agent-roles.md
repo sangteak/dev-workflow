@@ -1,4 +1,4 @@
-> Ouroboros 0.39.0 `agents/*.md` verbatim 내장본 (v1.16.0, REQ-005). 문장 수정 금지 — 갱신은 Ouroboros 메이저 업데이트 인지 시 수동 1회 대조. 블록 구분 헤딩만 본 파일이 추가한 것이다.
+> Ouroboros 0.50.5 `agents/*.md` verbatim 내장본 (v1.16.0 도입, REQ-005 — 2026-07-20 0.50.5와 대조, 내용 동일 확인). 문장 수정 금지 — 갱신은 Ouroboros 메이저 업데이트 인지 시 수동 1회 대조. 블록 구분 헤딩만 본 파일이 추가한 것이다.
 
 ## 「Evaluator」
 
