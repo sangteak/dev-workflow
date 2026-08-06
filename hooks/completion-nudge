@@ -25,7 +25,10 @@ case "$prompt" in *"<task-notification>"*) exit 0;; esac
 FINISH_WORDS='마무리|완료|정리해|끝내자|wrap up|finish|finalize|done'
 printf '%s' "$prompt" | grep -qiE "$FINISH_WORDS" || exit 0
 
-remnants=$("${SCRIPT_DIR}/lib/detect-remnants" "$PROJECT_ROOT" HANDOFF.md plan.md)
+# v1.22.0(intake-routing): HANDOFF는 국면 완료로 삭제되지 않고 워크플로우 내내 산다
+# (context-handling/SKILL.md 「주의 사항」). 따라서 HANDOFF 단독 존재는 "마무리할 작업"의
+# 근거가 되지 못한다 — 태스크 목록(plan.md)이 있을 때만 마무리 대상으로 본다.
+remnants=$("${SCRIPT_DIR}/lib/detect-remnants" "$PROJECT_ROOT" plan.md)
 [ -z "$remnants" ] && exit 0
 
 features=$(printf '%s\n' "$remnants" | sed 's|.*/docs/design/||; s|/[^/]*$||' | sort -u | paste -sd ', ' -)

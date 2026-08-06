@@ -18,6 +18,8 @@ fire() { # $1=프로젝트루트 $2=프롬프트 → 발동 시 "FIRE", 침묵 �
 mkdir -p "$TMP/projA/docs/design/cat/feat" "$TMP/projB/docs/design/cat/feat" "$TMP/projC/docs/design/cat/_archive/old"
 echo p > "$TMP/projA/docs/design/cat/feat/plan.md"
 echo h > "$TMP/projC/docs/design/cat/_archive/old/HANDOFF.md"
+mkdir -p "$TMP/projD/docs/design/cat/feat"
+printf -- '---\nfeature: feat\naction: defect\ncurrent-phase: "Phase 1 탐색"\n---\n' > "$TMP/projD/docs/design/cat/feat/HANDOFF.md"
 
 echo "[completion-nudge]"
 # 0. 어휘 SSOT diff: SKILL.md의 completion-vocab 라인과 훅의 FINISH_WORDS 일치
@@ -38,5 +40,9 @@ check "5.어휘 밖 미탐" "SILENT" "$(fire "$TMP/projA" "오늘은 여기까�
 check "6.archive 제외" "SILENT" "$(fire "$TMP/projC" "마무리하자")"
 # 7. 잔존 O + 에이전트 완료 알림(하네스 주입) → 침묵 (사용자 발화 아님 — 이슈 카드 001)
 check "7.알림 오탐 차단" "SILENT" "$(fire "$TMP/projA" "<task-notification>Agent finished 완료</task-notification>")"
+# 8. 브레인스토밍 진행 중(HANDOFF만 있고 plan.md 없음) + 마무리 발화 → 침묵
+#    (intake-routing v1.22.0: HANDOFF가 국면 완료로 삭제되지 않게 바뀌어 상시 존재하므로,
+#     HANDOFF 단독 잔존은 "마무리할 작업"의 근거가 되지 못한다)
+check "8.HANDOFF 단독 침묵" "SILENT" "$(fire "$TMP/projD" "이제 마무리하자")"
 
 echo "PASS=$PASS FAIL=$FAIL"; [ "$FAIL" -eq 0 ]
