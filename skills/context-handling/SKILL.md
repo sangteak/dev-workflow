@@ -258,7 +258,8 @@ no-git-mode: 기존 확인 게이트 유지
 1. 완료된 phase 파일들을 로드한다
 2. HANDOFF.md의 진행 내용을 기반으로 중단 지점부터 이어서 진행한다
 3. HANDOFF에 "결정 흐름 상태" 섹션이 있으면: 한 줄 헤더(N/M/K)·미확정 잔여 순서·재논의 대기열을 원장 값으로 복원하고 `[>] 진행 중` 항목부터 결정 흐름을 재개한다. 대기열 내용을 기억으로 재구성하지 않는다 (decision-flow.md §6)
-4. 국면 완료 → 해당 `phase*.md` 생성 → `HANDOFF.md` 삭제 (역할 완료)
+4. 국면 완료 → 해당 `phase*.md` 생성 → `HANDOFF.md`는 **유지한다** (진행 중 갈래 값의 임시 정본이므로). `current-phase`를 다음 국면으로 갱신한다
+   - 삭제 시점은 **워크플로우 종료 시 한 번뿐**이다 — Completion Protocol의 중간 산출물 정리에서 `seed.yaml`과 함께 지운다
 
 ### HANDOFF 없는 경우
 
@@ -291,7 +292,7 @@ no-git-mode: 기존 확인 게이트 유지
 
 ## 주의 사항
 
-- HANDOFF.md는 임시 파일이다. 국면 완료 시 반드시 삭제한다 (또는 개발 완료 시 _archive/로 이동)
+- HANDOFF.md는 워크플로우가 끝날 때까지 사는 파일이다. **국면 완료로 삭제하지 않는다** — 진행 중 갈래 값(`action:`)의 임시 정본이기 때문이다 (원본 규정: `[플러그인 루트]/skills/workflow-orchestrator/references/actions.md` 「정본 규정」). 삭제는 Completion Protocol의 중간 산출물 정리 한 곳에서만 일어난다 (또는 방향 전환 시 `_archive/`로 이동)
 - 여러 기능의 HANDOFF.md가 동시에 존재할 수 있다 (멀티세션 지원)
 - phase*.md가 생성된 국면은 HANDOFF.md 없이도 복구 가능하므로
   HANDOFF.md는 현재 진행 중인 국면 정보만 담는다
