@@ -19,9 +19,11 @@ You have a structured development workflow (dev-workflow plugin).
 |---|---|---|
 | BRAINSTORM | 브레인스토밍·아이디어·방향 탐색 | brainstorming 스킬 (페르소나 사용) |
 | PLAN | 계획·설계, `[기능명].md` 존재 + plan.md 없음 | plan-stage 스킬 (페르소나 사용) |
-| DEVELOP | 구현·개발, plan.md 존재 | Superpowers subagent-driven-development |
+| DEVELOP | 구현·개발, plan.md 존재 | `actions.md` 갈래 블록의 「넘길 곳」 (폴백: Superpowers subagent-driven-development) |
 | REVIEW | 리뷰·검토·QA | Superpowers requesting-code-review + Evaluator QA |
 | COMPLETION | 마무리·완료·wrap up, /dev-workflow:finish | Completion Protocol (문서 취합 → 커밋 제안) |
+
+> 갈래(`action:`)에 따라 각 단계의 깊이와 위임 목적지가 다르다. 어느 칸을 채워야 하는지는 `[플러그인 루트]/skills/workflow-orchestrator/references/actions.md`의 갈래 블록이 정한다.
 
 ## 세션 불변식 (워크플로우 단계 진행 중 항상 적용)
 
