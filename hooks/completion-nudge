@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # UserPromptSubmit hook — 조건부 정밀 주입 (completion-trigger REQ-001)
-# 발동: 미완료 잔존(plan.md/HANDOFF.md, _archive 제외) ∧ 마무리 어휘.
+# 발동: 미완료 잔존(plan.md, _archive 제외) ∧ 마무리 어휘.
 # 미충족 시 빈 출력. 항상 exit 0 (차단 금지 — deny형 개입 배제 독트린).
 set -u
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"

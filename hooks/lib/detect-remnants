@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 공용 잔존 감지 — 소비자: session-start(3종 집합), completion-nudge(2종 집합)
+# 공용 잔존 감지 — 소비자: session-start(3종 집합), completion-nudge(1종 집합)
 # 사용: detect-remnants <PROJECT_ROOT> <파일명1> [파일명2...]
 # 출력: 매칭 경로 목록 (_archive 제외, 최대 5건). 항상 exit 0.
 set -u
