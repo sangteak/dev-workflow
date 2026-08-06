@@ -106,6 +106,9 @@ Feasibility Assessment 시작 전, Architect 에이전트를 서브에이전트�
 --- 에이전트 역할 정의 ---
 [본 스킬 references/agent-roles.md 「Architect」 블록 전문]
 
+--- 행동 블록 ---
+[workflow-orchestrator/references/actions.md의 현재 action: 값에 해당하는 블록 전문 — Read 실패 시 최소 요건: 갈래 이름 + 종료 조건 + 넘길 곳]
+
 --- 프로젝트 규칙 ---
 [rules-injection 결과: applies-to: plan 매칭 규칙 본문 — `all` 규칙은 SessionStart에서만 노출되므로 단계별 첨부에는 제외됨]
 
@@ -174,6 +177,9 @@ RENEGOTIATE 또는 CAUTION 항목이 있을 때, 사용자에게 선택지를 �
 
 --- 에이전트 역할 정의 ---
 [본 스킬 references/agent-roles.md 「Researcher」 블록 전문]
+
+--- 행동 블록 ---
+[workflow-orchestrator/references/actions.md의 현재 action: 값에 해당하는 블록 전문 — Read 실패 시 최소 요건: 갈래 이름 + 종료 조건 + 넘길 곳]
 
 --- 언어 규범 ---
 [decision-flow.md 3부 「언어 규범」 펜스 전문 — 공통 조립 규칙 참조]
