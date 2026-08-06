@@ -51,6 +51,7 @@ workflow-orchestrator의 Session Start Protocol '경량 상시 1. 작업 상태 
 ---
 feature: [기능명]
 category: [카테고리명]
+action: new-feature
 current-phase: "[Phase N 단계명]"
 last-updated: [YYYY-MM-DD]
 is-issue: false
@@ -111,6 +112,8 @@ parent-feature: ""
 2. [phase 파일들]을 로드한다
 3. [국면명] [구체적 지점]부터 이어서 시작한다
 ```
+
+> `action:` — 작업 갈래. 설계 문서가 아직 없는 구간에서는 이 칸이 **임시 정본**이다 (원본 규정: `[플러그인 루트]/skills/workflow-orchestrator/references/actions.md` 「정본 규정」). 값이 없으면 `new-feature`로 읽는다.
 
 **issues/ 내 HANDOFF 생성 시 (구형 이슈 디렉토리 전용 — 신형 카드는 HANDOFF를 사용하지 않는다):**
 - `is-issue: true` 로 설정

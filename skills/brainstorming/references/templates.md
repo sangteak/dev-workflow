@@ -133,6 +133,8 @@
 **시드 YAML 형식** (templates/seed.yaml 참조):
 
 ```yaml
+# 갈래 (사본 — 정본은 [기능명].md 앞머리. actions.md 「정본 규정」 참조)
+action: new-feature
 goal: "[핵심 목표 1문장]"
 constraints:
   - "[제약조건]"
@@ -322,6 +324,7 @@ YAGNI 원칙을 적용하여:
 ---
 feature: [기능명]
 category: [카테고리명]
+action: new-feature        # new-feature | spec-change | refactor | defect — 정본 (actions.md 「정본 규정」)
 status: ready-for-plan
 created: [날짜]
 last-updated: [날짜]
