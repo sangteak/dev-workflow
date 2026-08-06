@@ -298,6 +298,7 @@ Seed-Architect 에이전트를 서브에이전트로 실행하여 시드를 생�
 
 **전환 확정 시 즉시:**
 `docs/design/[카테고리]/[기능명]/phase1_exploration.md` 생성 — 이후 절대 수정하지 않는다.
+동시에 `HANDOFF.md`의 `current-phase`를 다음 국면으로 갱신한다 (원본 규정: context-handling 「주의 사항」).
 
 포함 내용:
 - 탐색된 요구사항 전체 목록 (확정/미확정 구분 없이 언급된 모든 것)
@@ -353,6 +354,7 @@ Simplifier 에이전트를 서브에이전트로 1회 실행한다:
 
 **전환 확정 시 즉시:**
 `docs/design/[카테고리]/[기능명]/phase2_discovery.md` 생성 — 이후 절대 수정하지 않는다.
+동시에 `HANDOFF.md`의 `current-phase`를 다음 국면으로 갱신한다 (원본 규정: context-handling 「주의 사항」).
 
 포함 내용:
 - 국면 2에서 새로 발견된 미정의 영역 목록
@@ -386,6 +388,7 @@ Simplifier 에이전트를 서브에이전트로 1회 실행한다:
 
 **전환 확정 시 즉시:**
 `docs/design/[카테고리]/[기능명]/phase3_validation.md` 생성 — 이후 절대 수정하지 않는다.
+동시에 `HANDOFF.md`의 `current-phase`를 다음 국면으로 갱신한다 (원본 규정: context-handling 「주의 사항」).
 
 포함 내용:
 - TD가 검토한 각 요구사항별 판단 결과 및 리스크 수준

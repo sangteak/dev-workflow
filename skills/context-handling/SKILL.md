@@ -150,7 +150,7 @@ Session Start Protocol에서 invoke 시, 아래 절차를 실행한다.
    - `[해소된 경로]/**/issues/[NNN]-*.md` (이슈 카드 — 3자리 숫자 접두 파일)
 3. 디렉토리별로 그룹핑한 뒤, 아래 우선순위로 상태를 판정한다:
    1) `status: complete` → 완료, 목록에서 제외. HANDOFF.md가 잔존하면 잔존 목록에 추가한다
-   2) HANDOFF.md 있음 → `current-phase` 값을 라벨로 사용
+   2) HANDOFF.md 있음 → `current-phase` 값을 라벨로 사용. **단 3)~5)의 조건이 더 앞선 단계를 가리키면 그쪽이 이긴다** — HANDOFF는 파일이 말해 주지 못하는 것(진행 중 국면의 세부, 갈래 값)만 담당한다
    3) `plan.md` 존재 + `status` ≠ `complete` → 라벨: `DEVELOP 진행 중`
    4) `[기능명].md` 존재 + `status: ready-for-plan` → 라벨: `PLAN 대기`
    5) `phase*.md`만 존재 → 가장 높은 phase 번호 + `완료` (예: `Phase 2 완료`)
@@ -294,8 +294,7 @@ no-git-mode: 기존 확인 게이트 유지
 
 - HANDOFF.md는 워크플로우가 끝날 때까지 사는 파일이다. **국면 완료로 삭제하지 않는다** — 진행 중 갈래 값(`action:`)의 임시 정본이기 때문이다 (원본 규정: `[플러그인 루트]/skills/workflow-orchestrator/references/actions.md` 「정본 규정」). 삭제는 Completion Protocol의 중간 산출물 정리 한 곳에서만 일어난다 (또는 방향 전환 시 `_archive/`로 이동)
 - 여러 기능의 HANDOFF.md가 동시에 존재할 수 있다 (멀티세션 지원)
-- phase*.md가 생성된 국면은 HANDOFF.md 없이도 복구 가능하므로
-  HANDOFF.md는 현재 진행 중인 국면 정보만 담는다
+- HANDOFF.md는 현재 진행 중인 국면 정보와 갈래 값(`action:`)을 담는다. **국면이 바뀌면 `current-phase`를 갱신한다** — 갱신을 빠뜨리면 낡은 값이 재개 목록에 그대로 뜬다 (판정 규칙 2)가 3)~5)에 지도록 되어 있는 것은 그때의 안전망이다)
 - issues/ 내 HANDOFF는 is-issue: true, parent-feature에 부모 기능명을 기록한다 (구형 이슈 디렉토리 전용 — 신형 카드는 HANDOFF를 사용하지 않는다)
 
 ---
