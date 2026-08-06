@@ -309,6 +309,8 @@ DEVELOP 완료 후 마무리 시퀀스를 관리한다. 커밋·푸시는 반드
 
 `completion-vocab: 마무리|완료|정리해|끝내자|wrap up|finish|finalize|done`
 
+`intake-vocab: 버그|버그가|에러|오류|안 나와|안나와|안 떠|재현|리팩터링|리팩토링|고쳐줘|문제 확인`
+
 - 위 어휘가 세션 전체 작업의 마무리 의도로 발화되면 시퀀스를 시작한다 (특정 코드·파일에 대한 정리 요청은 해당 없음)
 - `<completion-signal>` 주입(completion-nudge 훅)이 보이면 같은 판정을 즉시 수행한다
 - `/dev-workflow:finish` 호출은 감지를 생략하고 시퀀스로 직행한다 (호출=선언)
