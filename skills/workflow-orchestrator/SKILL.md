@@ -81,13 +81,15 @@ orchestrator 최초 invoke 시(세션 시작 또는 대화 중 워크플로우 �
 - 태스크 목록 존재 (Superpowers `writing-plans` 산출물) — 갈래와 무관하게 PLAN Step 4가 항상 생성한다 (`plan-stage/SKILL.md` Step 4)
 - 사용자 메시지: 구현, implement, 개발, 작성, coding, write
 
-→ **위임 목적지는 갈래가 정한다** (REQ-004 · GOAL-002).
+→ **위임 목적지는 갈래가 정한다** (REQ-016 · GOAL-002).
   `[플러그인 루트]/skills/workflow-orchestrator/references/actions.md`를 Read해 현재 `action:` 값의 블록에서 「넘길 곳」을 읽는다.
   값 해소 순서: `[기능명].md` 앞머리(정본) → `HANDOFF.md` 앞머리(임시 정본) → 없으면 `new-feature` (REQ-007).
   Read에 실패하면 `superpowers:subagent-driven-development`로 폴백한다.
 
   - 「넘길 곳」이 `superpowers:systematic-debugging`인 경우: 그 블록의 **「종료 조건」 다섯 칸을 채운 값 그대로** 호출 프롬프트에 싣는다. 1~3번 칸은 그 스킬 1단계의 입력이므로 다시 물을 것이 없다. 워크트리·태스크 루프 규칙은 적용하지 않는다
-  - 그 외(태스크 목록 실행형): 아래 공통 규칙을 그대로 따른다
+    - 채운 값의 해소 순서: `phase1_exploration.md`의 「종료 조건 충족 내역」 → `[기능명].md` §3 → `HANDOFF.md` 본문. 어느 자리에도 없으면 **개발로 넘기지 말고** 브레인스토밍 Step A(인터뷰)로 되돌아가 채운다
+    - 아래 공통 규칙 중 **1(rules-injection)과 3(마무리 복귀 문구)은 이 경로에도 적용한다** — `target_agent`는 `Implementer` 대신 디버깅 담당으로 바꿔 첨부하고, 디버깅이 끝나면 3번 문구로 마무리 복귀를 안내한다
+  - 그 외(태스크 목록 실행형인 경우): 아래 공통 규칙을 그대로 따른다
 
 → 태스크 목록 실행형 위임 시, VCS 모드에 관계없이 `superpowers:subagent-driven-development` 실행 시 아래 공통 규칙을 컨텍스트로 전달:
   1. **단계 진입 즉시**: invoke `dev-workflow:rules-injection` with:
@@ -102,14 +104,14 @@ orchestrator 최초 invoke 시(세션 시작 또는 대화 중 워크플로우 �
   5. 규범의 의미를 바꾸는 변경(게이트 존폐·독트린 역전·명칭 개명)이 plan에 포함된 경우, 태스크 리뷰·최종 브랜치 리뷰 프롬프트에 검증 항목을 첨부한다: "구 규범 문장 잔존(스테일) 0 확인 — 범위는 skills/ 밖(README·commands·CLAUDE.md)까지" (절차 규범: development-principles 「규범 변경 스윕」)
   6. DEVELOP 중 계획 밖 결함의 처리(카드 선행·태스크 경계·대기열)는 본 스킬 「Issue Lifecycle」 절을 따른다 — 서브에이전트 리포트 수신 시 태스크 범위 밖 발견물은 대기 카드로 적재한다
 
-→ VCS 모드에 따라 분기:
+→ 태스크 목록 실행형 위임 시, VCS 모드에 따라 분기:
 
-**git-mode:**
+**git-mode (태스크 목록 실행형):**
 → Superpowers `subagent-driven-development` 전담 (페르소나 없음 — 단 이슈 카드 관점 1줄 예외 — 「Issue Lifecycle」)
   - `superpowers:using-git-worktrees` 실행 후 `superpowers:subagent-driven-development` 실행
   - 기존 Superpowers 방식 그대로
 
-**no-git-mode:**
+**no-git-mode (태스크 목록 실행형):**
 → Superpowers `subagent-driven-development` 전담 (페르소나 없음 — 단 이슈 카드 관점 1줄 예외 — 「Issue Lifecycle」)
   - DEVELOP 진입 시 안내: "⚙️ no-git-mode — worktree 없이 현재 디렉토리에서 진행합니다"
   - `superpowers:using-git-worktrees` 스킵
@@ -194,11 +196,10 @@ Evaluator 에이전트를 서브에이전트로 실행하여 AC 충족 여부를
 | PLAN | dev-workflow | ✅ 사용 | Architect, Researcher |
 | DEVELOP (태스크 목록 실행형, git-mode) | dev-workflow `rules-injection` → Superpowers `using-git-worktrees` + `subagent-driven-development` | ❌ 없음 (이슈 카드 관점 1줄 예외) | — |
 | DEVELOP (태스크 목록 실행형, no-git-mode) | dev-workflow `rules-injection` → Superpowers `subagent-driven-development` (worktree 스킵) | ❌ 없음 (이슈 카드 관점 1줄 예외) | — |
-| DEVELOP (defect 갈래) | dev-workflow → Superpowers `systematic-debugging` (워크트리·태스크 루프 미적용) | ❌ 없음 | — |
+| DEVELOP (「넘길 곳」이 디버깅인 경우) | dev-workflow → Superpowers `systematic-debugging` (워크트리·태스크 루프 미적용) | ❌ 없음 | — |
 | REVIEW | dev-workflow `rules-injection` (사전+사후) → Superpowers `requesting-code-review` + Evaluator QA | ❌ 없음 | Evaluator |
 | COMPLETION | dev-workflow `rules-injection` → Completion Protocol (작업자 측) + merge-to-domain (관리자 측) | ❌ 없음 | — |
 
-- DEVELOP 위임 목적지는 갈래(`action:`)가 정한다 — 위 세 행은 `references/actions.md` 갈래 블록의 「넘길 곳」을 그대로 반영한 결과다 (상세 분기 로직은 위 Workflow Stage Detection → DEVELOP 절)
 - **검증 버전: Superpowers 6.1.1** — 이후 버전에서 역할 구조가 다르면 의미상 등가 역할(구현 담당 → Implementer 규칙, 태스크 리뷰 담당 → Reviewer 규칙)에 첨부하라
 - Superpowers 스킬이 존재하면 FIRST 실행
 - DEVELOP/REVIEW 충돌 시 → Superpowers 우선
@@ -413,7 +414,7 @@ DEVELOP 완료 후 마무리 시퀀스를 관리한다. 커밋·푸시는 반드
 ## What This Workflow Does NOT Cover
 
 아래는 Superpowers 전담:
-- DEVELOP 단계 구현 및 검토 (subagent-driven-development, defect 갈래는 systematic-debugging)
+- DEVELOP 단계 구현 및 검토 (subagent-driven-development, 「넘길 곳」이 디버깅인 경우는 systematic-debugging)
 - REVIEW 단계 코드 리뷰 (requesting-code-review)
 - TDD (RED/GREEN/REFACTOR)
 - git worktree 관리 (git-mode에서만 Superpowers 전담, no-git-mode에서는 스킵)
