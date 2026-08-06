@@ -17,7 +17,7 @@ fi
 # 하네스 주입 블록 제외 — 백그라운드 에이전트 완료 알림은 사용자 발화가 아니다 (이슈 카드 001과 동일 사유)
 case "$prompt" in *"<task-notification>"*) exit 0;; esac
 
-# 어휘 미러 — SSOT: skills/workflow-orchestrator/SKILL.md 「마무리 트리거 감지」의 intake-vocab 라인.
+# 어휘 미러 — SSOT: skills/workflow-orchestrator/SKILL.md 「착수 트리거 감지」의 intake-vocab 라인.
 # 변경 시 양쪽 동시 수정 (tests/hooks/test-intake-nudge.sh 케이스 0번이 diff 검증)
 INTAKE_WORDS='버그|버그가|에러|오류|안 나와|안나와|안 떠|재현|리팩터링|리팩토링|고쳐줘|문제 확인'
 printf '%s' "$prompt" | grep -qiE "$INTAKE_WORDS" || exit 0
