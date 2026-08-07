@@ -15,7 +15,7 @@
 #   open_questions: 아직 답이 없는 질문. 다음 국면에서 해소 대상.
 #   context: 배경 설명. 왜 지금 이 기능이 필요한가.
 
-action: new-feature
+action: ""    # [기능명].md 앞머리의 action: 값과 같게 (사본)
 goal: ""
 constraints:
   - ""

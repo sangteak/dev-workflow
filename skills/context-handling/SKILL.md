@@ -51,7 +51,7 @@ workflow-orchestrator의 Session Start Protocol '경량 상시 1. 작업 상태 
 ---
 feature: [기능명]
 category: [카테고리명]
-action: new-feature
+action: [성격 승인에서 확정된 값을 적는다 — 설계 문서가 생기기 전까지 이 자리가 임시 정본]
 current-phase: "[Phase N 단계명]"
 last-updated: [YYYY-MM-DD]
 is-issue: false
