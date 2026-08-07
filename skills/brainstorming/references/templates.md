@@ -2,7 +2,7 @@
 
 > **공통 조립 규칙 (REQ-003):** 아래 모든 프롬프트 펜스 조립 시 decision-flow.md 3부 「언어 규범」 펜스 전문을 "--- 언어 규범 ---" 구획으로 그대로 붙여넣는다 (Read 실패 시 최소 요건: 한국어·일상어·용어 즉석 풀이·줄임말 금지·문단 개행).
 > 적용 경로 목록 (검증 기준 — 누락 0): ① Step A-0 Ontologist ② Step A Socratic ③ 미답변 조사 ④ Step B Seed-Architect ⑤ Step C Contrarian ⑥ Step C Hacker ⑦ Simplifier ⑧ 블라인드 라운드 (본 파일) + plan-stage Architect·Researcher·블라인드 판정 (plan-stage SKILL.md).
-> 행동 블록 구획 적용 경로 (검증 기준 — 누락 0): ① brainstorming 성격 승인 화면 ② brainstorming 국면별 종료 조건 ③ workflow-orchestrator 개발 위임 ④ plan-stage Architect ⑤ plan-stage Researcher.
+> 행동 블록 구획 적용 경로 (검증 기준 — 누락 0): ① brainstorming 성격 승인 화면 ② brainstorming 국면별 종료 조건 ③ workflow-orchestrator 개발 위임 (SKILL.md · bootstrap.md) ④ context-handling 세션 재개 라벨 ⑤ plan-stage 하위 에이전트 프롬프트 (Architect · Researcher · Feasibility 판정).
 
 ## 「Step A-0 Ontologist 프롬프트」
 

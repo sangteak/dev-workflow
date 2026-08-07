@@ -5,7 +5,7 @@
 > ① 소비 스킬은 갈래 이름을 나열하지 않는다 — **블록 목록을 순회한다.** 새 갈래 추가가 이 파일에 블록 하나를 더하는 것으로 끝나야 한다.
 > ② **화면 표시 이름은 「설명」 칸의 첫 줄**에서 뽑는다. 별도 칸을 두지 않는다.
 > ③ **「종료 조건」은 기본값과 달라지는 단계만 적는다.** 다섯 단계를 모두 나열하지 않는다 (갈래 넷 × 단계 다섯 = 스무 칸 방지).
-> 적용 경로 목록 (검증 기준 — 누락 0): ① 성격 승인 화면 (brainstorming Step B 직후) ② 국면별 종료 조건 (brainstorming 국면 1~4) ③ 개발 진입 위임 (workflow-orchestrator Stage Detection) ④ 하위 에이전트 프롬프트 `--- 행동 블록 ---` 구획 (plan-stage Architect·Researcher).
+> 적용 경로 목록 (검증 기준 — 누락 0): ① 성격 승인 화면 (brainstorming Step B-1) ② 국면별 종료 조건 (brainstorming 국면 1~4) ③ 개발 진입 위임 (workflow-orchestrator SKILL.md · bootstrap.md 상시 주입본) ④ 세션 재개 라벨 (context-handling 상태 판정) ⑤ 하위 에이전트 프롬프트 `--- 행동 블록 ---` 구획 (plan-stage Architect · Researcher · Feasibility 판정).
 
 > **정본 규정 (REQ-006):** 갈래 값의 **정본은 `[기능명].md` 앞머리의 `action:` 한 줄**이다.
 > `seed.yaml`과 `HANDOFF.md`의 같은 칸은 **사본**이며 마무리에서 함께 삭제된다. 값이 어긋나면 정본을 따른다.
