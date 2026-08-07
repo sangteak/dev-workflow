@@ -2,6 +2,7 @@
 
 > **공통 조립 규칙 (REQ-003):** 아래 모든 프롬프트 펜스 조립 시 decision-flow.md 3부 「언어 규범」 펜스 전문을 "--- 언어 규범 ---" 구획으로 그대로 붙여넣는다 (Read 실패 시 최소 요건: 한국어·일상어·용어 즉석 풀이·줄임말 금지·문단 개행).
 > 적용 경로 목록 (검증 기준 — 누락 0): ① Step A-0 Ontologist ② Step A Socratic ③ 미답변 조사 ④ Step B Seed-Architect ⑤ Step C Contrarian ⑥ Step C Hacker ⑦ Simplifier ⑧ 블라인드 라운드 (본 파일) + plan-stage Architect·Researcher·블라인드 판정 (plan-stage SKILL.md).
+> 행동 블록 구획 적용 경로 (검증 기준 — 누락 0): ① brainstorming 성격 승인 화면 ② brainstorming 국면별 종료 조건 ③ workflow-orchestrator 개발 위임 (SKILL.md · bootstrap.md) ④ context-handling 세션 재개 라벨 ⑤ plan-stage 하위 에이전트 프롬프트 (Architect · Researcher · Feasibility 판정).
 
 ## 「Step A-0 Ontologist 프롬프트」
 
@@ -133,6 +134,8 @@
 **시드 YAML 형식** (templates/seed.yaml 참조):
 
 ```yaml
+# 갈래 (사본 — 정본은 [기능명].md 앞머리. actions.md 「정본 규정」 참조)
+action: [[기능명].md 앞머리의 `action:` 값과 같게 적는다]
 goal: "[핵심 목표 1문장]"
 constraints:
   - "[제약조건]"
@@ -322,6 +325,7 @@ YAGNI 원칙을 적용하여:
 ---
 feature: [기능명]
 category: [카테고리명]
+action: [HANDOFF.md의 `action:` 값을 그대로 옮긴다 — 이 자리가 정본이 된다]
 status: ready-for-plan
 created: [날짜]
 last-updated: [날짜]
@@ -375,6 +379,40 @@ affects:
 |------|-----------|-----------|------|
 ```
 
+## 「성격 승인 화면」
+
+시드 확인 직후에 그린다. 선택지 이름과 괄호 풀이는 **하드코딩하지 않는다** — `[플러그인 루트]/skills/workflow-orchestrator/references/actions.md`를 Read해 블록 목록을 순회하며 각 블록의 「설명」 칸 **첫 줄**을 그대로 쓴다 (소비 계약 ②).
+
+추정값을 기본으로 제시하되 **승인 없이 확정하지 않는다** (REQ-005 · 건너뛸 수 없는 바닥 셋째).
+
+```
+📌 결정 요청 : 어떤 일인지 정하기
+
+**이 결정이 다루는 문제:** 요청의 성격에 따라 이후 무엇을 묻고, 어디로 넘기고, 무엇을 남길지가 달라집니다.
+
+**확인된 사실:**
+- [시드 확인에서 확정된 목표 한 줄]
+
+**확인 못 한 것:** [없으면 "없음"]
+
+**토론 요지:** 없음
+
+1. [블록 1의 설명 첫 줄] — 고르면: [블록 1의 종료 조건을 쉬운 말 한 줄로]
+2. [블록 2의 설명 첫 줄] — 고르면: …
+3. [블록 3의 설명 첫 줄] — 고르면: …
+4. [블록 4의 설명 첫 줄] — 고르면: …
+
+💡 추천: [추정 번호]
+[추정 근거 한 줄 — 사용자 발화의 어느 부분이 근거인지]
+```
+
+**승인 직후 같은 차례에 수행한다 (왕복 순증 0):**
+
+1. 기능명을 짓고 **고지 한 줄**로 알린다 — 답을 요구하지 않는다. 갈래별 규칙은 해당 블록의 「기능명 규칙」 칸을 따른다
+   `🏷️ 기능명을 [기능명]으로 정했습니다 — 다르게 하고 싶으시면 말씀해 주세요`
+2. `docs/design/[카테고리]/[기능명]/` 디렉토리를 만든다
+3. 같은 경로에 `HANDOFF.md`를 만들고 `action:`·`feature:`·`category:`·`current-phase: "Phase 1 탐색"`을 채운다 — **이 파일이 국면 4까지 갈래 값의 임시 정본이다**
+
 ## 「국면 4 디렉토리 구조」
 
 ```
@@ -385,7 +423,7 @@ docs/design/[카테고리]/[기능명]/
 ├── [기능명].md              ← 국면 4 확정 시 생성, 최종 설계 문서
 ├── seed.yaml                ← 국면 4에서 생성
 ├── plan.md                  ← PLAN 단계에서 생성
-├── HANDOFF.md               ← 미완료 시 존재
+├── HANDOFF.md               ← 성격 승인 시 생성, 워크플로우 종료까지 유지 (갈래 값 임시 정본)
 ├── issues/NNN-[문제명].md  ← 이슈 카드 (orchestrator Issue Lifecycle)
 ```
 

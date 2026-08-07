@@ -6,6 +6,7 @@
 # 모든 국면의 앵커 역할. phase 간 일관성 추적의 기준점.
 #
 # 필드 설명:
+#   action: 작업 갈래 (사본 — 정본은 [기능명].md 앞머리). new-feature | spec-change | refactor | defect
 #   goal: 핵심 목표 1문장. 기능의 존재 이유.
 #   constraints: 반드시 지켜야 하는 기술적/비즈니스 제약.
 #   non_goals: 명시적으로 범위에서 제외한 것.
@@ -14,6 +15,7 @@
 #   open_questions: 아직 답이 없는 질문. 다음 국면에서 해소 대상.
 #   context: 배경 설명. 왜 지금 이 기능이 필요한가.
 
+action: ""    # [기능명].md 앞머리의 action: 값과 같게 (사본)
 goal: ""
 constraints:
   - ""

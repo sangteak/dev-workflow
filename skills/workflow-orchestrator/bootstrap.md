@@ -6,10 +6,11 @@ You have a structured development workflow (dev-workflow plugin).
 워크플로우 의도 신호가 있는 요청을 처리하기 **전에** 반드시 `dev-workflow:workflow-orchestrator` 스킬을 invoke하라:
 
 - 단계 키워드: 브레인스토밍·아이디어·기획 / 계획·설계 / 구현·개발 / 리뷰·검토 / 마무리·wrap up
+- 착수 신호: 결함·문제 제기(버그·에러·안 나와·재현·고쳐줘) / 사양 변경 / 리팩터링·리팩토링 — **답이 이미 정해진 요청이 아니면 발동한다**
 - `docs/design/` 하위 설계 산출물을 만들거나 이어가는 작업
 - 진행 중 작업 재개 발화 ("이어서 하자", "계속하자", "복구해줘")
 
-신호가 전혀 없는 요청(일반 질문, 단순 수정, 조사)은 워크플로우를 발동하지 않고 일반 응답한다.
+답이 이미 정해진 요청(사실 조회, 지시가 구체적인 단순 수정, 조사)은 워크플로우를 발동하지 않고 일반 응답한다. **무엇을 고칠지 아직 정해지지 않은 문제 제기는 답이 정해진 요청이 아니다** — 발동한다.
 이후 대화에서 신호가 등장하면 **그 시점에** invoke한다. 판단이 애매하면 invoke하는 쪽을 택한다.
 이미 이 세션에서 orchestrator가 활성이면(워크플로우 단계 진행 중, /compact 복원 포함) 재invoke하지 않고 진행 중 흐름을 계속한다.
 
@@ -19,9 +20,11 @@ You have a structured development workflow (dev-workflow plugin).
 |---|---|---|
 | BRAINSTORM | 브레인스토밍·아이디어·방향 탐색 | brainstorming 스킬 (페르소나 사용) |
 | PLAN | 계획·설계, `[기능명].md` 존재 + plan.md 없음 | plan-stage 스킬 (페르소나 사용) |
-| DEVELOP | 구현·개발, plan.md 존재 | Superpowers subagent-driven-development |
+| DEVELOP | 구현·개발, plan.md 존재 | `actions.md` 갈래 블록의 「넘길 곳」 (폴백: Superpowers subagent-driven-development) |
 | REVIEW | 리뷰·검토·QA | Superpowers requesting-code-review + Evaluator QA |
 | COMPLETION | 마무리·완료·wrap up, /dev-workflow:finish | Completion Protocol (문서 취합 → 커밋 제안) |
+
+> 갈래(`action:`)에 따라 각 단계의 깊이와 위임 목적지가 다르다. 어느 칸을 채워야 하는지는 `[플러그인 루트]/skills/workflow-orchestrator/references/actions.md`의 갈래 블록이 정한다.
 
 ## 세션 불변식 (워크플로우 단계 진행 중 항상 적용)
 

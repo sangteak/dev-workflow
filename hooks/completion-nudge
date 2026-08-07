@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # UserPromptSubmit hook — 조건부 정밀 주입 (completion-trigger REQ-001)
-# 발동: 미완료 잔존(plan.md/HANDOFF.md, _archive 제외) ∧ 마무리 어휘.
+# 발동: 미완료 잔존(plan.md, _archive 제외) ∧ 마무리 어휘.
 # 미충족 시 빈 출력. 항상 exit 0 (차단 금지 — deny형 개입 배제 독트린).
 set -u
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
@@ -25,7 +25,10 @@ case "$prompt" in *"<task-notification>"*) exit 0;; esac
 FINISH_WORDS='마무리|완료|정리해|끝내자|wrap up|finish|finalize|done'
 printf '%s' "$prompt" | grep -qiE "$FINISH_WORDS" || exit 0
 
-remnants=$("${SCRIPT_DIR}/lib/detect-remnants" "$PROJECT_ROOT" HANDOFF.md plan.md)
+# v1.22.0(intake-routing): HANDOFF는 국면 완료로 삭제되지 않고 워크플로우 내내 산다
+# (context-handling/SKILL.md 「주의 사항」). 따라서 HANDOFF 단독 존재는 "마무리할 작업"의
+# 근거가 되지 못한다 — 태스크 목록(plan.md)이 있을 때만 마무리 대상으로 본다.
+remnants=$("${SCRIPT_DIR}/lib/detect-remnants" "$PROJECT_ROOT" plan.md)
 [ -z "$remnants" ] && exit 0
 
 features=$(printf '%s\n' "$remnants" | sed 's|.*/docs/design/||; s|/[^/]*$||' | sort -u | paste -sd ', ' -)
