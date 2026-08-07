@@ -87,7 +87,7 @@ orchestrator 최초 invoke 시(세션 시작 또는 대화 중 워크플로우 �
   Read에 실패하면 `superpowers:subagent-driven-development`로 폴백한다.
 
   - 「넘길 곳」이 `superpowers:systematic-debugging`인 경우: 그 블록의 **「종료 조건」 다섯 칸을 채운 값 그대로** 호출 프롬프트에 싣는다. 1~3번 칸은 그 스킬 1단계의 입력이므로 다시 물을 것이 없다. 워크트리·태스크 루프 규칙은 적용하지 않는다
-    - 채운 값의 해소 순서: `phase1_exploration.md`의 「종료 조건 충족 내역」 → `[기능명].md` §3 → `HANDOFF.md` 본문. 어느 자리에도 없으면 **개발로 넘기지 말고** 브레인스토밍 Step A(인터뷰)로 되돌아가 채운다
+    - 채운 값의 해소 순서: `phase1_exploration.md`의 「종료 조건 충족 내역」 → `HANDOFF.md` 본문의 「확정된 항목」. 어느 자리에도 없으면 **개발로 넘기지 말고** 브레인스토밍 Step A(인터뷰)로 되돌아가 채운다
     - 아래 공통 규칙 중 **1(rules-injection)과 3(마무리 복귀 문구)은 이 경로에도 적용한다** — `target_agent`는 `Implementer` 대신 디버깅 담당으로 바꿔 첨부하고, 디버깅이 끝나면 3번 문구로 마무리 복귀를 안내한다
   - 그 외(태스크 목록 실행형인 경우): 아래 공통 규칙을 그대로 따른다
 
@@ -200,7 +200,8 @@ Evaluator 에이전트를 서브에이전트로 실행하여 AC 충족 여부를
 | REVIEW | dev-workflow `rules-injection` (사전+사후) → Superpowers `requesting-code-review` + Evaluator QA | ❌ 없음 | Evaluator |
 | COMPLETION | dev-workflow `rules-injection` → Completion Protocol (작업자 측) + merge-to-domain (관리자 측) | ❌ 없음 | — |
 
-- **검증 버전: Superpowers 6.1.1** — 이후 버전에서 역할 구조가 다르면 의미상 등가 역할(구현 담당 → Implementer 규칙, 태스크 리뷰 담당 → Reviewer 규칙)에 첨부하라
+- **검증 버전: Superpowers 6.2.0** — 이후 버전에서 역할 구조가 다르면 의미상 등가 역할(구현 담당 → Implementer 규칙, 태스크 리뷰 담당 → Reviewer 규칙)에 첨부하라
+  - `systematic-debugging` 1단계 요구 셋(에러 원문·재현 절차·최근 변경)에 `actions.md`의 결함 종료 조건 1~3번이 이름을 맞추고 있다. 상위 버전에서 이 셋이 바뀌면 블록의 해당 칸도 함께 고친다
 - Superpowers 스킬이 존재하면 FIRST 실행
 - DEVELOP/REVIEW 충돌 시 → Superpowers 우선
 - BRAINSTORM/PLAN 충돌 시 → 이 워크플로우 우선
