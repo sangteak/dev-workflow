@@ -529,13 +529,13 @@ dev-workflow가 제공하는 슬래시 커맨드입니다. 워크플로우 자�
 
 ### DEVELOP
 
-Superpowers `subagent-driven-development`에 위임됩니다:
+작업 갈래가 위임 대상을 가릅니다 — 새 기능·사양 변경·코드 다듬기는 Superpowers `subagent-driven-development`에, 문제 고치기는 Superpowers `systematic-debugging`에 위임됩니다 (디버깅 경로는 아래 git/no-git 구분과 태스크 루프를 적용하지 않습니다):
 
 - **git-mode**: worktree를 생성하여 격리된 환경에서 구현
 - **no-git-mode**: 현재 디렉토리에서 직접 작업, 파일 기반 체크포인트
 - 모든 태스크가 끝나도 바로 커밋하지 않습니다 — 아래 COMPLETION 단계로 넘어가 마무리를 기다립니다
 
-> 🔧 내부 스킬: Superpowers `subagent-driven-development`
+> 🔧 내부 스킬: Superpowers `subagent-driven-development` (문제 고치기는 `systematic-debugging`)
 
 ### REVIEW
 

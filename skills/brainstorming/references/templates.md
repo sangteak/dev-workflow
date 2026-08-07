@@ -135,7 +135,7 @@
 
 ```yaml
 # 갈래 (사본 — 정본은 [기능명].md 앞머리. actions.md 「정본 규정」 참조)
-action: new-feature
+action: [[기능명].md 앞머리의 `action:` 값과 같게 적는다]
 goal: "[핵심 목표 1문장]"
 constraints:
   - "[제약조건]"
@@ -325,7 +325,7 @@ YAGNI 원칙을 적용하여:
 ---
 feature: [기능명]
 category: [카테고리명]
-action: new-feature        # new-feature | spec-change | refactor | defect — 정본 (actions.md 「정본 규정」)
+action: [HANDOFF.md의 `action:` 값을 그대로 옮긴다 — 이 자리가 정본이 된다]
 status: ready-for-plan
 created: [날짜]
 last-updated: [날짜]
