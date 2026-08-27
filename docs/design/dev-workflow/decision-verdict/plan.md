@@ -755,7 +755,7 @@ git commit -m "feat(decision-verdict): 설명 블록을 이름표 없는 문단�
 
 ---
 
-## Task 7: 「내보내기 전 검사」를 두 항목으로 다시 짠다
+## Task 7: 「내보내기 전 검사」를 세 항목으로 다시 짠다
 
 **Files:**
 - Modify: `skills/workflow-orchestrator/decision-flow.md` (「내보내기 전 검사」 절 전체 — 검사 항목 둘·실패 처리·작성 지침 문단까지)
@@ -848,7 +848,7 @@ Expected: `3` — `bootstrap.md`·`workflow-orchestrator/SKILL.md`·`grounding.m
 
 ```bash
 git add skills/workflow-orchestrator/decision-flow.md
-git commit -m "feat(decision-verdict): 내보내기 전 검사를 낱말·대상 둘로 · 결과 줄 규칙 복원"
+git commit -m "feat(decision-verdict): 내보내기 전 검사를 낱말·결과 줄·대상 셋으로"
 ```
 
 ---
