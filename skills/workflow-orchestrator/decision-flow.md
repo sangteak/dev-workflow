@@ -8,6 +8,21 @@
 **게이트 실효성 정비와의 관계:** 게이트 정비는 확인의 존폐·등급(이 확인이 필요한가)을 다루고, 본 규칙은 묶음 내부의 제시 방식(남은 확인을 어떻게 보여주나)을 다룬다 — 확인 횟수를 줄이는 변경과 충돌하지 않는다.
 **문서 구성:** 1부(결정 규칙)·2부(질문 규칙)는 3부(공통 형식·언어)의 스켈레톤과 언어 규범을 결정·질문에 각각 적용한 것이다 — 형식·언어의 원본은 3부가 유일하다. 3부는 「언어 규범」(원본 펜스)과 「결정·질문 구조 규범」으로 구성된다.
 
+**재서술 지점 목록 (검증 기준 — 누락 0):** 이 문서의 규범을 **다시 적어 놓은** 자리는 아래 열이다. 규범의 뜻을 바꾸는 작업은 같은 차례에 이 열을 함께 고친다. 원본을 가리키기만 하는 줄(예: brainstorming SKILL.md의 "형식은 decision-flow.md가 정의한다")은 재서술이 아니므로 목록에 넣지 않는다.
+
+1. `skills/workflow-orchestrator/bootstrap.md` — 세션 시작 상시 주입본의 결정 요청 형식 폴백
+2. `skills/workflow-orchestrator/SKILL.md` — 「결정 요청 폴백 형식」의 스켈레톤 전문·결정 정의·설명 블록·등급
+3. `skills/workflow-orchestrator/references/grounding.md` — 등급 경계 사례와 로컬 템플릿 면제
+4. `skills/workflow-orchestrator/references/actions.md` — 소비 계약의 적용 경로 목록
+5. `skills/brainstorming/SKILL.md` — 성격 승인 화면의 읽기 실패 폴백
+6. `skills/brainstorming/references/templates.md` — 「성격 승인 화면」 실물
+7. `skills/plan-stage/SKILL.md` — 「재협의 선택지」 실물
+8. `skills/merge-to-domain/SKILL.md` — 결정 박스와 설명 블록의 적용 범위 조항
+9. `skills/context-handling/SKILL.md` — HANDOFF 「결정 흐름 상태」 섹션의 보존 항목 목록
+10. `README.md` — 사용자 문서의 결정 화면 설명
+
+이 목록은 **바닥이지 천장이 아니다.** 규범 변경 스윕은 매번 새로 돌리고, 목록에 없는 자리를 찾으면 그 릴리스에서 이 목록에 더한다. 절차 원본은 development-principles의 「규범 변경 스윕」이다.
+
 ## 1. 메타 원칙
 
 **결정의 정의:** 결정 = 산출물(phase 파일·설계 문서·plan.md)에 기록될, 선택지 2개 이상 중의 선택.
