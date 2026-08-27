@@ -8,7 +8,7 @@ description: ".claude/rules/*.md 프로젝트 규칙을 단계별로 전파하�
 dev-workflow의 3계층 Defense in Depth 중 **2차(단계별 프롬프트 첨부)와 3차(REVIEW 검증자 라우팅 + 자동 수정 라운드)**를 응집하여 담당한다. 1차(SessionStart 자동 주입)는 `hooks/inject-rules`가 별도로 담당한다.
 
 ## 책임 범위
-- 2차 — 단계별 프롬프트 첨부 (DEVELOP/REVIEW/COMPLETION/PLAN 진입 시 매칭 규칙을 Superpowers/Ouroboros 서브에이전트 호출 프롬프트에 명시 첨부 — DEVELOP의 첨부 대상은 갈래에 따라 갈린다: 기본은 Implementer, 문제 고치기 갈래는 `systematic-debugging`)
+- 2차 — 단계별 프롬프트 첨부 (DEVELOP/REVIEW/COMPLETION/PLAN 진입 시 매칭 규칙을 Superpowers/Ouroboros 서브에이전트 호출 프롬프트에 명시 첨부 — DEVELOP의 첨부 대상은 갈래에 따라 갈린다: 기본은 Implementer, 결함 수정 갈래는 `systematic-debugging`)
 - 3차 — REVIEW에서 `type`별 검증자 라우팅 (semantic→code-reviewer, quantitative/structural→Evaluator)
 - 3차 — 자동 수정 라운드 (별도 커밋 + 테스트 재실행 + 실패 시 자동 롤백)
 - 충돌 감지 + 사용자 결정 위임 (자동 해결 안 함)
@@ -43,12 +43,12 @@ auto-fix: true | false | confirm   # 선택, 기본 confirm
 
 ### DEVELOP 진입 시 (`stage: develop`, `purpose: pre-stage-attach`)
 
-갈래가 **문제 고치기**이면 첨부 대상이 Superpowers `systematic-debugging` 호출 프롬프트로 바뀐다 — 그 경로에는 Implementer가 없다. 그 외 갈래는 아래 절차 그대로 Implementer가 대상이다.
+갈래가 **결함 수정**이면 첨부 대상이 Superpowers `systematic-debugging` 호출 프롬프트로 바뀐다 — 그 경로에는 Implementer가 없다. 그 외 갈래는 아래 절차 그대로 Implementer가 대상이다.
 
 1. `.claude/rules/*.md` 글로브 (재귀 금지, examples/ 제외)
 2. 각 파일의 frontmatter에서 `applies-to` 추출 (grep `^applies-to:`)
 3. `applies-to`에 `develop`이 포함된 규칙만 선택 (단, `all` 규칙은 SessionStart에서만 노출 — 중복 방지)
-4. 선택된 규칙 파일 본문 전체를 다음 블록으로 Superpowers Implementer(문제 고치기 갈래는 `systematic-debugging`) 호출 프롬프트에 첨부:
+4. 선택된 규칙 파일 본문 전체를 다음 블록으로 Superpowers Implementer(결함 수정 갈래는 `systematic-debugging`) 호출 프롬프트에 첨부:
    ```
    ── 📋 활성 규칙 (DEVELOP) ──
    [규칙명 콤마 나열]
