@@ -1606,6 +1606,250 @@ git commit -m "feat(decision-verdict): 성격 승인 화면이 「그대로 가�
 
 ---
 
+## Task 15: 갈래 이름을 표준 용어로 바꾸고 요구 사항 변경의 정의를 고친다
+
+Task 11(실물 재현) 2차에서 사용자가 짚었다. **"쉬운 말"을 쓴다고 만든 이름이 오히려 어렵다** — 사용자는 개발자이고 리팩터링·결함 수정이 이미 일상어인데, "코드 다듬기"·"문제 고치기"로 바꿔서 한 번 더 번역해 읽게 만들었다.
+
+그리고 더 큰 것 하나. **요구 사항 변경의 정의가 틀렸다.** 종료 조건이 "바뀌는 대상 문서와 절"이라 문서를 주인공으로 놓는데, 실제로 바뀌는 것은 코드베이스의 요구 사항이다 (사용자 예: `matchid`가 int였는데 string이 됨). 문서는 그걸 기록하는 자리일 뿐이다.
+
+> **비목표를 한 번 더 연다.** 설계 문서 2장의 "`actions.md`의 갈래 정의 바꾸기"를 사용자 결정으로 연다 — 정의가 틀린 것을 알고도 두면 다음 사람이 같은 화면을 또 만든다.
+
+**Files:**
+- Modify: `skills/workflow-orchestrator/references/actions.md` (「설명」 첫 줄 넷 · spec-change 「종료 조건」 · 「그대로 가면」 넷)
+
+**Interfaces:**
+- Consumes: 없음
+- Produces: 표준 용어 이름 넷. Task 16이 이 이름을 소비 지점 열둘에 퍼뜨린다.
+
+- [ ] **Step 1: 지금 상태를 확인한다 (실패 확인)**
+
+Run:
+```bash
+grep -cE "^- \*\*설명\*\* — (새 기능 만들기|기존 기능 바꾸기|코드 다듬기|문제 고치기)" skills/workflow-orchestrator/references/actions.md
+```
+Expected: `4`
+
+Run:
+```bash
+grep -c "바뀌는 대상 문서와 절" skills/workflow-orchestrator/references/actions.md
+```
+Expected: `1`
+
+- [ ] **Step 2: 「설명」 첫 줄 넷을 바꾼다**
+
+각 블록의 `- **설명** — …` 첫 줄만 바꾼다. **그 아래 딸린 설명 문단은 건드리지 않는다.**
+
+```
+- **설명** — 새 기능 만들기              →  - **설명** — 신규 기능
+- **설명** — 기존 기능 바꾸기 (사양이 달라짐)  →  - **설명** — 요구 사항 변경
+- **설명** — 코드 다듬기 (동작은 그대로)   →  - **설명** — 리팩터링 (동작은 그대로 두고 구조만 정리)
+- **설명** — 문제 고치기                 →  - **설명** — 결함 수정
+```
+
+리팩터링만 외래어라 괄호 풀이를 남긴다. 나머지 셋은 이미 평이해서 풀이가 필요 없다 — 괄호를 붙이면 오히려 늘어진다.
+
+- [ ] **Step 3: spec-change 「종료 조건」을 고친다**
+
+```
+- **종료 조건** — BRAINSTORM: 기본 다섯 칸에 **「바뀌는 대상 문서와 절」**을 추가로 확정한다
+```
+
+를
+
+```
+- **종료 조건** — BRAINSTORM: 기본 다섯 칸에 **「무엇이 어떻게 바뀌는가」**를 추가로 확정한다 (예: `matchid`를 int에서 string으로). 그 내용을 어느 설계 문서 어느 절에 반영할지는 그다음이다 — 바뀌는 것은 코드베이스의 요구 사항이고 문서는 그것을 기록하는 자리다
+```
+
+로 바꾼다.
+
+- [ ] **Step 4: 「그대로 가면」 넷을 고친다**
+
+이름과 정의가 바뀌었으니 이 칸도 맞춘다. 사용자가 "설명이 더 헷갈리게 한다"고 짚은 자리다.
+
+```
+new-feature:
+- **그대로 가면** — 고칠 대상이 없고 없던 것을 만드는 일이라, 요구 사항을 캐는 것부터 시작합니다.
+
+spec-change:
+- **그대로 가면** — 이미 있는 기능이고 요구 사항이 달라지는 것이라, 무엇이 어떻게 바뀌는지를 확정해 반영합니다.
+
+refactor:
+- **그대로 가면** — 동작은 그대로 두고 구조만 정리하는 일이라, 다듬을 범위와 동작이 안 바뀐 걸 무엇으로 확인할지를 확정합니다.
+
+defect:
+- **그대로 가면** — 돌던 것이 안 도는 일이라, 에러 원문과 재현 절차를 비롯한 다섯 가지를 채운 뒤 원인을 좁혀 갑니다.
+```
+
+defect의 "디버깅 절차로 넘어갑니다"를 "원인을 좁혀 갑니다"로 바꾼다 — 구현자와 리뷰어가 각각 그 표현을 짚었다.
+
+- [ ] **Step 5: 검증한다**
+
+Run — 새 이름 넷:
+```bash
+grep -cE "^- \*\*설명\*\* — (신규 기능|요구 사항 변경|리팩터링|결함 수정)" skills/workflow-orchestrator/references/actions.md
+```
+Expected: `4`
+
+Run — 옛 이름 0:
+```bash
+grep -cE "^- \*\*설명\*\* — (새 기능 만들기|기존 기능 바꾸기|코드 다듬기|문제 고치기)" skills/workflow-orchestrator/references/actions.md
+```
+Expected: `0`
+
+Run — 정의 교체:
+```bash
+grep -c "바뀌는 대상 문서와 절" skills/workflow-orchestrator/references/actions.md
+grep -c "바뀌는 것은 코드베이스의 요구 사항이고" skills/workflow-orchestrator/references/actions.md
+```
+Expected: `0` · `1`
+
+Run — 「그대로 가면」 넷이 여전히 넷이고 서로 다른지:
+```bash
+grep -cE "^- \*\*그대로 가면\*\* — .*\.$" skills/workflow-orchestrator/references/actions.md
+grep -E "^- \*\*그대로 가면\*\* —" skills/workflow-orchestrator/references/actions.md | sort -u | wc -l
+```
+Expected: `4` · `4`
+
+Run — 기존 다섯 칸이 안 바뀌었는지 (「설명」은 바꿨으므로 제외):
+```bash
+grep -cE "^- \*\*(종료 조건|넘길 곳|남길 것|지울 것|기능명 규칙)\*\*" skills/workflow-orchestrator/references/actions.md
+```
+Expected: `20`
+
+Run — "디버깅 절차" 표현이 사라졌는지:
+```bash
+grep -c "디버깅 절차로 넘어갑니다" skills/workflow-orchestrator/references/actions.md
+```
+Expected: `0`
+
+- [ ] **Step 6: 커밋**
+
+```bash
+git add skills/workflow-orchestrator/references/actions.md
+git commit -m "feat(decision-verdict): 갈래 이름을 표준 용어로 · 요구 사항 변경의 정의를 코드베이스 기준으로"
+```
+
+---
+
+## Task 16: 갈래 이름을 소비 지점 열둘에 퍼뜨리고 판정 문장을 고친다
+
+Task 15가 이름을 바꿨다. 그 이름이 저장소 열두 자리에 퍼져 있다 (실측). 하나라도 남으면 화면과 문서가 다른 이름을 말한다.
+
+**Files:**
+- Modify: `skills/brainstorming/references/templates.md` (판정 문장 모양)
+- Modify: `README.md` (갈래 표 넷 · 위임 설명 둘 · 결정 화면 설명 하나 — 실측 자리)
+- Modify: `skills/rules-injection/SKILL.md` (갈래별 분기 셋)
+- Modify: `skills/context-handling/SKILL.md` (세션 재개 라벨 예시 하나)
+- Modify: `skills/workflow-orchestrator/decision-flow.md` (검사 3번의 예시 하나)
+
+**Interfaces:**
+- Consumes: Task 15의 새 이름 넷
+- Produces: 이름이 저장소 전체에서 하나로 통일된 상태. Task 11 재실행이 이것을 판정한다.
+
+- [ ] **Step 1: 옛 이름이 남은 자리를 센다 (실패 확인)**
+
+Run:
+```bash
+for n in "새 기능 만들기" "기존 기능 바꾸기" "코드 다듬기" "문제 고치기"; do printf '%s: ' "$n"; grep -rc "$n" --include=*.md skills/ commands/ README.md 2>/dev/null | grep -v ':0$' | wc -l; done
+```
+Expected: 넷 다 `1` 이상 — 아직 남아 있다
+
+- [ ] **Step 2: 판정 문장 모양을 고친다**
+
+`skills/brainstorming/references/templates.md`의 「성격 승인 화면」 코드 펜스 첫 줄
+
+```
+📌 확인 : [대상]을 [갈래 판정 — 새로 만드는 · 바꾸는 · 다듬는 · 고치는] 일로 봤습니다
+```
+
+를
+
+```
+📌 확인 : [대상]을 [갈래 이름 — 신규 기능 · 요구 사항 변경 · 리팩터링 · 결함 수정]으로 판단했습니다
+```
+
+로 바꾼다.
+
+같은 절의 불릿 중
+
+```
+- 첫 줄의 판정 문장에 **시드의 목표 문장에 나온 대상**을 넣는다 — "새 기능으로 봤습니다"가 아니라 "매칭 진입 경로를 새로 만드는 일로 봤습니다"
+```
+
+를
+
+```
+- 첫 줄의 판정 문장에 **시드의 목표 문장에 나온 대상**을 넣는다 — "신규 기능으로 판단했습니다"가 아니라 "매칭 진입 경로를 신규 기능으로 판단했습니다"
+```
+
+로 바꾼다.
+
+- [ ] **Step 3: `README.md`의 갈래 표를 고친다**
+
+```
+| 새 기능 만들기 | 없던 것을 새로 만든다 | Superpowers 구현 |
+| 기존 기능 바꾸기 | 사양 자체가 달라진다 | Superpowers 구현 |
+| 코드 다듬기 | 동작은 그대로 두고 구조만 손본다 | Superpowers 구현 |
+| 문제 고치기 | 돌아가던 것이 안 돌아간다 | **Superpowers 디버깅** — …
+```
+
+의 첫 칸 넷을 각각 `신규 기능` · `요구 사항 변경` · `리팩터링` · `결함 수정`으로 바꾼다. 둘째 칸(설명)과 셋째 칸(위임)은 그대로 둔다. 단 요구 사항 변경의 둘째 칸은 `코드베이스의 요구 사항이 달라진다`로 고친다 — 정의를 바꿨기 때문이다.
+
+- [ ] **Step 4: `README.md`의 나머지 세 자리를 고친다**
+
+- 91행 부근 `작업 갈래가 **문제 고치기**이면` → `작업 갈래가 **결함 수정**이면`
+- 532행 부근 `새 기능·사양 변경·코드 다듬기는` → `신규 기능·요구 사항 변경·리팩터링은`
+- 538행 부근 `(문제 고치기는 \`systematic-debugging\`)` → `(결함 수정은 \`systematic-debugging\`)`
+
+- [ ] **Step 5: `skills/rules-injection/SKILL.md`의 세 자리를 고친다**
+
+`문제 고치기`가 나오는 세 자리를 전부 `결함 수정`으로 바꾼다. 문장의 나머지는 건드리지 않는다.
+
+- [ ] **Step 6: `skills/context-handling/SKILL.md`의 재개 라벨 예시를 고친다**
+
+166행 부근의 예시에서 `문제 고치기`를 `결함 수정`으로 바꾼다.
+
+- [ ] **Step 7: `skills/workflow-orchestrator/decision-flow.md`의 검사 예시를 고친다**
+
+검사 3번의 예시 문장에서 `"새 기능 만들기"·"계획"은 걸리고`를 `"신규 기능"·"계획"은 걸리고`로 바꾼다. 이름을 바꿔도 여전히 걸리는 예시라 예시 자체는 유효하다.
+
+- [ ] **Step 8: 잔존 0을 검증한다**
+
+Run:
+```bash
+bash scripts/sweep '새 기능 만들기' '기존 기능 바꾸기' '코드 다듬기' '문제 고치기' 2>&1 | grep -vE '^docs/design/' | grep -E '^(skills|commands|hooks|README|CLAUDE)' | wc -l
+```
+Expected: `0`
+
+Run — 새 이름이 실제로 들어갔는지:
+```bash
+grep -rc "신규 기능" --include=*.md skills/ README.md | grep -v ':0$' | wc -l
+grep -rc "결함 수정" --include=*.md skills/ README.md | grep -v ':0$' | wc -l
+```
+Expected: 각각 `2` 이상
+
+Run — 판정 문장이 바뀌었는지:
+```bash
+grep -c "으로 판단했습니다" skills/brainstorming/references/templates.md
+grep -c "일로 봤습니다" skills/brainstorming/references/templates.md
+```
+Expected: `1` 이상 · `0`
+
+Run — 훅 회귀:
+```bash
+bash tests/hooks/run-all.sh
+```
+Expected: 전부 `FAIL=0`, 종료 코드 `0`
+
+- [ ] **Step 9: 커밋**
+
+```bash
+git add skills/brainstorming/references/templates.md README.md skills/rules-injection/SKILL.md skills/context-handling/SKILL.md skills/workflow-orchestrator/decision-flow.md
+git commit -m "fix(decision-verdict): 갈래 이름을 소비 지점 전수에 퍼뜨리고 판정 문장을 고침"
+```
+
+---
+
 ## 되돌릴 때 주의
 
 설명 블록 문단화는 **원본이 Task 6, 사본 다섯이 Task 10**에서 커밋된다. 그 사이(Task 7·8·9 커밋 시점)에는 원본이 「문단」이라 하고 `bootstrap.md`·`workflow-orchestrator/SKILL.md`·`grounding.md`가 「설명 네 항목·이름표」라고 반대말을 한다. 브랜치를 중간에 배포하지 않으므로 실사용 위험은 없지만, **Task 6이나 Task 10 하나만 되돌리면 저장소가 모순 상태로 남는다.** 되돌릴 때는 둘을 함께 되돌린다.
