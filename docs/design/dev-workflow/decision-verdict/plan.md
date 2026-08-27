@@ -1398,6 +1398,214 @@ git commit -m "chore(release): decision-verdict 구현 완료 · bump to 1.25.0"
 
 ---
 
+## Task 13: `actions.md` 네 블록에 「그대로 가면」 칸을 만든다
+
+Task 11(실물 재현)에서 사용자가 화면의 "그대로 가면 … 폴더와 이어받기 파일이 만들어집니다" 줄을 이해하지 못했다. 그 줄이 플러그인 내부 산출물 이름을 사용자에게 들이밀고 있었다 — 이번 릴리스가 고친 것과 같은 종류의 결함이다. 그 자리에 와야 할 것은 **갈래를 확정하면 다음에 무엇을 더 묻는지**다. 그 정보가 갈래 정의 파일에 없어서 이 태스크가 만든다.
+
+> **비목표 하나를 연다.** 설계 문서 2장이 "`actions.md`의 갈래 정의 바꾸기"를 비목표로 뒀다. 사용자 결정으로 이 항목을 연다 — 갈래의 값어치가 "그다음에 뭘 더 묻는지"를 정하는 데 있다면 그 정보가 갈래 정의 파일에 없는 것이 이상하고, 넷 중 하나만 다른 방식으로 만들어지는 상태를 남기면 같은 자리를 다음 릴리스가 또 만진다. **다만 「설명」·「종료 조건」·「넘길 곳」·「남길 것」·「지울 것」·「기능명 규칙」 기존 여섯 칸은 한 글자도 고치지 않는다** — 칸 하나를 더할 뿐이다.
+
+**Files:**
+- Modify: `skills/workflow-orchestrator/references/actions.md` (네 블록 각각 + 소비 계약)
+
+**Interfaces:**
+- Consumes: 없음
+- Produces: 갈래마다 「그대로 가면」 한 줄. Task 14의 화면이 이 칸에서 뽑아 쓴다.
+- 이 태스크가 담는 요구사항: REQ-004(무엇이 달라지는가 — 원천 신설)
+
+- [ ] **Step 1: 지금 상태를 확인한다 (실패 확인)**
+
+Run:
+```bash
+grep -c "그대로 가면" skills/workflow-orchestrator/references/actions.md
+```
+Expected: `0`
+
+Run:
+```bash
+grep -cE "^- \*\*(설명|종료 조건|넘길 곳|남길 것|지울 것|기능명 규칙)\*\*" skills/workflow-orchestrator/references/actions.md
+```
+Expected: `24` — 네 블록 × 여섯 칸. 이 값은 이 태스크가 끝난 뒤에도 **그대로 24**여야 한다 (기존 칸을 안 건드린다는 뜻).
+
+- [ ] **Step 2: 네 블록에 칸을 하나씩 더한다**
+
+각 블록의 `- **종료 조건** — …` 줄 **바로 뒤에** 아래를 넣는다. 다른 칸은 건드리지 않는다.
+
+`## new-feature` 블록:
+```
+- **그대로 가면** — 고칠 대상을 찾는 질문은 하지 않습니다. 없던 것을 만드는 흐름 그대로 이어 갑니다
+```
+
+`## spec-change` 블록:
+```
+- **그대로 가면** — 바뀌는 대상 문서와 그 안의 어느 절인지를 추가로 여쭙니다
+```
+
+`## refactor` 블록:
+```
+- **그대로 가면** — 다듬을 범위와, 동작이 안 바뀐 걸 무엇으로 확인할지 둘을 추가로 여쭙니다
+```
+
+`## defect` 블록:
+```
+- **그대로 가면** — 에러 원문, 재현 절차, 최근 변경, 대상, 수락 기준 다섯 가지를 채운 뒤 디버깅 절차로 넘어갑니다
+```
+
+> 이 칸의 문면은 **사용자에게 그대로 보인다.** 그래서 다른 칸과 달리 높임말로 쓴다 — 나머지 칸은 모델이 읽는 지시문이라 평서형이다.
+
+- [ ] **Step 3: 소비 계약에 이 칸을 등재한다**
+
+`skills/workflow-orchestrator/references/actions.md`의 소비 계약 ② 줄
+
+```
+> ② **화면에 갈래 이름을 표시할 때는 「설명」 칸의 첫 줄**에서 뽑는다. 별도 칸을 두지 않는다. 성격 승인 화면은 판정형이라 갈래 이름을 표시하지 않으므로 이 조항의 대상이 아니다 — 세션 재개 라벨이 이 조항의 소비자다.
+```
+
+**바로 뒤에** 아래 줄을 넣는다:
+
+```
+> ②-2 **성격 승인 화면의 「그대로 가면」 줄은 「그대로 가면」 칸에서 뽑는다.** 이 칸은 사용자에게 그대로 보이는 유일한 칸이라 높임말로 쓴다. 갈래를 확정하면 브레인스토밍에서 무엇을 더 묻는지가 이 칸의 내용이다.
+```
+
+적용 경로 목록에도 항목을 더한다. 아래 줄에서
+
+```
+⑤ 하위 에이전트 프롬프트 `--- 행동 블록 ---` 구획 (plan-stage Architect · Researcher · Feasibility 판정).
+```
+
+를
+
+```
+⑤ 하위 에이전트 프롬프트 `--- 행동 블록 ---` 구획 (plan-stage Architect · Researcher · Feasibility 판정) ⑥ 성격 승인 화면의 「그대로 가면」 줄 (brainstorming Step B-1 — 「그대로 가면」 칸에서 뽑는다).
+```
+
+로 바꾼다.
+
+- [ ] **Step 4: 검증한다**
+
+Run:
+```bash
+grep -cE "^- \*\*그대로 가면\*\* —" skills/workflow-orchestrator/references/actions.md
+```
+Expected: `4` — 네 블록 전부
+
+Run — 기존 여섯 칸이 안 바뀌었는지:
+```bash
+grep -cE "^- \*\*(설명|종료 조건|넘길 곳|남길 것|지울 것|기능명 규칙)\*\*" skills/workflow-orchestrator/references/actions.md
+```
+Expected: `24` — Step 1과 같은 값
+
+Run — 소비 계약이 등재됐는지:
+```bash
+grep -c "②-2" skills/workflow-orchestrator/references/actions.md
+grep -c "⑥ 성격 승인 화면의 「그대로 가면」 줄" skills/workflow-orchestrator/references/actions.md
+```
+Expected: 각각 `1`
+
+Run — 네 줄이 서로 다른지 (같으면 갈래별 차이가 없다는 뜻이라 이 태스크가 무의미하다):
+```bash
+grep -E "^- \*\*그대로 가면\*\* —" skills/workflow-orchestrator/references/actions.md | sort -u | wc -l
+```
+Expected: `4`
+
+- [ ] **Step 5: 커밋**
+
+```bash
+git add skills/workflow-orchestrator/references/actions.md
+git commit -m "feat(decision-verdict): 갈래 블록에 「그대로 가면」 칸 신설 — 화면이 뽑아 쓸 원천"
+```
+
+---
+
+## Task 14: 성격 승인 화면의 「그대로 가면」 줄을 갈아 끼우고 「왜 지금 묻는지」를 넣는다
+
+Task 11에서 사용자가 두 가지를 짚었다. 하나는 그 줄이 플러그인 내부 산출물을 말한다는 것이고, 다른 하나는 이 화면이 체감상 한참 뒤에 나와서 "왜 이제 와서 이걸 묻지?"가 된다는 것이다. 자리는 안 옮기고(판정 정확도가 근거다) 화면 안에서 이유가 보이게 한다.
+
+**Files:**
+- Modify: `skills/brainstorming/references/templates.md` (「성격 승인 화면」)
+
+**Interfaces:**
+- Consumes: Task 13이 만든 「그대로 가면」 칸
+- Produces: 사용자가 실제로 볼 최종 화면. Task 11 재실행이 이것을 판정한다.
+
+- [ ] **Step 1: 지금 상태를 확인한다 (실패 확인)**
+
+Run:
+```bash
+grep -c "폴더와 이어받기 파일이 만들어집니다" skills/brainstorming/references/templates.md
+```
+Expected: `1`
+
+- [ ] **Step 2: 화면 안의 「그대로 가면」 줄을 갈아 끼운다**
+
+`skills/brainstorming/references/templates.md`의 「성격 승인 화면」 코드 펜스 안에서
+
+```
+그대로 가면 방금 확정한 시드로 설계를 이어 가고,
+`docs/design/[카테고리]/[기능명]/` 폴더와 이어받기 파일이 만들어집니다.
+```
+
+를
+
+```
+방금 나눈 이야기를 보고 판정했습니다. 여기가 판정이 가장 정확해지는 자리입니다.
+
+그대로 가면 [해당 갈래 블록의 「그대로 가면」 칸 문장]
+설계 기록을 담을 자리도 이때 만들어져서, 중간에 끊겨도 이어서 할 수 있습니다.
+```
+
+로 바꾼다.
+
+- [ ] **Step 3: 불릿 목록에 뽑는 자리를 적는다**
+
+같은 절의 불릿 목록에서
+
+```
+- 첫 줄의 판정 문장에 **시드의 목표 문장에 나온 대상**을 넣는다 — "새 기능으로 봤습니다"가 아니라 "매칭 진입 경로를 새로 만드는 일로 봤습니다"
+```
+
+**바로 뒤에** 아래 둘을 넣는다:
+
+```
+- **「그대로 가면」 줄은 지어내지 않는다** — `actions.md`의 해당 갈래 블록에서 「그대로 가면」 칸을 그대로 뽑아 쓴다 (소비 계약 ②-2). 그 칸이 갈래마다 다르므로 이 줄도 갈래마다 달라진다
+- **첫 줄 위의 한 줄은 왜 지금 묻는지를 말한다** — 이 화면은 인터뷰와 시드 확정을 다 지난 뒤에 나와서 사용자에게는 늦게 느껴진다. [✔ `brainstorming/SKILL.md`의 Step B-1 규칙] 시드를 보고 추정해야 국면 0보다 정확하기 때문에 여기 있는 것이므로, 그 사실을 화면이 스스로 밝힌다
+```
+
+- [ ] **Step 4: 검증한다**
+
+Run:
+```bash
+grep -c "폴더와 이어받기 파일이 만들어집니다" skills/brainstorming/references/templates.md
+```
+Expected: `0`
+
+Run:
+```bash
+grep -c "여기가 판정이 가장 정확해지는 자리입니다" skills/brainstorming/references/templates.md
+grep -c "「그대로 가면」 줄은 지어내지 않는다" skills/brainstorming/references/templates.md
+grep -c "설계 기록을 담을 자리도 이때 만들어져서" skills/brainstorming/references/templates.md
+```
+Expected: 각각 `1`
+
+Run — 화면의 나머지가 안 깨졌는지:
+```bash
+sed -n '/^## 「성격 승인 화면」/,/^\*\*승인 직후/p' skills/brainstorming/references/templates.md | grep -c '\[✔ 출처\]'
+```
+Expected: `2`
+
+```bash
+grep -c "승인 직후 같은 차례에 수행한다" skills/brainstorming/references/templates.md
+```
+Expected: `1`
+
+- [ ] **Step 5: 커밋**
+
+```bash
+git add skills/brainstorming/references/templates.md
+git commit -m "feat(decision-verdict): 성격 승인 화면이 「그대로 가면」 칸을 뽑아 쓰고 왜 지금 묻는지 밝힘"
+```
+
+---
+
 ## 되돌릴 때 주의
 
 설명 블록 문단화는 **원본이 Task 6, 사본 다섯이 Task 10**에서 커밋된다. 그 사이(Task 7·8·9 커밋 시점)에는 원본이 「문단」이라 하고 `bootstrap.md`·`workflow-orchestrator/SKILL.md`·`grounding.md`가 「설명 네 항목·이름표」라고 반대말을 한다. 브랜치를 중간에 배포하지 않으므로 실사용 위험은 없지만, **Task 6이나 Task 10 하나만 되돌리면 저장소가 모순 상태로 남는다.** 되돌릴 때는 둘을 함께 되돌린다.
