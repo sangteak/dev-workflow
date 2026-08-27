@@ -2,7 +2,7 @@
 feature: decision-verdict
 category: dev-workflow
 action: spec-change
-current-phase: "Phase 3 검증"
+current-phase: "PLAN"
 last-updated: 2026-08-27
 is-issue: false
 parent-feature: ""
