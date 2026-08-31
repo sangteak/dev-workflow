@@ -37,7 +37,7 @@ LLM 몫이라 의미 보존을 100% 보장하지 않는다. dry-run plan을 신�
 
 domain.md(설계 문서 SSOT)에 기록될 결정(의미 충돌 채택, 새 섹션 위치, 정책 ID 부여 방식 등 선택지 2개 이상)은 `decision-flow.md`의 결정 박스(D)와 순차 흐름을 따른다. 첫 결정 요청 전에 해당 파일을 Read한다 — `${CLAUDE_PLUGIN_ROOT}/skills/workflow-orchestrator/decision-flow.md` 우선, 미확보 시 `find "$HOME/.claude/plugins" -path "*dev-workflow*/skills/workflow-orchestrator/decision-flow.md" -not -path "*/worktrees/*" -type f | head -1`로 탐색 (리포 상대경로 금지). 본 스킬의 고정 게이트 템플릿(digest 확인, dry-run 승인, resolution 4지 등)은 SSOT의 '로컬 템플릿 우선' 규칙에 따라 문서 그대로 사용한다.
 
-적용 범위: dry-run의 [사용자 결정 항목] 목록이 사전 브리핑(F)을 대체하는 로컬 템플릿이며, 개별 결정 요청에는 결정 박스(D)와 짧은 설명 문단, 그리고 「내보내기 전 검사」 셋(선택지 낱말·결과 줄·원인)을 적용한다. 이 스킬의 결정 지점은 전부 메뉴형이라 선택지 대상 검사만 적용 밖이다. 한 줄 헤더(B)·재논의 대기열은 적용하지 않는다 — 본 스킬의 게이트 흐름은 이미 순차 구조이고 충돌 처리는 자체 In-session Resolution(REQ-010)이 담당한다 (SSOT '적용 예외' 해당).
+적용 범위: dry-run의 [사용자 결정 항목] 목록이 사전 브리핑(F)을 대체하는 로컬 템플릿이며, 개별 결정 요청에는 결정 박스(D)와 짧은 설명 문단, 그리고 「내보내기 전 검사」 넷(선택지 낱말·결과 줄·원인·곁가지)을 적용한다. 이 스킬의 결정 지점은 전부 메뉴형이라 선택지 대상 검사만 적용 밖이다. 한 줄 헤더(B)·재논의 대기열은 적용하지 않는다 — 본 스킬의 게이트 흐름은 이미 순차 구조이고 충돌 처리는 자체 In-session Resolution(REQ-010)이 담당한다 (SSOT '적용 예외' 해당).
 
 ---
 
