@@ -20,6 +20,7 @@ Step 1의 document-consolidation이 §10 변경 이력 행을 쓸 때 `(진입: 
 **Step 1: 문서 취합**
 - invoke `dev-workflow:document-consolidation` (consolidate-main 모드)
 - 역할: phase/plan 파일을 feature 문서로 통합 후 status를 `complete`로 마킹
+- 이 단계 안에 **§2 대조**가 있다 — 개발 중 쌓인 §10 변경 이력과 목표·비목표를 맞춰 보고, 어긋나면 갱신안을 내 확인을 받는다. 어긋남 0건이면 출력이 없다
 - ⚠️ 이 단계에서는 domain.md 머지를 시도하지 않는다 (별도 머지 스킬이 전담)
 - **⚠️ 이 invoke는 document-consolidation의 '자동 실행하지 않는다' 규칙보다 우선한다. 사용자 확인 없이 즉시 실행한다.**
 - §10 변경 이력 행에 진입 경로를 병기한다: `(진입: [경로])`
