@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# 재서술 지점 목록 검사 — 목록 경로 존재 · 항목 수 대조 · 문면 도착
+# 사용법: scripts/check-restatements '<도착 문면 패턴>' [경로 접두어...]
+set -u
+SRC="skills/workflow-orchestrator/decision-flow.md"
+PATTERN="${1:-}"
+
+# 머리말이 선언한 항목 수 (한글 수사)
+declare -A NUM=([열]=10 [열하나]=11 [열둘]=12 [열셋]=13 [열넷]=14 [열다섯]=15)
+DECLARED_WORD=$(grep -o "아래 열[가-힣]*이다" "$SRC" | head -1 | sed 's/아래 //; s/이다//')
+DECLARED=${NUM[$DECLARED_WORD]:-0}
+
+# 목록 항목의 경로를 뽑는다 — `N. \`경로\`` 모양
+mapfile -t PATHS < <(grep -oE '^[0-9]+\. `[^`]+`' "$SRC" | sed 's/^[0-9]*\. `//; s/`$//')
+
+echo "── 목록 항목: ${#PATHS[@]}건 (머리말 선언: ${DECLARED}건)"
+fail=0
+[ "${#PATHS[@]}" -eq "$DECLARED" ] || { echo "   항목 수 불일치"; fail=1; }
+
+for p in "${PATHS[@]}"; do
+  [ -e "$p" ] || { echo "   경로 없음: $p"; fail=1; }
+done
+[ "$fail" -eq 0 ] && echo "   경로 존재: OK"
+
+if [ -n "$PATTERN" ]; then
+  echo "── 도착 검사: $PATTERN"
+  for p in "${PATHS[@]}"; do
+    [ -f "$p" ] || continue
+    n=$(grep -c "$PATTERN" "$p" 2>/dev/null || true)
+    [ "$n" -ge 1 ] || { echo "   $p: 0건"; fail=1; }
+  done
+  [ "$fail" -eq 0 ] && echo "   도착: OK"
+fi
+
+exit "$fail"
