@@ -21,6 +21,7 @@ description: Generate a narrative system overview from related design documents.
 - 카테고리: `/dev-workflow:design-summary dev-workflow` → 카테고리 전체
 - 기능명 목록: `/dev-workflow:design-summary peek-overview peek-detail` → 지정 문서만
 - 인자 없음: 범위를 질문한다
+  - 질문은 `decision-flow.md`의 질문 규칙을 따른다 — 답의 후보를 적어 두 줄 이상이면 번호 선택지를 붙이고, 한 줄 이하면 개방형으로 둔다. 화면 모양은 이 스킬의 기존 형식을 쓴다
 
 ---
 
