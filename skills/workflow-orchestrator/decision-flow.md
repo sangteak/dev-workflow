@@ -1,14 +1,14 @@
 # 결정 요청의 단계적 흐름 (Decision Flow SSOT)
 
 > dev-workflow 플러그인에서 사용자 결정을 요청할 때 따르는 단일 SSOT.
-> 적용 스킬: workflow-orchestrator, brainstorming, plan-stage, document-consolidation(§8 적용 예외 조항의 규율을 받음), merge-to-domain(결정 박스와 설명 블록만 적용 — dry-run 목록이 브리핑 대체 로컬 템플릿, 헤더·대기열은 적용 예외) — 본 파일을 참조로 명시한 스킬.
+> 적용 스킬: workflow-orchestrator, brainstorming, plan-stage, document-consolidation(§8 적용 예외 조항의 규율을 받음), merge-to-domain(결정 박스와 설명 블록만 적용 — dry-run 목록이 브리핑 대체 로컬 템플릿, 헤더·대기열은 적용 예외), design-summary(질문 규칙만 적용 — 답의 후보를 적어 두 줄 이상이면 번호를 붙인다. 나머지 출력 형식은 별개) — 본 파일을 참조로 명시한 스킬.
 > 그 외 스킬의 확인·질문은 orchestrator의 Input Format Rules를 따른다.
 
-**적용 범위:** 본 규칙은 dev-workflow가 직접 진행하는 구간(BRAINSTORM/PLAN/COMPLETION, 세션 시작, 컨텍스트 관리)의 사용자 대면 출력에 적용된다. Superpowers 위임 단계(DEVELOP/REVIEW)와 merge-to-domain·design-summary의 기존 출력 형식은 별개다. 단 3부 「언어 규범」 펜스는 이 범위와 별개로 모든 사용자 대면 문면·페르소나 발언에 적용된다.
+**적용 범위:** 본 규칙은 dev-workflow가 직접 진행하는 구간(BRAINSTORM/PLAN/COMPLETION, 세션 시작, 컨텍스트 관리)의 사용자 대면 출력에 적용된다. Superpowers 위임 단계(DEVELOP/REVIEW)와 merge-to-domain의 기존 출력 형식은 별개다. `design-summary`도 화면 모양은 자기 형식을 쓰지만, 답의 후보를 적어 두 줄 이상이면 번호를 붙이는 질문 규칙은 그 스킬의 질문 화면에도 걸린다. 단 3부 「언어 규범」 펜스는 이 범위와 별개로 모든 사용자 대면 문면·페르소나 발언에 적용된다.
 **게이트 실효성 정비와의 관계:** 게이트 정비는 확인의 존폐·등급(이 확인이 필요한가)을 다루고, 본 규칙은 묶음 내부의 제시 방식(남은 확인을 어떻게 보여주나)을 다룬다 — 확인 횟수를 줄이는 변경과 충돌하지 않는다.
 **문서 구성:** 1부(결정 규칙)·2부(질문 규칙)는 3부(공통 형식·언어)의 스켈레톤과 언어 규범을 결정·질문에 각각 적용한 것이다 — 형식·언어의 원본은 3부가 유일하다. 3부는 「언어 규범」(원본 펜스)과 「결정·질문 구조 규범」으로 구성된다.
 
-**재서술 지점 목록 (검증 기준 — 누락 0):** 이 문서의 규범을 **다시 적어 놓은** 자리는 아래 열둘이다. 규범의 뜻을 바꾸는 작업은 같은 차례에 이 목록을 함께 고친다. 원본을 가리키기만 하는 줄(예: brainstorming SKILL.md의 "형식은 decision-flow.md가 정의한다")은 재서술이 아니므로 목록에 넣지 않는다.
+**재서술 지점 목록 (바닥 검증 — 목록에 오른 자리는 빠짐없이):** 이 문서의 규범을 **다시 적어 놓은** 자리는 아래 열둘이다. 규범의 뜻을 바꾸는 작업은 같은 차례에 이 목록을 함께 고친다. 이 목록은 `skills/` 아래와 사용자 문서를 덮는다 — `docs/design/`의 도메인 문서는 `merge-to-domain`이 옮기므로 여기 넣지 않는다. 목록에 오른 자리를 빠짐없이 고쳤는지는 `scripts/check-restatements`가 센다. 목록 밖에 새 자리가 생겼는지는 기계가 못 세므로 전수 스윕이 매번 그대로 돈다. 원본을 가리키기만 하는 줄(예: brainstorming SKILL.md의 "형식은 decision-flow.md가 정의한다")은 재서술이 아니므로 목록에 넣지 않는다.
 
 1. `skills/workflow-orchestrator/bootstrap.md` — 세션 시작 상시 주입본의 결정 요청 형식 폴백과 언어 요약
 2. `skills/workflow-orchestrator/SKILL.md` — 「결정 요청 폴백 형식」의 스켈레톤 전문·결정 정의·설명 블록·등급·언어 최소 요건·질문 규칙 요약, 그리고 이슈 경량 사이클의 언어 줄

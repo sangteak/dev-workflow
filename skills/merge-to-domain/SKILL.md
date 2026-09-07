@@ -233,6 +233,8 @@ feature digest 산출 직후 답을 요구하지 않는 1줄로 고지한다 (do
 4. 다음 feature로 진행한다 (누적 base = **해당 대상 도메인 문서**의 방금 커밋된 상태)
 5. no-git-mode: 커밋 단계는 생략하며 수정된 파일 자체가 누적 base가 된다. 해당 도메인 문서의 체크포인트는 정리하고, 다음 feature의 (4) 적용 직전에 `merge_checkpoint`(create)로 재생성한다
 
+> 도메인 문서에 머지된 규범 서술이 낡았으면 그것을 되살리는 것도 이 스킬의 일이다. `decision-flow.md`의 재서술 지점 목록은 `skills/` 아래와 사용자 문서만 덮으므로, `docs/design/` 아래는 여기서 옮긴다.
+
 **실패 항목 발견 시:**
 1. in-session resolution 4지 선택지 노출 (REQ-010)
 2. skip 또는 abort 선택 시 domain.md를 pre-merge 상태로 복원한다 — git-mode: `git checkout -- [도메인 문서]`, no-git-mode: `merge_checkpoint` 도구 호출 `{action: "restore"}` (가장 최근 체크포인트에서 복원)
