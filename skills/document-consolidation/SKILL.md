@@ -17,7 +17,12 @@ consolidate-main 단일 모드로 동작한다.
 ## 트리거
 
 자동 실행하지 않는다. 아래 시점에 **제안**하고 사용자 승인 후 실행한다:
-- REVIEW 완료 시: "문서 통합을 진행할까요?" (consolidate-main)
+- REVIEW 완료 시 아래를 묻는다 (consolidate-main)
+
+  문서 통합을 진행할까요?
+
+  1. Yes — 고르면: phase 파일과 plan.md의 내용을 설계 문서로 합치고 중간 산출물을 정리합니다
+  2. No — 고르면: 문서 통합을 미루고 지금 상태를 그대로 둡니다
 
 **예외:** Completion Protocol(진입 경로 무관 — orchestrator 자연어 감지, `/dev-workflow:finish` command, 훅 주입 후 라우팅)에서 invoke된 경우, 이 규칙을 적용하지 않는다. **즉시 실행한다.**
 
