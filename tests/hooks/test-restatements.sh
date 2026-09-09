@@ -138,4 +138,23 @@ arrival '밟은 갈래' \
   skills/workflow-orchestrator/decision-flow.md \
   skills/context-handling/SKILL.md
 
+# 0번 탈출구 — 옛 모양(목록에 이어 붙은 `0.`)이 아홉 자리에서 사라졌는가
+residue '^0\. 이 중에 없음' \
+  skills/workflow-orchestrator/decision-flow.md \
+  skills/workflow-orchestrator/SKILL.md \
+  skills/brainstorming/references/templates.md
+residue '^0\. \[탈출' \
+  skills/workflow-orchestrator/decision-flow.md \
+  skills/workflow-orchestrator/SKILL.md
+residue '^> 0\. 이 중에' \
+  README.md
+
+# 새 모양 도착 — `0\.` (BRE: `\\`=백슬래시, `.`=아무 글자). 경로마다 1건 이상. 총 9건은 §9 검증 표에 손으로 적는다
+arrival '^0\\. ' \
+  skills/workflow-orchestrator/decision-flow.md \
+  skills/workflow-orchestrator/SKILL.md \
+  skills/brainstorming/references/templates.md
+arrival '^> 0\\. ' \
+  README.md
+
 exit "$rc"
