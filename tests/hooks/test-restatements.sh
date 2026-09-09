@@ -88,4 +88,17 @@ residue '^\*\*배경(/힌트)?:\*\* *.' \
 residue '^> \*\*배경(/힌트)?:\*\* *.' \
   README.md
 
+# ── reask-reassembly (1.27.0) ──────────────────────────────────────
+# 되묻기 조항 통일 — 옛 조항 셋의 문면이 정본에서 사라졌는가
+residue '역질문' \
+  skills/workflow-orchestrator/decision-flow.md
+residue '배경→비유→선택지별 의미→추천' \
+  skills/workflow-orchestrator/decision-flow.md
+residue '재설명 경로' \
+  skills/workflow-orchestrator/decision-flow.md
+
+# 재조립 접미 문구가 정본에 도착했는가 (사본은 Task 3에서 더한다)
+arrival '다시 씀: ' \
+  skills/workflow-orchestrator/decision-flow.md
+
 exit "$rc"
