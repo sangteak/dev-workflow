@@ -14,8 +14,8 @@
 2. `skills/workflow-orchestrator/SKILL.md` — 「결정 요청 폴백 형식」의 스켈레톤 전문·결정 정의·설명 블록·등급·언어 최소 요건·질문 규칙 요약, 그리고 이슈 경량 사이클의 언어 줄
 3. `skills/workflow-orchestrator/references/grounding.md` — 등급 경계 사례와 로컬 템플릿 면제
 4. `skills/workflow-orchestrator/references/actions.md` — 소비 계약의 적용 경로 목록
-5. `skills/brainstorming/SKILL.md` — 작업 방향 확인 화면의 읽기 실패 폴백, 페르소나 발언 공통 규칙의 언어 요약, 국면 1·2의 질문 규칙 요약
-6. `skills/brainstorming/references/templates.md` — 「작업 방향 확인 화면」 실물, 공통 조립 규칙의 언어 최소 요건, 「핵심 질문」 출력 형식, 시드 확인의 지어낸 이름 검사
+5. `skills/brainstorming/SKILL.md` — 작업 방향 확인 화면의 읽기 실패 폴백, 페르소나 발언 공통 규칙의 언어 요약, 국면 1·2의 질문 규칙 요약, 국면 0 카테고리 확정 화면의 「배경」 이름표
+6. `skills/brainstorming/references/templates.md` — 「작업 방향 확인 화면」 실물, 공통 조립 규칙의 언어 최소 요건, 「핵심 질문」 출력 형식, 시드 확인의 지어낸 이름 검사, 본질 질문 화면과 인터뷰 질문 화면의 「배경/힌트」 이름표
 7. `skills/plan-stage/SKILL.md` — 「재협의 선택지」 실물
 8. `skills/merge-to-domain/SKILL.md` — 결정 박스와 설명 블록의 적용 범위 조항
 9. `skills/context-handling/SKILL.md` — HANDOFF 「결정 흐름 상태」 섹션의 보존 항목 목록
