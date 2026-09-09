@@ -88,4 +88,73 @@ residue '^\*\*배경(/힌트)?:\*\* *.' \
 residue '^> \*\*배경(/힌트)?:\*\* *.' \
   README.md
 
+# ── reask-reassembly (1.27.0) ──────────────────────────────────────
+# 되묻기 조항 통일 — 옛 조항 셋의 문면이 정본에서 사라졌는가
+residue '역질문' \
+  skills/workflow-orchestrator/decision-flow.md
+residue '배경→비유→선택지별 의미→추천' \
+  skills/workflow-orchestrator/decision-flow.md
+residue '재설명 경로' \
+  skills/workflow-orchestrator/decision-flow.md
+
+# 재조립 접미 문구가 정본에 도착했는가 (사본은 Task 3에서 더한다)
+arrival '다시 씀: ' \
+  skills/workflow-orchestrator/decision-flow.md
+
+# 검사 1번의 옛 술어("안 나오고 풀이도")가 정본에서 사라졌는가 — 사본은 Task 3에서 더한다
+residue '안 나오고 풀이도' \
+  skills/workflow-orchestrator/decision-flow.md
+
+# 세는 문장과 적용 범위 예외가 정본에 도착했는가
+arrival '풀이 없는 것' \
+  skills/workflow-orchestrator/decision-flow.md
+arrival '번호 선택지를 낸 화면' \
+  skills/workflow-orchestrator/decision-flow.md
+
+# 사본 — 언어 요약 넷·이슈 언어 줄이 세는 조각을 받았는가
+arrival '풀이 없는 것' \
+  skills/workflow-orchestrator/bootstrap.md \
+  skills/workflow-orchestrator/SKILL.md \
+  skills/brainstorming/SKILL.md \
+  skills/brainstorming/references/templates.md
+
+# 사본 — 되물음 재조립 접미가 bootstrap 불변식과 SKILL 폴백에 도착했는가
+arrival '다시 씀: ' \
+  skills/workflow-orchestrator/bootstrap.md \
+  skills/workflow-orchestrator/SKILL.md
+
+# 사본 — 적용 범위 문구가 bootstrap·merge-to-domain에 도착했는가
+arrival '번호 선택지를 낸 화면' \
+  skills/workflow-orchestrator/bootstrap.md \
+  skills/merge-to-domain/SKILL.md
+
+# 사본 — 옛 검사 ① 문면이 사라졌는가
+residue '안 나오고 풀이도' \
+  skills/workflow-orchestrator/bootstrap.md \
+  skills/workflow-orchestrator/SKILL.md
+
+# 되물음 상태 — 원본(상태 보존 절)과 사본(HANDOFF 템플릿)에 밟은 갈래가 도착했는가
+arrival '밟은 갈래' \
+  skills/workflow-orchestrator/decision-flow.md \
+  skills/context-handling/SKILL.md
+
+# 0번 탈출구 — 옛 모양(목록에 이어 붙은 `0.`)이 아홉 자리에서 사라졌는가
+residue '^0\. 이 중에 없음' \
+  skills/workflow-orchestrator/decision-flow.md \
+  skills/workflow-orchestrator/SKILL.md \
+  skills/brainstorming/references/templates.md
+residue '^0\. \[탈출' \
+  skills/workflow-orchestrator/decision-flow.md \
+  skills/workflow-orchestrator/SKILL.md
+residue '^> 0\. 이 중에' \
+  README.md
+
+# 새 모양 도착 — `0\.` (BRE: `\\`=백슬래시, `.`=아무 글자). 경로마다 1건 이상. 총 9건은 §9 검증 표에 손으로 적는다
+arrival '^0\\. ' \
+  skills/workflow-orchestrator/decision-flow.md \
+  skills/workflow-orchestrator/SKILL.md \
+  skills/brainstorming/references/templates.md
+arrival '^> 0\\. ' \
+  README.md
+
 exit "$rc"
