@@ -111,4 +111,26 @@ arrival '풀이 없는 것' \
 arrival '번호 선택지를 낸 화면' \
   skills/workflow-orchestrator/decision-flow.md
 
+# 사본 — 언어 요약 넷·이슈 언어 줄이 세는 조각을 받았는가
+arrival '풀이 없는 것' \
+  skills/workflow-orchestrator/bootstrap.md \
+  skills/workflow-orchestrator/SKILL.md \
+  skills/brainstorming/SKILL.md \
+  skills/brainstorming/references/templates.md
+
+# 사본 — 되물음 재조립 접미가 bootstrap 불변식과 SKILL 폴백에 도착했는가
+arrival '다시 씀: ' \
+  skills/workflow-orchestrator/bootstrap.md \
+  skills/workflow-orchestrator/SKILL.md
+
+# 사본 — 적용 범위 문구가 bootstrap·merge-to-domain에 도착했는가
+arrival '번호 선택지를 낸 화면' \
+  skills/workflow-orchestrator/bootstrap.md \
+  skills/merge-to-domain/SKILL.md
+
+# 사본 — 옛 검사 ① 문면이 사라졌는가
+residue '안 나오고 풀이도' \
+  skills/workflow-orchestrator/bootstrap.md \
+  skills/workflow-orchestrator/SKILL.md
+
 exit "$rc"
