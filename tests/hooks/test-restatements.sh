@@ -133,4 +133,9 @@ residue '안 나오고 풀이도' \
   skills/workflow-orchestrator/bootstrap.md \
   skills/workflow-orchestrator/SKILL.md
 
+# 되물음 상태 — 원본(상태 보존 절)과 사본(HANDOFF 템플릿)에 밟은 갈래가 도착했는가
+arrival '밟은 갈래' \
+  skills/workflow-orchestrator/decision-flow.md \
+  skills/context-handling/SKILL.md
+
 exit "$rc"
