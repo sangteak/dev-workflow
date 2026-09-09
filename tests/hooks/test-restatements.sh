@@ -101,4 +101,14 @@ residue '재설명 경로' \
 arrival '다시 씀: ' \
   skills/workflow-orchestrator/decision-flow.md
 
+# 검사 1번의 옛 술어("안 나오고 풀이도")가 정본에서 사라졌는가 — 사본은 Task 3에서 더한다
+residue '안 나오고 풀이도' \
+  skills/workflow-orchestrator/decision-flow.md
+
+# 세는 문장과 적용 범위 예외가 정본에 도착했는가
+arrival '풀이 없는 것' \
+  skills/workflow-orchestrator/decision-flow.md
+arrival '번호 선택지를 낸 화면' \
+  skills/workflow-orchestrator/decision-flow.md
+
 exit "$rc"
