@@ -166,6 +166,17 @@ affects:
 - 일탈(브레인스토밍): Seed-Architect · Step C Contrarian · Simplifier 서브에이전트를 띄우지 않았다 — 재료가 이미 읽은 파일뿐이고 제외 목록이 이미 일곱이라 새로 뺄 자리가 좁았다. 국면 3 블라인드 라운드는 규범대로 전원 병렬 실행
 - 관측 항목(범위 밖): 산문 규범을 모델이 매 화면 실행하는지(다음 리뷰의 화면 수·되물음 수가 유일한 검증 자리) · Cursor·Copilot CLI 분기에서 `0\.` 렌더 · Superpowers 위임 스킬의 질문 습관과 접미가 한 세션에 섞이는 문제 · merge-to-domain 40행 "검사 넷" vs decision-flow 다섯 드리프트 · 파킹(1.26.1 승계): `💡 추천:` 줄 이름표 목록 미포함, 재서술 항목 10 설명 미확장, 검사 경로 손지정 사각
 
+### 검증 (구현 시점)
+| 항목 | 결과 |
+|---|---|
+| `tests/hooks/run-all.sh` | rc=0 |
+| 잔존 다섯 | 0건 (정본·사본) |
+| 도착 `^0\\. ` | decision-flow 2 · SKILL 3 · templates 2 · README(`^> `) 2 = 9 |
+| `scripts/check-restatements` | 12/12, 경로 OK |
+| `scripts/sweep` | skills·commands·hooks·README·CLAUDE.md 0건 · docs 히트 84건 = phase1_exploration.md 2·phase2_discovery.md 9·phase3_validation.md 1·evidence/reask-cases-all.md 3·evidence/reask-norm-review.md 4·plan.md 47·reask-reassembly.md 16(이상 설계 문서 인용)+`ux-consistency.md` 2(도메인 문서, merge-to-domain 몫) |
+| 버전 | 1.27.0 (plugin.json = marketplace.json) |
+| REQ-013 실사용 | 미완료 — Update → 재시작 → 원인 ③ 브레인스토밍 한 바퀴에서 사건 ①②③ 기록 |
+
 ## 10. 변경 이력
 | 날짜 | 변경 내용 | 영향 범위 | 상태 |
 |------|-----------|-----------|------|
