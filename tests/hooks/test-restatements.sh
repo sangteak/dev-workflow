@@ -197,4 +197,10 @@ arrival_min 2 '코드 이름 목록' \
 arrival '코드 이름 목록' \
   skills/document-consolidation/SKILL.md
 
+# 워커 프롬프트 — 구획 도착 (templates 여덟 + 조립 규칙, plan-stage 둘)
+arrival_min 8 '--- 코드 이름 목록 ---' \
+  skills/brainstorming/references/templates.md
+arrival_min 2 '--- 코드 이름 목록 ---' \
+  skills/plan-stage/SKILL.md
+
 exit "$rc"
