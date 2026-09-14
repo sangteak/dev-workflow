@@ -12,20 +12,22 @@ scripts/check-restatements || rc=1
 
 # 도착 검사는 목록 열둘 전부가 아니라 그 문면을 담아야 하는 자리에만 건다 —
 # 담지 않는 자리의 정당한 0건을 실패로 세지 않기 위해 대상을 직접 지정한다.
-arrival() {
+arrival_min() {
+  local min="$1"; shift
   local pattern="$1"; shift
-  echo "== 도착 검사: $pattern =="
+  echo "== 도착 검사(${min}건 이상): $pattern =="
   local p n
   for p in "$@"; do
-    n=$(grep -c "$pattern" "$p" 2>/dev/null || true)
-    if [ "${n:-0}" -ge 1 ]; then
+    n=$(grep -c -- "$pattern" "$p" 2>/dev/null || true)
+    if [ "${n:-0}" -ge "$min" ]; then
       echo "   $p: ${n}건"
     else
-      echo "   $p: 0건 — 문면이 도착하지 않았다"
+      echo "   $p: ${n:-0}건 — ${min}건 미만, 문면이 도착하지 않았다"
       rc=1
     fi
   done
 }
+arrival() { arrival_min 1 "$@"; }
 
 # 잔존 검사는 대상 경로를 직접 지정한다 — 저장소 전체를 훑으면 설계 문서나 phase 파일의
 # 정당한 인용이 실패를 내고, phase 파일은 수정 불가라 되돌릴 수단이 없다.
@@ -174,5 +176,13 @@ residue '세는 것은 풀이 유무 하나다' \
   skills/workflow-orchestrator/decision-flow.md
 arrival '코드 이름 목록' \
   skills/workflow-orchestrator/decision-flow.md
+
+# 사본 — 언어 요약 다섯·폴백 ① 둘. bootstrap·orchestrator SKILL은 두 줄(요약+폴백)이라 2건
+arrival_min 2 '코드 자리에서 1건 이상' \
+  skills/workflow-orchestrator/bootstrap.md \
+  skills/workflow-orchestrator/SKILL.md
+arrival '코드 자리에서 1건 이상' \
+  skills/brainstorming/SKILL.md \
+  skills/brainstorming/references/templates.md
 
 exit "$rc"
