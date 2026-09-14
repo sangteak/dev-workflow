@@ -157,4 +157,14 @@ arrival '^0\\. ' \
 arrival '^> 0\\. ' \
   README.md
 
+# ── code-name-lookup (1.28.0) ──────────────────────────────────────
+# 코드 이름 추출 표 — 파일 존재와 proto 패턴 도착
+if [ -f skills/workflow-orchestrator/references/code-name-patterns.md ]; then
+  echo "== 존재 검사: code-name-patterns.md: 있음"
+else
+  echo "== 존재 검사: code-name-patterns.md: 없음"; rc=1
+fi
+arrival '\^message' \
+  skills/workflow-orchestrator/references/code-name-patterns.md
+
 exit "$rc"
