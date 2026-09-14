@@ -167,4 +167,12 @@ fi
 arrival '\^message' \
   skills/workflow-orchestrator/references/code-name-patterns.md
 
+# 정본 — 대조 항목 도착, 옛 "풀이 유무 하나다" 잔존 0, 목록·구획 문구 도착
+arrival '코드 자리에서 1건 이상' \
+  skills/workflow-orchestrator/decision-flow.md
+residue '세는 것은 풀이 유무 하나다' \
+  skills/workflow-orchestrator/decision-flow.md
+arrival '코드 이름 목록' \
+  skills/workflow-orchestrator/decision-flow.md
+
 exit "$rc"
