@@ -185,4 +185,10 @@ arrival '코드 자리에서 1건 이상' \
   skills/brainstorming/SKILL.md \
   skills/brainstorming/references/templates.md
 
+# brainstorming — 국면 0 목록 단계·고지 본문·B-1 절 옮기기
+arrival_min 2 '코드 이름 목록' \
+  skills/brainstorming/SKILL.md
+arrival '개를 이 세션에 두었습니다' \
+  skills/brainstorming/SKILL.md
+
 exit "$rc"
