@@ -2,7 +2,7 @@
 feature: code-name-lookup
 category: dev-workflow
 action: spec-change
-status: ready-for-plan
+status: complete
 created: 2026-09-14
 last-updated: 2026-09-14
 dependencies:
@@ -62,8 +62,8 @@ affects:
 - REQ-010: **사본과 재서술 목록.** 언어 요약 다섯 자리(bootstrap 32 · orchestrator SKILL 267·404 · brainstorming SKILL 121 · templates 3)에 조각 "도메인 명사는 세션 목록 또는 코드 자리에서 1건 이상", bootstrap 36행·orchestrator SKILL 432행 폴백 검사 ①에 "코드 자리에서 1건 이상 안 나오는 것" 조각. 재서술 목록 항목 1·2·5·6·9·12 설명 갱신(열둘 유지 — 항목 9는 HANDOFF에 「코드 이름 목록」 절이 생기므로) — 우선순위: HIGH
 - REQ-011: **검사.** `tests/hooks/test-restatements.sh`에 도착: `코드 자리에서 1건 이상`(decision-flow·brainstorming SKILL·templates 1건 이상; bootstrap·orchestrator SKILL은 **2건** — `arrival_min` 헬퍼 신설) · `코드 이름 목록`(brainstorming SKILL·context-handling SKILL·document-consolidation SKILL) · `개를 이 세션에 두었습니다`(brainstorming SKILL) · `[ -f skills/workflow-orchestrator/references/code-name-patterns.md ]`(저장소 루트 기준) · 표 도착 `^message`. `arrival_min N 패턴 경로…` 헬퍼를 두고 기존 `arrival()`은 `arrival_min 1 "$@"` 래퍼로(호출 열넷 불변). 2건 대상 파일은 요약 줄과 폴백 ① 줄이 서로 다른 줄이어야 한다(`grep -c`는 줄 수). 잔존 없음 — 우선순위: MEDIUM
 - REQ-012: **사례 재현.** 사례 696·706·716행(배정·충원)의 화면을 새 대조 항목으로 재현 — (가) 원본 (나) 대조 항목 인용과 실패 이유 (다) 코드 이름으로 되돌린 화면 — 셋이 §8에 있으면 완료. 검증 명령은 §8 범위로 한정한다 — 우선순위: MEDIUM
-- REQ-013: **실사용 확인이 통과 선언이다.** `/plugin` Update → 재시작 → version 1.28.0 → 다음 GW-Server 브레인스토밍에서 국면 0 첫 화면부터: 고지 한 줄이 보이고, 박스에 `Backfill`·`Assignment`가 원문+풀이로 나오며, "충원"·"배정"이 0회. 워커 발언에서도 같은지 본다. 마무리 통합 뒤 설계 문서 본문(§1~§8)에 번역어가 없는지도 본다(REQ-009의 동작 확인). 세는 주체와 자리: 사용자가 그 세션의 마무리에 항목 넷(고지 · 원문+풀이 · 번역어 0회 · 문서 본문)을 이 문서 §9에 적는다. 귀속 릴리스 1.28.0 — 우선순위: HIGH
-- REQ-014: **릴리스 1.28.0 (MINOR).** `scripts/bump-version 1.28.0`, `check-restatements` 12/12, `tests/hooks/run-all.sh` rc=0, sweep 비-docs 0건. 미푸시 릴리스 넷(1.26.0·1.26.1·1.27.0·1.28.0)은 §9에 적고 실사용 확인 뒤 푸시를 권한다 — 우선순위: HIGH
+- REQ-013: **실사용 확인이 통과 선언이다.** `/plugin` Update → 재시작 → version 1.27.1 → 다음 GW-Server 브레인스토밍에서 국면 0 첫 화면부터: 고지 한 줄이 보이고, 박스에 `Backfill`·`Assignment`가 원문+풀이로 나오며, "충원"·"배정"이 0회. 워커 발언에서도 같은지 본다. 마무리 통합 뒤 설계 문서 본문(§1~§8)에 번역어가 없는지도 본다(REQ-009의 동작 확인). 세는 주체와 자리: 사용자가 그 세션의 마무리에 항목 넷(고지 · 원문+풀이 · 번역어 0회 · 문서 본문)을 이 문서 §9에 적는다. 귀속 릴리스 1.27.1 — 우선순위: HIGH
+- REQ-014: **릴리스 1.27.1.** `scripts/bump-version 1.27.1`, `check-restatements` 12/12, `tests/hooks/run-all.sh` rc=0, sweep 비-docs 0건. 미푸시 릴리스 넷(1.26.0·1.26.1·1.27.0·1.27.1)은 §9에 적고 실사용 확인 뒤 푸시를 권한다 — 우선순위: HIGH
 
 ## 4. 설계 개요
 
@@ -132,7 +132,46 @@ affects:
     > 📌 결정 요청 : `AssignTickets` 요청을 `Ticket`(매치 요청 한 건)별로 쪼갤 때 지킬 것 — 1.매치 전체 실패로 올림 2.실패 `Ticket` 목록도 로그
 
 ## 9. 구현 결과 및 일탈 사항
-> 구현 완료 후 작성
+
+### 구현 결과 — 커밋 열하나 (feature/analyzer, 2026-09-14, 푸시 없음)
+
+| 커밋 | 태스크 | 요지 |
+|---|---|---|
+| 6ba21ec | 1 | `references/code-name-patterns.md` 신설 — 언어별 선언 패턴 여섯·어간 규칙·자리 추정 bash 실물 |
+| 100a223 | 2 | 정본 — 언어 규범 대조 문장, 검사 1번 "둘을 센다", 예외 승계, `/compact` 규칙, 프롬프트 구성 구획 |
+| 4eb42a3 | 3 | 사본 — 언어 요약 다섯·폴백 ① 둘, `arrival_min` 헬퍼(기존 `arrival`은 래퍼) |
+| 6fb5efc | 4 | brainstorming 국면 0 목록 추출·고지(같은 차례), B-1 절 옮기기, 국면 갱신 줄 셋 |
+| c1bd878 | 5 | context-handling HANDOFF 절·복구 4번, document-consolidation Step 2-1·Step 7 |
+| 98398f0 | 6 | 워커 프롬프트 구획 열 곳 + 조립 규칙 셋째 줄 |
+| 04fe537 | 7 | 재서술 목록 항목 1·2·5·6·9·12 설명 |
+| 707e2d0 · 64cb8ff | 8 | §8 사례 재현 셋 (수정 라운드 1 — 원문 구조 그대로 전수 치환) |
+| d0666f7 | 9 | 1.27.1 범프·검증 표 |
+| 04ed635 | 최종 리뷰 수정 | plan-stage 판정 프롬프트 구획(열한 번째 자리)·검사 1번 후보 집합 넓힘·마침표 둘·표 이스케이프 주석·사례 716 되돌림 |
+
+요구사항 열넷 중 열셋 구현, REQ-013(실사용 확인)만 미완료. 태스크마다 서브에이전트 구현(sonnet, Task 7은 haiku) + 태스크 리뷰(sonnet), 최종 브랜치 리뷰(세션 모델): Critical 0 · Important 2 · Minor 11 → 수정 물결 하나로 Important 둘과 Minor 셋을 닫고 스코프 재리뷰 통과.
+
+### 설계 대비 일탈 사항
+
+- **일탈 1 — 워커 프롬프트 구획이 열 곳이 아니라 열한 곳.** REQ-008은 templates 여덟 + plan-stage Architect·Researcher 둘을 세었는데 plan-stage의 Feasibility 판정 프롬프트 구성 줄(94행)이 빠져 있었다. 최종 리뷰가 잡아 더했고 검사 문턱은 3
+- **일탈 2 — 검사 1번의 후보 집합.** 계획 문면은 후보를 "저장소 전용 용어·식별자"로 좁혀 §1 원인 ①("번역어는 평범한 한국어라 후보에 안 든다")을 그대로 재현할 뻔했다. 언어 규범 펜스와 같은 집합("화면의 도메인 명사(표준 개발 용어가 아닌 것)")으로 넓혔다
+- **일탈 3 — 계획의 검사 패턴 오기 둘.** `arrival '^message'`는 BRE 앵커라 표 셀 안 리터럴을 못 잡는다(→ `'\^message'`). `arrival_min 8 -- '패턴'`은 `--`가 패턴이 되는 오기(헬퍼가 `grep -c --`를 가지므로 불필요)
+- **일탈 4 — 사례 재현 (다)의 지어낸 어구.** 디스패치에 준 예시 문구("경로의")를 구현자가 그대로 옮겨 원문에 없는 어구가 끼었다. 원문 구조를 그대로 두고 낱말만 치환하는 규칙으로 다시 썼다 (`tasks/lessons.md` 기록)
+- **일탈 5 — 169행은 "보존 목록 추가"가 아니라 규칙 문장.** REQ-006 문면은 `/compact` 직전 보존 목록에 목록을 더한다고 했으나, B-1 전에는 HANDOFF가 없어 보존할 곳이 없으므로 "압축 뒤 절이 없으면 첫 검색 때 다시 뽑는다" 규칙으로 들어갔다(계획 승인 문면)
+- **일탈(절차)** — 브레인스토밍 A-0·Socratic·Seed-Architect·Contrarian·Simplifier, PLAN Architect·Researcher 서브에이전트를 띄우지 않고 본체가 맡았다. 국면 3 블라인드 라운드와 PLAN 판정 셋은 규범대로 병렬 실행. Completion 진입은 "DEVELOP 완료 후 오케스트레이터 라우팅"(표준 라벨 셋 밖)
+- **판정(rulings) — 실행 중 본체가 내린 것.** ① 계획 행 번호는 작성 시점 기준, 구현자는 인용 문면으로 찾는다 ② 계획서의 커밋 아홉은 "서브에이전트 주도" 선택으로 승인된 것으로 둔다 ③ `arrival_min` 본문에 처음부터 `grep -c --` ④ 위 일탈 1~4의 처리 ⑤ 706 (다)의 "`Assignment`를"은 받침 없는 이름 뒤 맞는 조사라 결함 아님 ⑥ sweep docs 히트 7건은 이 기능의 설계·계획 문서 인용이라 통과
+
+### 남은 것 (파킹 · 최종 리뷰 Minor 5·6·7·9~13)
+
+- 어간 규칙 "다음 조각이 대문자로 이어지면 둘째까지"는 문면상 카멜 전부에 걸린다 — 뜻은 약어(`OMClient`) 경우이나 문장을 "첫 조각이 대문자 연속일 때"로 고쳐야 한다 (스펙 REQ-004 문면 문제)
+- 자리 추정 bash: 단서는 있는데 히트가 0건이거나 공통 접두가 루트뿐일 때 `place=''` 처리가 없다
+- C# `public sealed|abstract|partial|static class`·TS `export default|abstract class`를 패턴이 못 잡는다 — Unity·TS 저장소에서 관측
+- 펜스 새 문장의 "세션 코드 이름 목록"·"코드 자리", 국면 0의 "어간", 고지 셋째 변형의 "추출 표" — 첫 등장 풀이가 약하다
+- 국면 0 본문과 표 파일이 서로를 "원본"으로 가리킨다(절차/규정으로 갈라 읽으면 맞음)
+- context-handling save 모드 2단계가 코드 이름 목록 절을 열거하지 않는다(템플릿 주석에만)
+- 검사 느슨함: `코드 이름 목록` decision-flow 1건 문턱(실측 6, 재서술 목록이 채움)·brainstorming 2건 문턱(실측 9) — 169·203행이 되돌아가도 통과. 눈으로 확인함
+- 국면 0 70행 "결정 박스와 다른 메시지로 … ⑤의 대상이 아니다"가 주니어 독자에게 모순처럼 읽힌다(REQ-005 문면)
+- 1.27.0에서 승계: 두 자리 목록의 자리 혼용 · 코드 이름+풀이 헤더 반복 길이 · 발화가 이미 번역어면 자리 단서 없음 · 컴팩션 유실 · merge-to-domain "검사 넷" 드리프트 · `💡 추천:` 이름표 목록 · 재서술 항목 10 · 검사 경로 손지정 사각
+- 미푸시 릴리스 넷(1.26.0·1.26.1·1.27.0·1.27.1) — 실사용 확인 뒤 푸시
 
 - 일탈(브레인스토밍): A-0·Socratic·Seed-Architect·Contrarian·Simplifier 서브에이전트 미투입 — 재료가 검토 한 편과 결정뿐. 국면 3 블라인드 라운드는 규범대로 전원 병렬
 - 관측 항목(범위 밖): 두 자리 목록의 자리 혼용(근거 갈래 안전망 없음) · 코드 이름+풀이의 헤더 반복 길이 · 발화가 이미 번역어면 자리 단서 없음 · 컴팩션으로 국면 0~B-1 목록이 사라지는 경우
@@ -146,8 +185,8 @@ affects:
 | 도착 `코드 이름 목록` / 구획 / `^message` / 존재 | 코드 이름 목록: decision-flow 6 · brainstorming(SKILL) 9 · context-handling 2 · document-consolidation 2 · 구획(`--- 코드 이름 목록 ---`): templates 9 · plan-stage 3 · `^message`: 1 · 존재: 있음 |
 | `scripts/check-restatements` | 12/12, 경로 OK |
 | `scripts/sweep` | skills·commands·hooks·README·CLAUDE.md 0건 · docs 히트 7건 = code-name-lookup.md 2 · phase3_validation.md 1 · plan.md 4 |
-| 버전 | 1.28.0 (plugin.json = marketplace.json) |
-| 미푸시 릴리스 | 1.26.0 · 1.26.1 · 1.27.0 · 1.28.0 — 실사용 확인 뒤 푸시 권고 |
+| 버전 | 1.27.1 (plugin.json = marketplace.json) |
+| 미푸시 릴리스 | 1.26.0 · 1.26.1 · 1.27.0 · 1.27.1 — 실사용 확인 뒤 푸시 권고 |
 | REQ-013 실사용 | 미완료 — Update → 재시작 → GW-Server 브레인스토밍 국면 0 첫 화면부터 항목 넷(고지 · 원문+풀이 · 번역어 0회 · 문서 본문) |
 
 ## 10. 변경 이력
@@ -155,3 +194,4 @@ affects:
 |------|-----------|-----------|------|
 | 2026-09-14 | 브레인스토밍 국면 0~4, 확정 17 (재협의 넷 포함) | 설계 문서 | ready-for-plan |
 | 2026-09-14 | PLAN Feasibility — CAUTION 일곱(REQ-003·005·008·009·010·012·013)을 문면 보강으로 ✅ 상향. 추가: affects에 plan-stage · REQ-005 HIGH · 조항 이름 참조 · 어간 예외 · 검사 ⑤ 면제 · 절 생략 조건 · 구획 원천 · Step 2-1 · 항목 9 · arrival_min 래퍼 · 완료 기준 · 세는 주체 · run-all 게이트 | §3 REQ 문면 | ready-for-plan |
+| 2026-09-14 | 개발 완료 — 문서 통합 (진입: DEVELOP 완료 후 오케스트레이터 라우팅 — 표준 라벨 셋 밖, §9 일탈 참조). 커밋 열하나, 요구사항 열넷 중 열셋 구현, REQ-013 실사용 확인 미완료. 최종 브랜치 리뷰 Not ready(Critical 0 · Important 2 · Minor 11) → 수정 물결 하나로 Important 둘·Minor 셋을 닫고 재리뷰 통과 | 전체 | 완료 |

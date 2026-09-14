@@ -159,7 +159,7 @@ arrival '^0\\. ' \
 arrival '^> 0\\. ' \
   README.md
 
-# ── code-name-lookup (1.28.0) ──────────────────────────────────────
+# ── code-name-lookup (1.27.1) ──────────────────────────────────────
 # 코드 이름 추출 표 — 파일 존재와 proto 패턴 도착
 if [ -f skills/workflow-orchestrator/references/code-name-patterns.md ]; then
   echo "== 존재 검사: code-name-patterns.md: 있음"
