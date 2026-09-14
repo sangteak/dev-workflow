@@ -191,4 +191,10 @@ arrival_min 2 '코드 이름 목록' \
 arrival '개를 이 세션에 두었습니다' \
   skills/brainstorming/SKILL.md
 
+# HANDOFF 절·복구 · 문서 통합 대조
+arrival_min 2 '코드 이름 목록' \
+  skills/context-handling/SKILL.md
+arrival '코드 이름 목록' \
+  skills/document-consolidation/SKILL.md
+
 exit "$rc"
