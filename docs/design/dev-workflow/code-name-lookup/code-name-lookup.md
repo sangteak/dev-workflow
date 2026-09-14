@@ -138,6 +138,18 @@ affects:
 - 관측 항목(범위 밖): 두 자리 목록의 자리 혼용(근거 갈래 안전망 없음) · 코드 이름+풀이의 헤더 반복 길이 · 발화가 이미 번역어면 자리 단서 없음 · 컴팩션으로 국면 0~B-1 목록이 사라지는 경우
 - 1.27.0 실사용 확인(REQ-013 of reask-reassembly)은 이 브레인스토밍에서 사건 ②·③ 확인 — `phase1_exploration.md` 기록. 사건 ①(0번 렌더)은 사용자 캡처 대기
 
+### 검증 (구현 시점)
+| 항목 | 결과 |
+|---|---|
+| `tests/hooks/run-all.sh` | rc=0 |
+| 도착 `코드 자리에서 1건 이상` | decision-flow 2 · bootstrap 2 · SKILL 3 · brainstorming 1 · templates 1 |
+| 도착 `코드 이름 목록` / 구획 / `^message` / 존재 | 코드 이름 목록: decision-flow 6 · brainstorming(SKILL) 9 · context-handling 2 · document-consolidation 2 · 구획(`--- 코드 이름 목록 ---`): templates 9 · plan-stage 2 · `^message`: 1 · 존재: 있음 |
+| `scripts/check-restatements` | 12/12, 경로 OK |
+| `scripts/sweep` | skills·commands·hooks·README·CLAUDE.md 0건 · docs 히트 7건 = code-name-lookup.md 2 · phase3_validation.md 1 · plan.md 4 |
+| 버전 | 1.28.0 (plugin.json = marketplace.json) |
+| 미푸시 릴리스 | 1.26.0 · 1.26.1 · 1.27.0 · 1.28.0 — 실사용 확인 뒤 푸시 권고 |
+| REQ-013 실사용 | 미완료 — Update → 재시작 → GW-Server 브레인스토밍 국면 0 첫 화면부터 항목 넷(고지 · 원문+풀이 · 번역어 0회 · 문서 본문) |
+
 ## 10. 변경 이력
 | 날짜 | 변경 내용 | 영향 범위 | 상태 |
 |------|-----------|-----------|------|
