@@ -12,20 +12,22 @@ scripts/check-restatements || rc=1
 
 # 도착 검사는 목록 열둘 전부가 아니라 그 문면을 담아야 하는 자리에만 건다 —
 # 담지 않는 자리의 정당한 0건을 실패로 세지 않기 위해 대상을 직접 지정한다.
-arrival() {
+arrival_min() {
+  local min="$1"; shift
   local pattern="$1"; shift
-  echo "== 도착 검사: $pattern =="
+  echo "== 도착 검사(${min}건 이상): $pattern =="
   local p n
   for p in "$@"; do
-    n=$(grep -c "$pattern" "$p" 2>/dev/null || true)
-    if [ "${n:-0}" -ge 1 ]; then
+    n=$(grep -c -- "$pattern" "$p" 2>/dev/null || true)
+    if [ "${n:-0}" -ge "$min" ]; then
       echo "   $p: ${n}건"
     else
-      echo "   $p: 0건 — 문면이 도착하지 않았다"
+      echo "   $p: ${n:-0}건 — ${min}건 미만, 문면이 도착하지 않았다"
       rc=1
     fi
   done
 }
+arrival() { arrival_min 1 "$@"; }
 
 # 잔존 검사는 대상 경로를 직접 지정한다 — 저장소 전체를 훑으면 설계 문서나 phase 파일의
 # 정당한 인용이 실패를 내고, phase 파일은 수정 불가라 되돌릴 수단이 없다.
@@ -156,5 +158,49 @@ arrival '^0\\. ' \
   skills/brainstorming/references/templates.md
 arrival '^> 0\\. ' \
   README.md
+
+# ── code-name-lookup (1.27.1) ──────────────────────────────────────
+# 코드 이름 추출 표 — 파일 존재와 proto 패턴 도착
+if [ -f skills/workflow-orchestrator/references/code-name-patterns.md ]; then
+  echo "== 존재 검사: code-name-patterns.md: 있음"
+else
+  echo "== 존재 검사: code-name-patterns.md: 없음"; rc=1
+fi
+arrival '\^message' \
+  skills/workflow-orchestrator/references/code-name-patterns.md
+
+# 정본 — 대조 항목 도착, 옛 "풀이 유무 하나다" 잔존 0, 목록·구획 문구 도착
+arrival '코드 자리에서 1건 이상' \
+  skills/workflow-orchestrator/decision-flow.md
+residue '세는 것은 풀이 유무 하나다' \
+  skills/workflow-orchestrator/decision-flow.md
+arrival '코드 이름 목록' \
+  skills/workflow-orchestrator/decision-flow.md
+
+# 사본 — 언어 요약 다섯·폴백 ① 둘. bootstrap·orchestrator SKILL은 두 줄(요약+폴백)이라 2건
+arrival_min 2 '코드 자리에서 1건 이상' \
+  skills/workflow-orchestrator/bootstrap.md \
+  skills/workflow-orchestrator/SKILL.md
+arrival '코드 자리에서 1건 이상' \
+  skills/brainstorming/SKILL.md \
+  skills/brainstorming/references/templates.md
+
+# brainstorming — 국면 0 목록 단계·고지 본문·B-1 절 옮기기
+arrival_min 2 '코드 이름 목록' \
+  skills/brainstorming/SKILL.md
+arrival '개를 이 세션에 두었습니다' \
+  skills/brainstorming/SKILL.md
+
+# HANDOFF 절·복구 · 문서 통합 대조
+arrival_min 2 '코드 이름 목록' \
+  skills/context-handling/SKILL.md
+arrival '코드 이름 목록' \
+  skills/document-consolidation/SKILL.md
+
+# 워커 프롬프트 — 구획 도착 (templates 여덟 + 조립 규칙, plan-stage 둘)
+arrival_min 8 '--- 코드 이름 목록 ---' \
+  skills/brainstorming/references/templates.md
+arrival_min 3 '--- 코드 이름 목록 ---' \
+  skills/plan-stage/SKILL.md
 
 exit "$rc"
