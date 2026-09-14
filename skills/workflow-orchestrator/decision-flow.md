@@ -10,18 +10,18 @@
 
 **재서술 지점 목록 (바닥 검증 — 목록에 오른 자리는 빠짐없이):** 이 문서의 규범을 **다시 적어 놓은** 자리는 아래 열둘이다. 규범의 뜻을 바꾸는 작업은 같은 차례에 이 목록을 함께 고친다. 이 목록은 `skills/` 아래와 사용자 문서를 덮는다 — `docs/design/`의 도메인 문서는 `merge-to-domain`이 옮기므로 여기 넣지 않는다. 목록에 오른 자리를 빠짐없이 고쳤는지는 `scripts/check-restatements`가 센다. 목록 밖에 새 자리가 생겼는지는 기계가 못 세므로 전수 스윕이 매번 그대로 돈다. 원본을 가리키기만 하는 줄(예: brainstorming SKILL.md의 "형식은 decision-flow.md가 정의한다")은 재서술이 아니므로 목록에 넣지 않는다.
 
-1. `skills/workflow-orchestrator/bootstrap.md` — 세션 시작 상시 주입본의 결정 요청 형식 폴백과 언어 요약(풀이 세기 조각 포함), 되물음 재조립 불변식
-2. `skills/workflow-orchestrator/SKILL.md` — 「결정 요청 폴백 형식」의 스켈레톤 전문·결정 정의·설명 블록·등급·언어 최소 요건·질문 규칙 요약, 그리고 이슈 경량 사이클의 언어 줄, 되물음 처리 폴백과 0번 탈출구 모양
+1. `skills/workflow-orchestrator/bootstrap.md` — 세션 시작 상시 주입본의 결정 요청 형식 폴백과 언어 요약(풀이 세기·코드 자리 대조 조각 포함), 되물음 재조립 불변식, 폴백 검사 ①의 코드 자리 대조
+2. `skills/workflow-orchestrator/SKILL.md` — 「결정 요청 폴백 형식」의 스켈레톤 전문·결정 정의·설명 블록·등급·언어 최소 요건(코드 자리 대조 조각 포함)·질문 규칙 요약, 그리고 이슈 경량 사이클의 언어 줄, 되물음 처리 폴백과 0번 탈출구 모양, 폴백 검사 ①의 코드 자리 대조
 3. `skills/workflow-orchestrator/references/grounding.md` — 등급 경계 사례와 로컬 템플릿 면제
 4. `skills/workflow-orchestrator/references/actions.md` — 소비 계약의 적용 경로 목록
-5. `skills/brainstorming/SKILL.md` — 작업 방향 확인 화면의 읽기 실패 폴백, 페르소나 발언 공통 규칙의 언어 요약(풀이 세기 조각 포함), 국면 1·2의 질문 규칙 요약, 국면 0 카테고리 확정 화면의 「배경」 이름표
-6. `skills/brainstorming/references/templates.md` — 「작업 방향 확인 화면」 실물, 공통 조립 규칙의 언어 최소 요건(풀이 세기 조각 포함), 「핵심 질문」 출력 형식, 시드 확인의 지어낸 이름 검사, 본질 질문 화면과 인터뷰 질문 화면의 「배경/힌트」 이름표, 질문 화면 실물의 0번 탈출구 모양
+5. `skills/brainstorming/SKILL.md` — 작업 방향 확인 화면의 읽기 실패 폴백, 페르소나 발언 공통 규칙의 언어 요약(풀이 세기·코드 자리 대조 조각 포함), 국면 1·2의 질문 규칙 요약, 국면 0 카테고리 확정 화면의 「배경」 이름표, 국면 0 코드 이름 목록 추출·고지와 B-1 절 옮기기
+6. `skills/brainstorming/references/templates.md` — 「작업 방향 확인 화면」 실물, 공통 조립 규칙의 언어 최소 요건(풀이 세기·코드 자리 대조 조각 포함), 「핵심 질문」 출력 형식, 시드 확인의 지어낸 이름 검사, 본질 질문 화면과 인터뷰 질문 화면의 「배경/힌트」 이름표, 질문 화면 실물의 0번 탈출구 모양, 워커 프롬프트의 「코드 이름 목록」 구획
 7. `skills/plan-stage/SKILL.md` — 「재협의 선택지」 실물
 8. `skills/merge-to-domain/SKILL.md` — 결정 박스·설명 블록·되물음 재조립의 적용 범위 조항
-9. `skills/context-handling/SKILL.md` — HANDOFF 「결정 흐름 상태」 섹션의 보존 항목 목록(되물음 횟수와 밟은 갈래 포함)
+9. `skills/context-handling/SKILL.md` — HANDOFF 「결정 흐름 상태」 섹션의 보존 항목 목록(되물음 횟수와 밟은 갈래 포함), 「코드 이름 목록」 절과 복구 규칙
 10. `README.md` — 사용자 문서의 결정 화면 설명과 0번 탈출구 모양
 11. `skills/design-summary/SKILL.md` — 「서술 규칙」의 용어 조항
-12. `skills/document-consolidation/SKILL.md` — 「§2 대조」의 판정형 화면
+12. `skills/document-consolidation/SKILL.md` — 「§2 대조」의 판정형 화면, Step 2-1 코드 이름 대조
 
 이 목록은 **바닥이지 천장이 아니다.** 규범 변경 스윕은 매번 새로 돌리고, 목록에 없는 자리를 찾으면 그 릴리스에서 이 목록에 더한다. 절차 원본은 development-principles의 「규범 변경 스윕」이다.
 
