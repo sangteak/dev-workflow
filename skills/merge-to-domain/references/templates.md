@@ -22,7 +22,7 @@ digest의 원본은 dev-workflow MCP 서버 `digest_extract` 도구의 출력(JS
 | `decisions[].supersedes` | 이전 결정을 명시적으로 대체하는 경우 해당 결정 ID, 기본 null |
 | 항목 재분류 | 도구는 헤딩 신호만으로 policy/decision을 나눈다 — 문맥상 재분류가 필요하면 LLM이 조정하되 id, statement는 유지한다 |
 
-후처리는 도구 출력 JSON에 필드를 덧붙이는 방식으로만 수행한다 — id, statement과 순서 변경 금지.
+후처리는 도구 출력 JSON에 필드를 덧붙이는 방식으로만 수행한다 — id, statement와 순서 변경 금지.
 
 ## 「domain digest 사후 고지 출력」
 
