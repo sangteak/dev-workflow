@@ -24,7 +24,7 @@ printf '%s' "$prompt" | grep -qiE "$INTAKE_WORDS" || exit 0
 
 cat <<'EOF'
 <intake-signal>
-사용자 입력에 착수 어휘(결함·리팩터링 계열)가 감지되었다. 아래 두 경우 중 하나로 판정하라.
+사용자 입력에 착수 어휘(결함이나 리팩터링 계열)가 감지되었다. 아래 두 경우 중 하나로 판정하라.
 
 1) 이미 진행 중인 feature의 개발 도중에 발견된 문제라면 — 이 신호는 해당 없음이다.
    dev-workflow:workflow-orchestrator 「Issue Lifecycle」의 이슈 카드 경로를 따르라.

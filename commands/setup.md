@@ -352,7 +352,7 @@ auto-fix: false
 의존성 검증 완료 후 실행한다:
 
 1. 아래 3위치에서 `statusLine` 설정 존재를 검사한다 (grep `"statusLine"`):
-   - `~/.claude/settings.json` · 프로젝트 `.claude/settings.json` · 프로젝트 `.claude/settings.local.json`
+   - `~/.claude/settings.json`, 프로젝트 `.claude/settings.json`, 프로젝트 `.claude/settings.local.json`
 2. **셋 다 없으면 → 이 섹션 전체를 조용히 스킵한다.** 신규 설치를 제안하지 않는다 (설계 결정: 설치 강요 금지)
 3. 하나라도 있으면 1회 제안한다:
    "기존 statusline에 dev-workflow 미완료 상태 표시를 추가할 수 있습니다. 안내를 볼까요?
