@@ -53,4 +53,4 @@ if [ "$pv" != "$NEW" ] || [ "$mkv" != "$NEW" ]; then
   echo "ABORT: 치환 후 검증 실패 (plugin.json=$pv marketplace.json=$mkv) — 파일을 확인할 것"
   exit 4
 fi
-echo "OK: → $NEW (plugin.json·marketplace.json 동기 갱신)"
+echo "OK: → $NEW (plugin.json과 marketplace.json 동기 갱신)"

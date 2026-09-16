@@ -18,7 +18,7 @@ if [ $# -lt 1 ]; then
   exit 2
 fi
 
-# 고정 범위: 규범이 재서술될 수 있는 모든 텍스트 — skills/ 밖(README·commands·CLAUDE.md)을
+# 고정 범위: 규범이 재서술될 수 있는 모든 텍스트 — skills/ 밖(README, commands와 CLAUDE.md)을
 # 반드시 포함한다 (lessons.md: skills/ 한정 스윕이 README 2곳을 놓친 실측)
 SCOPE=(skills commands hooks docs README.md CLAUDE.md)
 

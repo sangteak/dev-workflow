@@ -34,7 +34,7 @@ check "2.잔존+무관" "SILENT" "$(fire "$TMP/projA" "이 버그 고쳐줘")"
 check "3.무잔존+마무리" "SILENT" "$(fire "$TMP/projB" "마무리하자")"
 # 4. 잔존 O + 영어 발화 → 발동
 check "4.영어 wrap up" "FIRE" "$(fire "$TMP/projA" "lets wrap up this feature")"
-# 5. 잔존 O + 어휘 밖 발화 → 침묵 (예상된 미탐 — 축2·4가 보완)
+# 5. 잔존 O + 어휘 밖 발화 → 침묵 (예상된 미탐 — 축2와 4가 보완)
 check "5.어휘 밖 미탐" "SILENT" "$(fire "$TMP/projA" "오늘은 여기까지 하고 넘어가자")"
 # 6. _archive만 잔존 → 침묵
 check "6.archive 제외" "SILENT" "$(fire "$TMP/projC" "마무리하자")"
