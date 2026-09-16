@@ -1,8 +1,8 @@
 > brainstorming SKILL.md의 참조 자료 (verbatim). 본문 디스패치 지점의 Read 지시로 로드된다.
 
 > **공통 조립 규칙 (REQ-003):** 아래 모든 프롬프트 펜스 조립 시 decision-flow.md 3부 「언어 규범」 펜스 전문을 "--- 언어 규범 ---" 구획으로 그대로 붙여넣는다 (Read 실패 시 최소 요건: 한국어, 독자는 주니어와 시니어 사이의 개발자, 표준 용어는 그대로, 저장소에 없는 낱말로 개념에 이름 붙이지 않기, 코드에 적히는 이름 번역 금지, 저장소 고유 용어와 식별자는 즉석 풀이(병기) — 번호만 쓰지 않고 무엇인지 한 조각을 함께 적는다 — 내보내기 전에 풀이 없는 것을 센다 — 도메인 명사는 세션 목록 또는 코드 자리에서 1건 이상, 가운뎃점(·) 금지 — 나열은 쉼표와 와/과, 줄임말 금지, 문단 개행, 화면 폭에 맞춘 임의 줄바꿈 금지).
-> 적용 경로 목록 (검증 기준 — 누락 0): ① Step A-0 Ontologist ② Step A Socratic ③ 미답변 조사 ④ Step B Seed-Architect ⑤ Step C Contrarian ⑥ Step C Hacker ⑦ Simplifier ⑧ 블라인드 라운드 (본 파일) + plan-stage Architect, Researcher과 블라인드 판정 (plan-stage SKILL.md).
-> 행동 블록 구획 적용 경로 (검증 기준 — 누락 0): ① brainstorming 작업 방향 확인 화면 ② brainstorming 국면별 종료 조건 ③ workflow-orchestrator 개발 위임 (SKILL.md과 bootstrap.md) ④ context-handling 세션 재개 라벨 ⑤ plan-stage 하위 에이전트 프롬프트 (Architect, Researcher과 Feasibility 판정).
+> 적용 경로 목록 (검증 기준 — 누락 0): ① Step A-0 Ontologist ② Step A Socratic ③ 미답변 조사 ④ Step B Seed-Architect ⑤ Step C Contrarian ⑥ Step C Hacker ⑦ Simplifier ⑧ 블라인드 라운드 (본 파일) + plan-stage Architect, Researcher와 블라인드 판정 (plan-stage SKILL.md).
+> 행동 블록 구획 적용 경로 (검증 기준 — 누락 0): ① brainstorming 작업 방향 확인 화면 ② brainstorming 국면별 종료 조건 ③ workflow-orchestrator 개발 위임 (SKILL.md와 bootstrap.md) ④ context-handling 세션 재개 라벨 ⑤ plan-stage 하위 에이전트 프롬프트 (Architect, Researcher와 Feasibility 판정).
 > 코드 이름 목록 구획 (검증 기준 — 누락 0): 위 언어 규범 적용 경로 전부에 `--- 코드 이름 목록 ---` 구획을 언어 규범 구획 바로 다음에 둔다. 원천은 B-1 전에는 본체 컨텍스트의 목록, 후에는 HANDOFF 「코드 이름 목록」 절 — 목록이 없으면 구획을 비운다 (원본: decision-flow §7 프롬프트 구성).
 
 ## 「Step A-0 Ontologist 프롬프트」
