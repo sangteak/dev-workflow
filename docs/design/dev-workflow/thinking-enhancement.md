@@ -13,7 +13,7 @@ workflow-orchestrator가 Ouroboros MCP 도구 사용 가능 여부를 자동 감
 - **Path A (MCP 연동)**: Ouroboros MCP 사용 가능 — validate_seed 등 MCP 전용 도구를 추가로 사용한다
 - **Path B (내장 역할)**: MCP 미사용 — 내장 역할 정의만으로 동일하게 동작한다
 
-에이전트 역할 정의는 Path와 무관하게 각 스킬의 `references/agent-roles.md` 내장본(Ouroboros 0.39.0 verbatim)을 사용한다. 초기 구조(v1.12.0~v1.15.x)는 설치·파일 발견 여부에 따른 3단계 폴백(Path A/B/C — C는 내장 소크라테스 패턴의 Standalone Mode)이었으나, **v1.16.0에서 역할 내장으로 대체됐다** — 외부 파일 glob 탐색·경로 미확보 리스크·Read 실패 폴백 의존이 함께 소멸했고, Ouroboros 미설치 사용자도 서브에이전트 사고 제약을 그대로 받는다. 내장본 갱신은 Ouroboros 메이저 업데이트 인지 시 수동 1회 대조로 한다 (상시 대조 절차 없음 — 죽은 절차 방지).
+에이전트 역할 정의는 Path와 무관하게 각 스킬의 `references/agent-roles.md` 내장본(Ouroboros 0.39.0 verbatim)을 사용한다. 초기 구조(v1.12.0~v1.15.x)는 설치와 파일 발견 여부에 따른 3단계 폴백(Path A/B/C — C는 내장 소크라테스 패턴의 Standalone Mode)이었으나, **v1.16.0에서 역할 내장으로 대체됐다** — 외부 파일 glob 탐색, 경로 미확보 리스크와 Read 실패 폴백 의존이 함께 소멸했고, Ouroboros 미설치 사용자도 서브에이전트 사고 제약을 그대로 받는다. 내장본 갱신은 Ouroboros 메이저 업데이트 인지 시 수동 1회 대조로 한다 (상시 대조 절차 없음 — 죽은 절차 방지).
 
 내장 후에도 유효한 제약 두 가지: dev-workflow는 Markdown 스킬이므로 프로그래밍적 게이트 강제는 MCP 없이 불가능하고(LLM의 지시 준수에 의존), 서브에이전트는 Agent 도구에 의존하며 병렬 실행 시 응답 시간이 증가한다. 구 제약이던 "에이전트 파일 경로가 OS/설치 방식마다 다름"은 내장으로 소멸했다. 서브에이전트의 파일시스템 접근, 두 플러그인 훅의 순차 실행 무충돌, MCP 동시 요청 큐 처리는 구현 시 실측 검증되었다.
 
@@ -50,7 +50,7 @@ Socratic Interviewer 서브에이전트가 각 페르소나별로 병렬 실행�
 plan-stage의 실현 가능성 평가에 두 에이전트를 통합했다.
 
 - **Architect** (Step 2): 구조적 리스크(결합도, 책임 분리, 추상화 수준)를 분석하여 실현 가능성 평가에 구조적 근거를 추가한다.
-- **Researcher** (Step 3): CAUTION/RENEGOTIATE 판정 항목에 대해 사례 조사와 대안 탐색을 수행한다. v1.16.0부터 **미실측 수치·구조적 상한 가정을 근거로 한 FEASIBLE(낙관) 판정**도 조사 대상에 포함된다 — 전원 낙관 일치가 실측 없이 통과한 계획 결함의 실증 경로를 막는 조건 확장이며, plan-stage의 전원 일치 조기 종료에도 같은 예외(근거 미실측 시 실측·추정 근거 1줄 요구)가 적용된다.
+- **Researcher** (Step 3): CAUTION/RENEGOTIATE 판정 항목에 대해 사례 조사와 대안 탐색을 수행한다. v1.16.0부터 **미실측 수치와 구조적 상한 가정을 근거로 한 FEASIBLE(낙관) 판정**도 조사 대상에 포함된다 — 전원 낙관 일치가 실측 없이 통과한 계획 결함의 실증 경로를 막는 조건 확장이며, plan-stage의 전원 일치 조기 종료에도 같은 예외(근거 미실측 시 실측과 추정 근거 1줄 요구)가 적용된다.
 
 ## 에이전트 매칭 전략
 
@@ -70,7 +70,7 @@ plan-stage의 실현 가능성 평가에 두 에이전트를 통합했다.
 | brainstorming | Step C (교착 해소) | Hacker | 교착 감지 시 |
 | brainstorming | 국면 1→2 전환 | Simplifier | 요구사항 ≥8 또는 ⚠️/❌ ≥3 |
 | plan-stage | Step 2 (실현 가능성) | Architect | 항상 |
-| plan-stage | Step 3 (조사) | Researcher | CAUTION/RENEGOTIATE 존재 시 + 미실측 수치·상한 가정 포함 FEASIBLE 판정 (v1.16.0) |
+| plan-stage | Step 3 (조사) | Researcher | CAUTION/RENEGOTIATE 존재 시 + 미실측 수치, 상한 가정 포함 FEASIBLE 판정 (v1.16.0) |
 
 시드와 명확도 체크리스트는 phase1 파일에 포함되어 국면 간 의도 추적의 기준점이 된다. 후속 확장 여지(v2 범위)로 Ouroboros MCP 도구 직접 호출(validate_seed, gate_transition, detect_drift), 국면 2~3 에이전트 매핑 확장(Ontologist/Simplifier), PostToolUse 훅 실시간 드리프트 감지가 식별되어 있다.
 
@@ -81,5 +81,5 @@ plan-stage의 실현 가능성 평가에 두 에이전트를 통합했다.
 | 날짜 | 변경 내용 | 영향 범위 | 상태 |
 |------|-----------|-----------|------|
 | 2026-07-08 | 기존 문서 — 신규 머지 시작 이전 | - | - |
-| 2026-07-08 | ouroboros-integration 통합 (작성자: 권상택) | 연동·매칭 섹션, 변경 이력 신설 | 완료 |
-| 2026-07-10 | verification-realignment 통합 (작성자: Sangtaek Kwon (권상택)) — 3단계 폴백→2-Path·역할 내장 대체 | 시스템 개요, Ouroboros 연동 절 재작성, Step A·Researcher 현행화 | 완료 |
+| 2026-07-08 | ouroboros-integration 통합 (작성자: 권상택) | 연동, 매칭 섹션, 변경 이력 신설 | 완료 |
+| 2026-07-10 | verification-realignment 통합 (작성자: Sangtaek Kwon (권상택)) — 3단계 폴백→2-Path, 역할 내장 대체 | 시스템 개요, Ouroboros 연동 절 재작성, Step A, Researcher 현행화 | 완료 |
