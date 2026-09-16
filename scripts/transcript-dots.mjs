@@ -5,8 +5,8 @@
 import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
 
-const DOT = "·";
-const NAME = /가운뎃점\(·\)/g;
+const DOT = "\u00B7";
+const NAME = /가운뎃점\(\u00B7\)/g;
 const file = process.argv[2];
 if (!file) { console.error("usage: transcript-dots.mjs <session.jsonl>"); process.exit(2); }
 

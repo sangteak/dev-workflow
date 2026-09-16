@@ -4,7 +4,7 @@
 // 출력: 한 줄에 하나 — OK | READ | FAIL | DOMAIN-BULLET, 파일, 새 줄 번호, 사유
 import { execFileSync } from "node:child_process";
 
-const DOT = "·";
+const DOT = "\u00B7";
 const [base, ...rest] = process.argv.slice(2);
 if (!base) { console.error("usage: diff-check.mjs <base-ref> [-- paths]"); process.exit(2); }
 const diff = execFileSync("git", ["diff", "-U0", "--no-color", base, "--", ...rest.filter(p => p !== "--")], { encoding: "utf8", maxBuffer: 1 << 28 });
