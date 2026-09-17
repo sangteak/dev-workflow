@@ -1,4 +1,4 @@
-> Ouroboros 0.50.5 `agents/*.md` verbatim 내장본 (v1.16.0 도입, REQ-005 — 2026-07-20 0.50.5 대조·갱신: Seed-Architect만 변경, 나머지 동일). 문장 수정 금지 — 갱신은 Ouroboros 메이저 업데이트 인지 시 수동 1회 대조. 블록 구분 헤딩만 본 파일이 추가한 것이다.
+> Ouroboros 0.50.5 `agents/*.md` verbatim 내장본 (v1.16.0 도입, REQ-005 — 2026-07-20 0.50.5 대조와 갱신: Seed-Architect만 변경, 나머지 동일). 문장 수정 금지 — 갱신은 Ouroboros 메이저 업데이트 인지 시 수동 1회 대조. 블록 구분 헤딩만 본 파일이 추가한 것이다.
 
 ## 「Ontologist」
 
