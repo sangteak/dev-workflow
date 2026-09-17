@@ -57,7 +57,7 @@ dot_residue() {
       skills commands hooks README.md CLAUDE.md tasks/lessons.md tests scripts docs/design \
       ':(exclude)**/phase[0-9]_*.md' ':(exclude)**/_archive/**' ':(exclude)**/evidence/**' 2>/dev/null \
     | sed "s/가운뎃점(${dot})//g" | grep -e "$dot" || true)
-  n=$(printf '%s' "$hits" | grep -c . || true)
+  n=$(printf '%s' "$hits" | grep -a -c . || true)
   if [ "${n:-0}" -eq 0 ]; then
     echo "   0건"
   else
