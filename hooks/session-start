@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SessionStart hook for dev-workflow plugin — 경량 부트스트랩 주입 (v1.12.0)
 # 전체 orchestrator 스킬은 Skill 도구로 지연 로드된다. 여기서는 발동 규칙, 단계 요약과
-# 세션 불변식만 담긴 bootstrap.md(~2.5KB)를 주입한다.
+# 세션 불변식만 담긴 bootstrap.md(약 6.8KB)를 주입한다.
 
 set -euo pipefail
 
