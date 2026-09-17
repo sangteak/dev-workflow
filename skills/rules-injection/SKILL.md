@@ -1,6 +1,6 @@
 ---
 name: rules-injection
-description: ".claude/rules/*.md 프로젝트 규칙을 단계별로 전파하고 REVIEW에서 검증/자동 수정하는 메커니즘. workflow-orchestrator·plan-stage가 단계 진입 시 invoke한다."
+description: ".claude/rules/*.md 프로젝트 규칙을 단계별로 전파하고 REVIEW에서 검증/자동 수정하는 메커니즘. workflow-orchestrator와 plan-stage가 단계 진입 시 invoke한다."
 ---
 
 # rules-injection

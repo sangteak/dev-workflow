@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 재서술 지점 목록 검사 — 목록 경로 존재 · 항목 수 대조 · 문면 도착
+# 재서술 지점 목록 검사 — 목록 경로 존재, 항목 수 대조와 문면 도착
 # 사용법: scripts/check-restatements '<도착 문면 패턴>' [경로 접두어...]
 set -u
 SRC="skills/workflow-orchestrator/decision-flow.md"

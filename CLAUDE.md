@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture
 
-이 프로젝트는 **문서 기반 플러그인**이다. 로직 대부분은 Markdown 스킬 문서에 정의된다 — 본문은 `skills/*/SKILL.md`, 출력 템플릿·서브에이전트 프롬프트 등 참조 자료는 `skills/*/references/*.md`(v1.13.0 분할), 상시 규범은 `skills/workflow-orchestrator/decision-flow.md`·`bootstrap.md`. 예외로 merge-to-domain의 기계 단계(digest 추출·머지 검증·체크포인트)는 `mcp/`의 MCP 서버가 담당한다 (Node 18+ 필요, 부재 시 머지 기능만 비활성).
+이 프로젝트는 **문서 기반 플러그인**이다. 로직 대부분은 Markdown 스킬 문서에 정의된다 — 본문은 `skills/*/SKILL.md`, 출력 템플릿, 서브에이전트 프롬프트 등 참조 자료는 `skills/*/references/*.md`(v1.13.0 분할), 상시 규범은 `skills/workflow-orchestrator/decision-flow.md`, `bootstrap.md`. 예외로 merge-to-domain의 기계 단계(digest 추출, 머지 검증과 체크포인트)는 `mcp/`의 MCP 서버가 담당한다 (Node 18+ 필요, 부재 시 머지 기능만 비활성).
 
 ### Core Components
 
@@ -16,8 +16,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **`hooks/`** — 세션 시작 시 `workflow-orchestrator` 스킬을 자동 주입하는 bash 스크립트 + 마무리 어휘 감지 시 라우팅 지시를 주입하는 completion-nudge 훅 + **착수 어휘 감지 시 작업 방향 판정을 지시하는 intake-nudge 훅 (파일 미접근)** (공용 잔존 감지: `hooks/lib/detect-remnants`)
 - **`skills/`** — 핵심 스킬 (아래 참조)
 - **`commands/`** — 콘솔 자동완성용 독립 명령 파일 (save, resume, design-summary, setup, add-rule, merge-to-domain)
-- **`mcp/`** — dev-workflow MCP 서버 (`digest_extract`·`merge_verify`·`merge_checkpoint` — 머지 기계 단계, 번들 커밋 `mcp/dist/index.js`)
-- **`scripts/`** — repo 개발용 릴리스 스크립트 (`bump-version`: `plugin.json`·`marketplace.json` 버전 동시 갱신·동기 검증, `sweep`: 규범 변경 후 구 문구 잔존 검사) — 플러그인 배포 대상 아님
+- **`mcp/`** — dev-workflow MCP 서버 (`digest_extract`, `merge_verify`, `merge_checkpoint` — 머지 기계 단계, 번들 커밋 `mcp/dist/index.js`)
+- **`scripts/`** — repo 개발용 릴리스 스크립트 (`bump-version`: `plugin.json`, `marketplace.json` 버전 동시 갱신과 동기 검증, `sweep`: 규범 변경 후 구 문구 잔존 검사) — 플러그인 배포 대상 아님
 - **`docs/design/`** — 설계 문서 저장소 (카테고리/기능 구조)
 
 ### Skills
@@ -93,7 +93,7 @@ docs/design/
 - **VCS 감지**: 세션 환경 컨텍스트의 "Is directory a git repo" 값 사용 (`.git` 리터럴 검사는 linked worktree 오탐으로 미사용) — Yes → git-mode (worktree 사용), No → no-git-mode (파일 기반 체크포인트)
 - **HANDOFF 복구**: 세션 시작 시 `docs/design/**/HANDOFF.md` glob 탐색 → 발견 시 목록 제시
 - **Phase 파일 불변성**: phase1/2/3.md는 생성 후 수정 불가. 개발 완료 시 document-consolidation이 중간 산출물(phase/plan/HANDOFF)만 삭제하고 `[기능명].md`는 complete로 보존 — feature 디렉토리 전체 삭제는 도메인 머지 후 merge-to-domain이 수행
-- **이슈 카드**: DEVELOP 중 계획 밖 결함은 카드 선행(한 번에 하나) — 경미는 경량 사이클로 즉시 반영·카드 삭제, 크리티컬은 판별문으로 제자리 재계획/아카이브+승계 분기. 닫힌 feature의 문제는 별도 feature (상세: orchestrator 「Issue Lifecycle」). 카드 분석 확인 시 PLAN 세트 페르소나 관점 1줄 병기 (personas.md 없으면 생략)
+- **이슈 카드**: DEVELOP 중 계획 밖 결함은 카드 선행(한 번에 하나) — 경미는 경량 사이클로 즉시 반영, 카드 삭제, 크리티컬은 판별문으로 제자리 재계획/아카이브+승계 분기. 닫힌 feature의 문제는 별도 feature (상세: orchestrator 「Issue Lifecycle」). 카드 분석 확인 시 PLAN 세트 페르소나 관점 1줄 병기 (personas.md 없으면 생략)
 - **자기개선 루프**: 수정받을 때마다 `tasks/lessons.md`에 기록, 세션 시작 시 내부적으로 검토
 - **작업 방향 축 (v1.22.0)**: 단계 축과 직교하는 두 번째 축. 문서 앞머리 `action:` 한 줄로 병기하고, 정의는 `skills/workflow-orchestrator/references/actions.md`에 블록 하나씩 모은다. 정본은 `[기능명].md` 앞머리, 설계 문서가 없는 구간에서는 `HANDOFF.md`가 임시 정본. 값이 없으면 `new-feature` (상세: 해당 파일 「정본 규정」)
 

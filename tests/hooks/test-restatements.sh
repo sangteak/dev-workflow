@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 재서술 지점의 도착·잔존 검사.
+# 재서술 지점의 도착과 잔존 검사.
 #   arrival() — 새 문면이 도착했는가. 경로마다 1건 이상이어야 통과
 #   residue() — 옛 문면이 남았는가. 경로마다 0건이어야 통과
 # 둘은 판정 방향이 반대다. 헬퍼 이름과 출력 머리말을 갈라 두어 방향을 반대로 읽지 않게 한다.
@@ -47,6 +47,26 @@ residue() {
   done
 }
 
+# 가운뎃점 잔존 — 포함 목록 아홉과 제외 경로 셋. 이름 문구 "가운뎃점(...)"을 지운 뒤 남는 것을 센다.
+# 패턴은 바이트로 조립해 이 스크립트 자신이 0건을 유지한다. DOT_GATE=off면 건수만 보고하고 rc를 올리지 않는다.
+dot=$'\xc2\xb7'
+dot_residue() {
+  echo "== 가운뎃점 잔존 검사 (이름 문구 제외) =="
+  local hits n
+  hits=$(git grep -nI --untracked -e "$dot" -- \
+      skills commands hooks README.md CLAUDE.md tasks/lessons.md tests scripts docs/design \
+      ':(exclude)**/phase[0-9]_*.md' ':(exclude)**/_archive/**' ':(exclude)**/evidence/**' 2>/dev/null \
+    | sed "s/가운뎃점(${dot})//g" | grep -e "$dot" || true)
+  n=$(printf '%s' "$hits" | grep -c . || true)
+  if [ "${n:-0}" -eq 0 ]; then
+    echo "   0건"
+  else
+    printf '%s\n' "$hits" | cut -c1-120 | head -40
+    echo "   ${n}건 — 가운뎃점이 남아 있다"
+    [ "${DOT_GATE:-on}" = off ] || rc=1
+  fi
+}
+
 # 질문 규칙 — 답의 후보를 세는 갈림 (원본 + 재서술 사본 넷)
 arrival '답의 후보를 적어' \
   skills/workflow-orchestrator/decision-flow.md \
@@ -80,7 +100,7 @@ residue '^이 결정이 다루는 문제: *.' \
   skills/workflow-orchestrator/decision-flow.md \
   skills/workflow-orchestrator/SKILL.md
 
-# 같은 모양 — 「배경」·「배경/힌트」
+# 같은 모양 — 「배경」과 「배경/힌트」
 residue '^\*\*배경(/힌트)?:\*\* *.' \
   skills/workflow-orchestrator/decision-flow.md \
   skills/brainstorming/SKILL.md \
@@ -113,7 +133,7 @@ arrival '풀이 없는 것' \
 arrival '번호 선택지를 낸 화면' \
   skills/workflow-orchestrator/decision-flow.md
 
-# 사본 — 언어 요약 넷·이슈 언어 줄이 세는 조각을 받았는가
+# 사본 — 언어 요약 넷과 이슈 언어 줄이 세는 조각을 받았는가
 arrival '풀이 없는 것' \
   skills/workflow-orchestrator/bootstrap.md \
   skills/workflow-orchestrator/SKILL.md \
@@ -125,7 +145,7 @@ arrival '다시 씀: ' \
   skills/workflow-orchestrator/bootstrap.md \
   skills/workflow-orchestrator/SKILL.md
 
-# 사본 — 적용 범위 문구가 bootstrap·merge-to-domain에 도착했는가
+# 사본 — 적용 범위 문구가 bootstrap과 merge-to-domain에 도착했는가
 arrival '번호 선택지를 낸 화면' \
   skills/workflow-orchestrator/bootstrap.md \
   skills/merge-to-domain/SKILL.md
@@ -169,7 +189,7 @@ fi
 arrival '\^message' \
   skills/workflow-orchestrator/references/code-name-patterns.md
 
-# 정본 — 대조 항목 도착, 옛 "풀이 유무 하나다" 잔존 0, 목록·구획 문구 도착
+# 정본 — 대조 항목 도착, 옛 "풀이 유무 하나다" 잔존 0, 목록과 구획 문구 도착
 arrival '코드 자리에서 1건 이상' \
   skills/workflow-orchestrator/decision-flow.md
 residue '세는 것은 풀이 유무 하나다' \
@@ -177,7 +197,7 @@ residue '세는 것은 풀이 유무 하나다' \
 arrival '코드 이름 목록' \
   skills/workflow-orchestrator/decision-flow.md
 
-# 사본 — 언어 요약 다섯·폴백 ① 둘. bootstrap·orchestrator SKILL은 두 줄(요약+폴백)이라 2건
+# 사본 — 언어 요약 다섯과 폴백 ① 둘. bootstrap과 orchestrator SKILL은 두 줄(요약+폴백)이라 2건
 arrival_min 2 '코드 자리에서 1건 이상' \
   skills/workflow-orchestrator/bootstrap.md \
   skills/workflow-orchestrator/SKILL.md
@@ -185,13 +205,13 @@ arrival '코드 자리에서 1건 이상' \
   skills/brainstorming/SKILL.md \
   skills/brainstorming/references/templates.md
 
-# brainstorming — 국면 0 목록 단계·고지 본문·B-1 절 옮기기
+# brainstorming — 국면 0 목록 단계, 고지 본문과 B-1 절 옮기기
 arrival_min 2 '코드 이름 목록' \
   skills/brainstorming/SKILL.md
 arrival '개를 이 세션에 두었습니다' \
   skills/brainstorming/SKILL.md
 
-# HANDOFF 절·복구 · 문서 통합 대조
+# HANDOFF 절, 복구와 문서 통합 대조
 arrival_min 2 '코드 이름 목록' \
   skills/context-handling/SKILL.md
 arrival '코드 이름 목록' \
@@ -202,5 +222,29 @@ arrival_min 8 '--- 코드 이름 목록 ---' \
   skills/brainstorming/references/templates.md
 arrival_min 3 '--- 코드 이름 목록 ---' \
   skills/plan-stage/SKILL.md
+
+# 가운뎃점 — 잔존 0건과 도착 여섯 (middle-dot-removal 1.27.2)
+dot_residue
+arrival "가운뎃점(${dot})을 쓰지 않는다" \
+  skills/workflow-orchestrator/decision-flow.md
+arrival "가운뎃점(${dot}) 금지" \
+  skills/workflow-orchestrator/bootstrap.md
+arrival_min 2 '가운뎃점(' \
+  skills/workflow-orchestrator/bootstrap.md \
+  skills/workflow-orchestrator/SKILL.md
+arrival '확정 N/M, 진행 중:' \
+  skills/workflow-orchestrator/decision-flow.md \
+  skills/workflow-orchestrator/SKILL.md
+arrival '확정 \[N\]/\[M\], 진행 중:' \
+  skills/context-handling/SKILL.md
+arrival '확정 N/M,' \
+  skills/workflow-orchestrator/bootstrap.md
+arrival '결정과 질문 구조 규범' \
+  skills/workflow-orchestrator/decision-flow.md \
+  skills/workflow-orchestrator/SKILL.md
+arrival '공통 형식과 언어' \
+  skills/workflow-orchestrator/decision-flow.md
+arrival '다시 씀: 왜 문제인지와 고르면 어떻게 되는지' \
+  skills/workflow-orchestrator/decision-flow.md
 
 exit "$rc"

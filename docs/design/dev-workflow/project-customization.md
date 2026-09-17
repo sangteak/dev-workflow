@@ -1,8 +1,8 @@
-> 프로젝트별 규칙(`.claude/rules/*.md`)을 SessionStart 자동 주입·단계별 적시 첨부·REVIEW 검증의 3계층으로 dev-workflow에 흡수하여, CLAUDE.md 비대화 없이 프로젝트가 dev-workflow에 적응하도록 한다.
+> 프로젝트별 규칙(`.claude/rules/*.md`)을 SessionStart 자동 주입, 단계별 적시 첨부와 REVIEW 검증의 3계층으로 dev-workflow에 흡수하여, CLAUDE.md 비대화 없이 프로젝트가 dev-workflow에 적응하도록 한다.
 
 ## 시스템 개요
 
-dev-workflow는 범용 워크플로우 플러그인으로 설계되어 있지만, 사용자 프로젝트마다 고유한 코딩 스타일·커밋 형식·아키텍처 원칙 같은 팀 표준을 갖는다. 기존에는 이러한 규칙이 모두 CLAUDE.md에 누적되어 파일이 비대해졌고, 도메인이 분리되지 않아 모든 컨텍스트에 무차별 주입되었다. CLAUDE.md에 *"YOU MUST 외부 파일을 읽어라"* 강한 명령을 추가하는 우회는 명령 인지는 보장하지만, **행동 강제·단계별 적시 재강조·자동 검증/수정·메타데이터 라우팅**을 보장하지 못했다.
+dev-workflow는 범용 워크플로우 플러그인으로 설계되어 있지만, 사용자 프로젝트마다 고유한 코딩 스타일, 커밋 형식과 아키텍처 원칙 같은 팀 표준을 갖는다. 기존에는 이러한 규칙이 모두 CLAUDE.md에 누적되어 파일이 비대해졌고, 도메인이 분리되지 않아 모든 컨텍스트에 무차별 주입되었다. CLAUDE.md에 *"YOU MUST 외부 파일을 읽어라"* 강한 명령을 추가하는 우회는 명령 인지는 보장하지만, **행동 강제, 단계별 적시 재강조, 자동 검증/수정과 메타데이터 라우팅**을 보장하지 못했다.
 
 조사 결과 Claude Code 자체 메커니즘만으로는 자동 글로브 주입이 불가능하고(`@import`는 수동 명시, Skills description은 자동 활성화 보장 안 됨), `SessionStart` 훅의 `additionalContext`만이 자동 주입의 유일한 경로이며, 서브에이전트는 메인 컨텍스트를 비상속(fresh context)하므로 명시적 첨부가 필수임을 확인했다. 이를 토대로 dev-workflow가 자체 레이어로 책임지는 3계층 Defense in Depth 메커니즘을 구축했다. 핵심 원칙은 Superpowers/Ouroboros 자체를 수정하지 않고 컨텍스트 주입과 호출 시점 첨부로만 제어한다는 것, 그리고 `.claude/rules/`가 없는 기존 프로젝트는 변경 없이 동일 동작한다는 것이다.
 
@@ -36,7 +36,7 @@ auto-fix: true | false | confirm   # 선택, 기본 confirm
 
 ### 2차: 단계별 프롬프트 적시 첨부
 
-신규 스킬 `skills/rules-injection/SKILL.md`가 단계별 첨부와 REVIEW 검증을 응집 책임으로 가져간다. `workflow-orchestrator`/`plan-stage` 같은 기존 스킬은 단계 진입 시점에 `rules-injection`을 invoke하기만 한다. 이 책임 분리는 PLAN 단계 Architect 검토의 권장에 따른 것으로, 그러지 않으면 `workflow-orchestrator`가 단계 감지·위임·Completion Protocol·Evaluator 게이트에 더해 3계층 규칙 주입까지 떠안게 되어 단일 책임이 무너졌을 것이다.
+신규 스킬 `skills/rules-injection/SKILL.md`가 단계별 첨부와 REVIEW 검증을 응집 책임으로 가져간다. `workflow-orchestrator`/`plan-stage` 같은 기존 스킬은 단계 진입 시점에 `rules-injection`을 invoke하기만 한다. 이 책임 분리는 PLAN 단계 Architect 검토의 권장에 따른 것으로, 그러지 않으면 `workflow-orchestrator`가 단계 감지, 위임, Completion Protocol과 Evaluator 게이트에 더해 3계층 규칙 주입까지 떠안게 되어 단일 책임이 무너졌을 것이다.
 
 invoke 인터페이스는 `stage`(develop/review/completion/plan), `purpose`(pre-stage-attach/post-review-validate/conflict-check), `target_agent`(Implementer/code-reviewer/Evaluator/Architect, 선택)의 3축이다. 단계 진입 시 `applies-to`에 해당 단계가 명시된 규칙을 grep 기반으로 매칭하여 Superpowers/Ouroboros 서브에이전트 호출 프롬프트에 명시 첨부한다. frontmatter는 정밀 YAML 파싱 대신 grep 단순 추출만 사용하며, 잘못된 frontmatter는 해당 파일을 제외하고 한 줄 경고를 출력한다.
 

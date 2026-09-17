@@ -18,22 +18,22 @@ digest의 원본은 dev-workflow MCP 서버 `digest_extract` 도구의 출력(JS
 
 | 필드 | 부여 규칙 |
 |---|---|
-| `immutability_level` | domain 정책별 `high`/`medium`/`low` — 문서가 명시적으로 불변·강제·금지를 선언한 정책은 high, 권장·기본값은 medium, 예시·참고는 low. (3) 머지 계획의 충돌 분류에서 변형 허용 수준 판단에 사용 |
+| `immutability_level` | domain 정책별 `high`/`medium`/`low` — 문서가 명시적으로 불변, 강제, 금지를 선언한 정책은 high, 권장, 기본값은 medium, 예시, 참고는 low. (3) 머지 계획의 충돌 분류에서 변형 허용 수준 판단에 사용 |
 | `decisions[].supersedes` | 이전 결정을 명시적으로 대체하는 경우 해당 결정 ID, 기본 null |
-| 항목 재분류 | 도구는 헤딩 신호만으로 policy/decision을 나눈다 — 문맥상 재분류가 필요하면 LLM이 조정하되 id·statement는 유지한다 |
+| 항목 재분류 | 도구는 헤딩 신호만으로 policy/decision을 나눈다 — 문맥상 재분류가 필요하면 LLM이 조정하되 id, statement는 유지한다 |
 
-후처리는 도구 출력 JSON에 필드를 덧붙이는 방식으로만 수행한다 — id·statement·순서 변경 금지.
+후처리는 도구 출력 JSON에 필드를 덧붙이는 방식으로만 수행한다 — id, statement와 순서 변경 금지.
 
 ## 「domain digest 사후 고지 출력」
 
 ```
-📄 digest 추출 완료 — 정책 [N]건·결정 [M]건 (오추출은 dry-run 원문 대조와 검증 단계가 잡습니다 · 상세를 보려면 "digest 보여줘")
+📄 digest 추출 완료 — 정책 [N]건, 결정 [M]건 (오추출은 dry-run 원문 대조와 검증 단계가 잡습니다, 상세를 보려면 "digest 보여줘")
 ```
 
 ## 「feature digest 사후 고지 출력」
 
 ```
-📄 digest 추출 완료 — 정책 [N]건·결정 [M]건 (오추출은 dry-run 원문 대조와 검증 단계가 잡습니다 · 상세를 보려면 "digest 보여줘")
+📄 digest 추출 완료 — 정책 [N]건, 결정 [M]건 (오추출은 dry-run 원문 대조와 검증 단계가 잡습니다, 상세를 보려면 "digest 보여줘")
 ```
 
 ## 「dry-run plan 예시」
