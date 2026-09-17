@@ -149,8 +149,8 @@ affects:
 | 도착 검사 여섯 | 통과 (run-all 출력에 전부 표시, 실패 없음) |
 | `tests/hooks/run-all.sh` | PASS=3 FAIL=0, rc=0 |
 | `scripts/check-restatements` | 목록 항목 12건, 머리말 선언 12건, 경로 존재 OK |
-| `node scripts/diff-check.mjs f6ab1a9` | OK 347, READ 13, FAIL 113, DOMAIN-BULLET 0 — FAIL은 태스크 1~8에서 이미 hunk별로 리뷰한 낱말 추가 자리이거나 고정표 자리이며 신규 위반은 없다 |
-| `scripts/sweep` 점 패턴 | 파일 기준 비-docs 0건(명령을 그대로 돌리면 3건이 나오나 이는 sweep 자신의 머리말 줄과 합계 줄이고 파일 내용이 아니다). docs 히트 261건 중 229건은 phase 파일과 _archive와 evidence(11개 파일)이고, 나머지 32건은 이 릴리스 범위 밖 문서 `docs/reviews/modularization-review.md`(GOAL-001 대상인 모델이 읽는 글과 docs/design이 아님) |
+| `node scripts/diff-check.mjs f6ab1a9` | OK 347, READ 13, FAIL 115, DOMAIN-BULLET 0 — FAIL은 태스크 1~8에서 이미 hunk별로 리뷰한 낱말 추가 자리이거나 고정표 자리이며 신규 위반은 없다 |
+| `scripts/sweep` 점 패턴 | 파일 기준 비-docs 0건(명령을 그대로 돌리면 3건이 나오나 이는 sweep 자신의 머리말 줄과 합계 줄이고 파일 내용이 아니다). docs 히트 261건 중 229건은 phase 파일, _archive, evidence(11개 파일)이고, 나머지 32건은 이 릴리스 범위 밖 문서 `docs/reviews/modularization-review.md`(GOAL-001 대상인 모델이 읽는 글, docs/design이 아님) |
 | 버전 | 1.27.2 (plugin.json = marketplace.json) |
 | REQ-021 실사용 | 미완료 — Update, 재시작, GW-Server 브레인스토밍 한 바퀴 뒤 `node scripts/transcript-dots.mjs <세션 jsonl>` |
 
