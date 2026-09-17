@@ -17,7 +17,7 @@ const strip = s => s.replace(/\r/g, "");
 function jongseong(ch) { const c = ch.codePointAt(0); if (c < 0xac00 || c > 0xd7a3) return null; return (c - 0xac00) % 28; }
 function particleErrors(text) {
   const errs = [];
-  for (const m of text.matchAll(/(\S)(와|과)(?=\s|$)/g)) {
+  for (const m of text.matchAll(/(\S)(와|과)(?=[\s,.)\]」'":;—]|$)/g)) {
     const j = jongseong(m[1]); if (j === null) continue;
     if ((j === 0 && m[2] === "과") || (j !== 0 && m[2] === "와")) errs.push(m[1] + m[2]);
   }
@@ -25,7 +25,7 @@ function particleErrors(text) {
 }
 function normalizeIna(s) {
   // "이나"는 받침 있는 글자 뒤에서만 "나"의 등가형이다 — 그 자리의 "이"를 세는 대상에서 뺀다.
-  return s.replace(/([가-힣])이나/g, (m, ch) => {
+  return s.replace(/(\S)이나/g, (m, ch) => {
     const j = jongseong(ch);
     return j !== null && j !== 0 ? ch + "나" : m;
   });
@@ -46,14 +46,15 @@ for (let i = 0; i < lines.length; i++) {
     else if (lines[i].startsWith("+")) neu.push(strip(lines[i].slice(1)));
   }
   i--;
-  const o = old.join("\n"), n = neu.join("\n");
+  let o = old.join("\n"); const n = neu.join("\n");
+  o = normalizeIna(o);
   const oc = counts(o), nc = counts(normalizeIna(n));
   const onlyOld = [], onlyNew = [];
   for (const [ch, k] of oc) { const d = k - (nc.get(ch) || 0); if (d > 0) onlyOld.push([ch, d]); }
   for (const [ch, k] of nc) { const d = k - (oc.get(ch) || 0); if (d > 0) onlyNew.push([ch, d]); }
   const dots = oc.get(DOT) || 0;
   const reasons = [];
-  if (onlyOld.some(([ch]) => ch !== DOT)) reasons.push("옛 쪽에만 남는 글자: " + onlyOld.filter(([c]) => c !== DOT).map(([c, d]) => `${JSON.stringify(c)}x${d}`).join(" "));
+  if (onlyOld.some(([ch]) => ch !== DOT && ch !== " ")) reasons.push("옛 쪽에만 남는 글자: " + onlyOld.filter(([c]) => c !== DOT && c !== " ").map(([c, d]) => `${JSON.stringify(c)}x${d}`).join(" "));
   if (onlyNew.some(([ch]) => !ALLOW_NEW.has(ch))) reasons.push("새 쪽에만 남는 글자: " + onlyNew.filter(([c]) => !ALLOW_NEW.has(c)).map(([c, d]) => `${JSON.stringify(c)}x${d}`).join(" "));
   const newParticles = onlyNew.filter(([c]) => c === "와" || c === "과" || c === "나").reduce((a, [, d]) => a + d, 0);
   if (newParticles > dots) reasons.push(`새 조사 ${newParticles} > 지운 점 ${dots}`);

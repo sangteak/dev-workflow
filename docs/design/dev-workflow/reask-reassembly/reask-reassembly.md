@@ -207,7 +207,7 @@ affects:
 | `scripts/check-restatements` | 12/12, 경로 OK |
 | `scripts/sweep` | skills, commands, hooks, README, CLAUDE.md 0건, docs 히트 84건 = phase1_exploration.md 2, phase2_discovery.md 9, phase3_validation.md 1, evidence/reask-cases-all.md 3, evidence/reask-norm-review.md 4, plan.md 47, reask-reassembly.md 16(이상 설계 문서 인용)+`ux-consistency.md` 2(도메인 문서, merge-to-domain 몫) |
 | 버전 | 1.27.0 (plugin.json = marketplace.json) |
-| REQ-013 실사용 | 미완료 — Update → 재시작 → 원인 ③ 브레인스토밍 한 바퀴에서 사건 ①②③ 기록 |
+| REQ-013 실사용 | 이 확인은 middle-dot-removal 설계 문서 9절 실사용 표에서 한 바퀴로 겸한다. 미완료 — Update → 재시작 → 원인 ③ 브레인스토밍 한 바퀴에서 사건 ①②③ 기록 |
 
 ## 10. 변경 이력
 | 날짜 | 변경 내용 | 영향 범위 | 상태 |

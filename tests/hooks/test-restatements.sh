@@ -47,7 +47,7 @@ residue() {
   done
 }
 
-# 가운뎃점(·) 잔존 — 포함 목록 아홉과 제외 경로 셋. 이름 문구 "가운뎃점(...)"을 지운 뒤 남는 것을 센다.
+# 가운뎃점 잔존 — 포함 목록 아홉과 제외 경로 셋. 이름 문구 "가운뎃점(...)"을 지운 뒤 남는 것을 센다.
 # 패턴은 바이트로 조립해 이 스크립트 자신이 0건을 유지한다. DOT_GATE=off면 건수만 보고하고 rc를 올리지 않는다.
 dot=$'\xc2\xb7'
 dot_residue() {
@@ -225,8 +225,9 @@ arrival_min 3 '--- 코드 이름 목록 ---' \
 
 # 가운뎃점 — 잔존 0건과 도착 여섯 (middle-dot-removal 1.27.2)
 dot_residue
-arrival '가운뎃점(' \
-  skills/workflow-orchestrator/decision-flow.md \
+arrival "가운뎃점(${dot})을 쓰지 않는다" \
+  skills/workflow-orchestrator/decision-flow.md
+arrival "가운뎃점(${dot}) 금지" \
   skills/workflow-orchestrator/bootstrap.md
 arrival_min 2 '가운뎃점(' \
   skills/workflow-orchestrator/bootstrap.md \

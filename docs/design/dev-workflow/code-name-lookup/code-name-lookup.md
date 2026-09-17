@@ -187,7 +187,7 @@ affects:
 | `scripts/sweep` | skills, commands, hooks, README, CLAUDE.md 0건, docs 히트 7건 = code-name-lookup.md 2, phase3_validation.md 1, plan.md 4 |
 | 버전 | 1.27.1 (plugin.json = marketplace.json) |
 | 미푸시 릴리스 | 1.26.0, 1.26.1, 1.27.0, 1.27.1 — 실사용 확인 뒤 푸시 권고 |
-| REQ-013 실사용 | 미완료 — Update → 재시작 → GW-Server 브레인스토밍 국면 0 첫 화면부터 항목 넷(고지, 원문+풀이, 번역어 0회, 문서 본문) |
+| REQ-013 실사용 | 이 확인은 middle-dot-removal 설계 문서 9절 실사용 표에서 한 바퀴로 겸한다. 미완료 — Update → 재시작 → GW-Server 브레인스토밍 국면 0 첫 화면부터 항목 넷(고지, 원문+풀이, 번역어 0회, 문서 본문) |
 
 ## 10. 변경 이력
 | 날짜 | 변경 내용 | 영향 범위 | 상태 |
