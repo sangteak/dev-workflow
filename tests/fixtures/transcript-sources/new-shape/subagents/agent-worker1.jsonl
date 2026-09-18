@@ -1,0 +1,1 @@
+{"type":"assistant","message":{"content":[{"type":"text","text":"--- 화면 ---\n결론: 짝 검사는 순서로 한다\n- ✔️ 규격 위반 판정은 셀 수 있는 조건만 쓴다고 정해 둔다\n--- 증거 ---\n1. ✔️ 규격 위반 판정은 셀 수 있는 조건만 쓴다고 정해 둔다\n   ↳ skills/workflow-orchestrator/decision-flow.md:199 — \"판정은 셀 수 있는 조건만\""}]}}
