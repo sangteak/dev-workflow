@@ -4,6 +4,7 @@
 #   residue() — 옛 문면이 남았는가. 경로마다 0건이어야 통과
 # 둘은 판정 방향이 반대다. 헬퍼 이름과 출력 머리말을 갈라 두어 방향을 반대로 읽지 않게 한다.
 set -u
+export LC_ALL=C   # 4바이트 이모지(예: 📎)를 UTF-8 로케일 grep이 못 잡는 환경 대응 — 바이트 비교라 기존 한글 패턴 매칭에는 영향 없음
 cd "$(dirname "$0")/../.." || exit 1
 rc=0
 
@@ -222,6 +223,16 @@ arrival_min 8 '--- 코드 이름 목록 ---' \
   skills/brainstorming/references/templates.md
 arrival_min 3 '--- 코드 이름 목록 ---' \
   skills/plan-stage/SKILL.md
+
+# grounded-output-display 도착 검사 — 규범 정본
+chk=$'\xe2\x9c\x94\xef\xb8\x8f'   # ✔️
+clip=$'\xf0\x9f\x93\x8e'          # 📎
+arrival "${chk} 확인된 사실:" skills/workflow-orchestrator/decision-flow.md
+arrival "확인 아이콘(${chk})이 한 줄도 없으면" skills/workflow-orchestrator/decision-flow.md
+arrival '\*\*근거 펼치기:\*\*' skills/workflow-orchestrator/decision-flow.md
+arrival '출처 신호가 있으면 되물음이 아니다' skills/workflow-orchestrator/decision-flow.md
+arrival_min 2 '--- 증거 ---' skills/workflow-orchestrator/decision-flow.md
+arrival "${clip} 근거 — " skills/workflow-orchestrator/decision-flow.md
 
 # 가운뎃점 — 잔존 0건과 도착 여섯 (middle-dot-removal 1.27.2)
 dot_residue
