@@ -1,0 +1,2 @@
+{"type":"assistant","message":{"content":[{"type":"text","text":"1. OpenMatch Backend가 matchfunction을 인지하는 방식\n\n- [✔ open-match v1.8.1 backend_service.go:212, clientcache.go:41-56] Backend가 host:port 문자열을 만들고 같은 문자열이면 같은 연결 객체를 재사용합니다.\n- [✔ kubernetes.io Service API publishNotReadyAddresses \"This field defaults to false\"] headless Service의 A 레코드는 Ready 상태 Pod의 IP만 돌려줍니다.\n- 이 규칙은 decision-flow.md 349행에 있습니다.\n- 그 문장은 245번째 줄에 있습니다."}]}}
+{"type":"user","message":{"content":[{"type":"tool_result","content":"[✔ 출처] 워커 반환물 안의 태그는 세지 않는다 backend_service.go:212"}]}}
