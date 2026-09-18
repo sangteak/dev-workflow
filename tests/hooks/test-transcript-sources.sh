@@ -11,7 +11,8 @@ tail -1 "$out"
 if [ "$code" -ne 1 ]; then echo "   FAIL: 종료 코드 $code (1 기대)"; rc=1; fi
 if ! grep -q "옛 태그 2" "$out"; then echo "   FAIL: 옛 태그 2건이어야 한다"; rc=1; fi
 if ! grep -q "경로:행 2" "$out"; then echo "   FAIL: 경로:행 2건(349행, 245번째 줄)이어야 한다"; rc=1; fi
-if ! grep -q "assistant 줄 6" "$out"; then echo "   FAIL: tool_result는 분모에 들어가면 안 된다(assistant 줄 6이어야 한다)"; rc=1; fi
+if ! grep -q "인용 1" "$out"; then echo "   FAIL: 인용 1건(grpc.io 공식 문서)이어야 한다"; rc=1; fi
+if ! grep -q "assistant 줄 7" "$out"; then echo "   FAIL: tool_result는 분모에 들어가면 안 된다(assistant 줄 7이어야 한다)"; rc=1; fi
 echo "== new-shape: 위반이 없어야 한다 =="
 code=$(run tests/fixtures/transcript-sources/new-shape.jsonl "$out")
 tail -1 "$out"

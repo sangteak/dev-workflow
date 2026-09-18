@@ -5,6 +5,7 @@
 // 사용: node scripts/transcript-sources.mjs <session.jsonl>
 // 메인 파일과 같은 이름 폴더의 subagents/agent-*.jsonl은 worker 출처로 세되 종료 코드에는 넣지 않는다
 // (워커 반환물의 증거 구획에 경로가 있는 것은 정상).
+// KO_LINE은 표의 행 참조('표 3행')도 잡는다 — 실사용 판정 때 사람이 가른다.
 import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
 
