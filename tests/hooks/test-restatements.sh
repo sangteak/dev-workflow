@@ -241,6 +241,23 @@ arrival '--- 화면 ---' skills/workflow-orchestrator/references/grounding.md
 arrival '출처 요청은 되물음이 아니다' skills/workflow-orchestrator/bootstrap.md
 arrival '확인 아이콘 근거' skills/workflow-orchestrator/bootstrap.md
 
+# grounded-output-display 잔존 검사 — 옛 대괄호 태그 모양 ([✔ …], [⚠️ 확인 불가], [추측], [✘ …)
+oldchk=$'\\[\xe2\x9c\x94'
+residue "${oldchk}|\\[추측\\]|\\[⚠️ 확인 불가\\]|\\[✘" \
+  skills/workflow-orchestrator/decision-flow.md \
+  skills/workflow-orchestrator/bootstrap.md \
+  skills/workflow-orchestrator/SKILL.md \
+  skills/workflow-orchestrator/references/grounding.md \
+  skills/brainstorming/SKILL.md \
+  skills/brainstorming/references/templates.md \
+  skills/plan-stage/SKILL.md \
+  skills/context-handling/SKILL.md \
+  skills/document-consolidation/SKILL.md \
+  README.md \
+  CLAUDE.md
+arrival_min 2 '--- 증거 ---' skills/plan-stage/SKILL.md
+arrival "${chk}(높음)" skills/brainstorming/references/templates.md
+
 # 가운뎃점 — 잔존 0건과 도착 여섯 (middle-dot-removal 1.27.2)
 dot_residue
 arrival "가운뎃점(${dot})을 쓰지 않는다" \
