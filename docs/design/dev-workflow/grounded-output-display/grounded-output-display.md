@@ -144,6 +144,8 @@ affects:
 
 - 개발 세션 잡음 실측 (`scripts/transcript-sources.mjs`, 이 저장소를 고치는 세션 하나): `--- assistant 줄 15713, main 위반 979 (옛 태그 634, 경로:행 308, 인용 37), worker 위반 1192(보고만), 제외 줄 2006, 출처 181개 파일` — 개발 세션은 파일 언급이 정당하므로 위반 다수가 정상이고, 통과 기준은 소비 프로젝트의 브레인스토밍 한 바퀴다.
 
+스윕 결과: `LC_ALL=C git grep -nI --untracked -e $'\[\xe2\x9c\x94' -e '\[추측\]' -e '\[✘' -- skills commands hooks README.md CLAUDE.md tasks/lessons.md tests scripts docs/design`(phase 파일, _archive, evidence, 이 스크립트 자신, tests/fixtures 제외)을 저장소 전체에 돌렸다. skills, commands, hooks, README.md, CLAUDE.md, tests, complete feature 문서 중 reask-reassembly와 decision-label-linebreak는 0건이었다. 남은 줄은 전부 정당한 인용이었다 — complete feature 문서 code-name-lookup.md 122행과 126행과 130행, middle-dot-removal.md 233행은 그 기능이 다루던 옛 태그 모양을 그대로 인용한 변경 이력이고, 이 feature 자신의 설계 산출물인 grounded-output-display.md 34행(배경 서술 속 표본 인용), 73행(REQ-013이 정한 HANDOFF 제외 목록 재인용), 81행(옛 구조 설명), 110행(기각한 아이콘 후보 대조), HANDOFF.md 45행(REQ-013이 명시적으로 제외한 HANDOFF 상태 이름), plan.md 전체(태스크 지시문과 실측 로그 인용)도 같은 성격이다. tasks/lessons.md 126행과 213행은 옛 규칙 서술과 전례 인용이라 정당하다. scripts/transcript-sources.mjs 11행의 `OLD_TAG` 정규식은 화면 실물이 아니라 옛 태그가 세션 기록에 남았는지 찾는 검출 패턴 그 자체라 고치면 검사 기능이 없어지므로 예외로 남긴다. REQ-001 예외는 하나뿐이다 — decision-flow 「판정형과 메뉴형」 표의 다섯 자리 중 document-consolidation의 「2절 대조」 화면(`↳ ✔️ 10절 [날짜] 행 — …`)만 출처가 곧 고칠 위치라 위치 표기를 남기고 아이콘 모양만 바꿨다. 나머지 넷 중 판정형인 「작업 방향 확인 화면」과 「재협의 선택지」는 근거 줄의 출처가 그대로 근거일 뿐 고칠 위치를 가리키지 않아 예외가 필요 없고, 메뉴형인 「Ambiguous 단계 감지」와 재논의 대기열 노출은 애초에 근거 줄이 없어 예외 대상이 아니다.
+
 ## 10. 변경 이력
 
 | 날짜 | 변경 내용 | 영향 범위 | 상태 |

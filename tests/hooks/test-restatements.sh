@@ -224,40 +224,6 @@ arrival_min 8 '--- 코드 이름 목록 ---' \
 arrival_min 3 '--- 코드 이름 목록 ---' \
   skills/plan-stage/SKILL.md
 
-# grounded-output-display 도착 검사 — 규범 정본
-chk=$'\xe2\x9c\x94\xef\xb8\x8f'   # ✔️
-clip=$'\xf0\x9f\x93\x8e'          # 📎
-arrival "${chk} 확인된 사실:" skills/workflow-orchestrator/decision-flow.md
-arrival "확인 아이콘(${chk})이 한 줄도 없으면" skills/workflow-orchestrator/decision-flow.md
-arrival '\*\*근거 펼치기:\*\*' skills/workflow-orchestrator/decision-flow.md
-arrival '출처 신호가 있으면 되물음이 아니다' skills/workflow-orchestrator/decision-flow.md
-arrival_min 2 '--- 증거 ---' skills/workflow-orchestrator/decision-flow.md
-arrival "${clip} 근거 — " skills/workflow-orchestrator/decision-flow.md
-
-# grounded-output-display 도착 검사 — 실물 문구와 주입본
-arrival "${clip} 근거 — " skills/workflow-orchestrator/references/grounding.md
-arrival '근거는 "출처 보여줘"로 펼칩니다' skills/workflow-orchestrator/references/grounding.md
-arrival '--- 화면 ---' skills/workflow-orchestrator/references/grounding.md
-arrival '출처 요청은 되물음이 아니다' skills/workflow-orchestrator/bootstrap.md
-arrival '확인 아이콘 근거' skills/workflow-orchestrator/bootstrap.md
-
-# grounded-output-display 잔존 검사 — 옛 대괄호 태그 모양 ([✔ …], [⚠️ 확인 불가], [추측], [✘ …)
-oldchk=$'\\[\xe2\x9c\x94'
-residue "${oldchk}|\\[추측\\]|\\[⚠️ 확인 불가\\]|\\[✘" \
-  skills/workflow-orchestrator/decision-flow.md \
-  skills/workflow-orchestrator/bootstrap.md \
-  skills/workflow-orchestrator/SKILL.md \
-  skills/workflow-orchestrator/references/grounding.md \
-  skills/brainstorming/SKILL.md \
-  skills/brainstorming/references/templates.md \
-  skills/plan-stage/SKILL.md \
-  skills/context-handling/SKILL.md \
-  skills/document-consolidation/SKILL.md \
-  README.md \
-  CLAUDE.md
-arrival_min 2 '--- 증거 ---' skills/plan-stage/SKILL.md
-arrival "${chk}(높음)" skills/brainstorming/references/templates.md
-
 # 가운뎃점 — 잔존 0건과 도착 여섯 (middle-dot-removal 1.27.2)
 dot_residue
 arrival "가운뎃점(${dot})을 쓰지 않는다" \
@@ -281,5 +247,41 @@ arrival '공통 형식과 언어' \
   skills/workflow-orchestrator/decision-flow.md
 arrival '다시 씀: 왜 문제인지와 고르면 어떻게 되는지' \
   skills/workflow-orchestrator/decision-flow.md
+
+# grounded-output-display (REQ-013, REQ-014)
+# grounded-output-display 도착 검사 — 규범 정본
+chk=$'\xe2\x9c\x94\xef\xb8\x8f'   # ✔️
+clip=$'\xf0\x9f\x93\x8e'          # 📎
+arrival "${chk} 확인된 사실:" skills/workflow-orchestrator/decision-flow.md
+arrival "확인 아이콘(${chk})이 한 줄도 없으면" skills/workflow-orchestrator/decision-flow.md
+arrival '\*\*근거 펼치기:\*\*' skills/workflow-orchestrator/decision-flow.md
+arrival '출처 신호가 있으면 되물음이 아니다' skills/workflow-orchestrator/decision-flow.md
+arrival_min 2 '--- 증거 ---' skills/workflow-orchestrator/decision-flow.md
+arrival "${clip} 근거 — " skills/workflow-orchestrator/decision-flow.md
+
+# grounded-output-display 도착 검사 — 실물 문구와 주입본
+arrival "${clip} 근거 — " skills/workflow-orchestrator/references/grounding.md
+arrival '근거는 "출처 보여줘"로 펼칩니다' skills/workflow-orchestrator/references/grounding.md
+arrival '--- 화면 ---' skills/workflow-orchestrator/references/grounding.md
+arrival '출처 요청은 되물음이 아니다' skills/workflow-orchestrator/bootstrap.md
+arrival '확인 아이콘 근거' skills/workflow-orchestrator/bootstrap.md
+
+# grounded-output-display 잔존 검사 — 옛 대괄호 태그 모양 ([✔ …], [⚠️ 확인 불가], [추측], [✘ …)
+oldchk=$'\\[\xe2\x9c\x94'
+# 제외: phase 파일, _archive, evidence, complete feature 문서의 정당한 인용, 도메인 문서 변경 이력, 이 스크립트와 tests/fixtures
+residue "${oldchk}|\\[추측\\]|\\[⚠️ 확인 불가\\]|\\[✘" \
+  skills/workflow-orchestrator/decision-flow.md \
+  skills/workflow-orchestrator/bootstrap.md \
+  skills/workflow-orchestrator/SKILL.md \
+  skills/workflow-orchestrator/references/grounding.md \
+  skills/brainstorming/SKILL.md \
+  skills/brainstorming/references/templates.md \
+  skills/plan-stage/SKILL.md \
+  skills/context-handling/SKILL.md \
+  skills/document-consolidation/SKILL.md \
+  README.md \
+  CLAUDE.md
+arrival_min 2 '--- 증거 ---' skills/plan-stage/SKILL.md
+arrival "${chk}(높음)" skills/brainstorming/references/templates.md
 
 exit "$rc"
