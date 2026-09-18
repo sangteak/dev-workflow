@@ -2,7 +2,7 @@
 feature: grounded-output-display
 category: dev-workflow
 action: spec-change
-status: ready-for-plan
+status: complete
 created: 2026-09-17
 last-updated: 2026-09-18
 dependencies:
@@ -86,7 +86,7 @@ affects:
 
 확인 여부는 아이콘 둘로 남는다. 이름표가 없는 자리는 줄마다 ✔️나 ⚠️, 이름표가 있는 자리는 이름표에 한 번. 세션 첫 고지가 두 아이콘의 뜻과 펼치기 부르는 법을 알린다.
 
-재발은 규범 문구와 사후 검사가 잡는다. `scripts/transcript-sources.mjs`가 세션 기록의 본체 텍스트 줄에서 출처 표기 모양을 세고, `📎 근거 —` 이후 줄은 뺀다.
+재발은 규범 문구와 사후 검사가 잡는다. `scripts/transcript-sources.mjs`가 세션 기록의 본체 텍스트 줄에서 출처 표기 모양을 세고, `📎 근거 —` 이후 줄과 코드 펜스와 인용 줄은 뺀다. 저장소 쪽은 `tests/hooks/test-restatements.sh`의 `# grounded-output-display (REQ-013, REQ-014)` 절이 옛 대괄호 모양 잔존(열한 파일)과 새 문구 도착(열셋)을 검사하고, `tests/hooks/test-transcript-sources.sh`가 고정 표본 둘(옛 모양은 걸리고 새 모양은 통과)과 워커 표본으로 스크립트를 검증한다.
 
 ## 5. 의존성 맵
 
@@ -116,6 +116,8 @@ affects:
 | 출처 요청의 규범 자리 (PLAN) | 「근거 펼치기」 문단 + 되물음 표 앞 한 줄 + 주입본 한 줄 | 갈래 표의 후속 규칙 셋을 예외로 만들지 않고 사본 나열 셋이 그대로. 고칠 자리 셋 대 아홉 | 갈래 표 여섯째 행 | 표의 뜻(박스 재조립)을 어기는 행, 사본 갱신 셋과 예외 문구 셋 |
 | 조사 경로 범위 (PLAN) | 여섯 경로 모두, 새 규격 없이 두 구획으로 흡수 | 실측 — 세션 화면은 결정 박스 칸과 plan-stage 조사 화면이 대부분, 조사 워커와 미답변 조사는 손에 꼽음. 편집량 다섯 줄. 미루면 미푸시 릴리스가 하나 더 쌓임 | 조사 워커 4필드와 미답변 조사 형식 교체(새 규격), 페르소나와 본체만 이번에 | 규격이 하나 더 늘어남, 사용자가 불평한 조사 경로가 옛 모양으로 남음 |
 | 릴리스 등급 | MINOR | 워커 반환 규격 변경은 동작 변경 | PATCH | 기존 동작 변경 |
+| 반증 줄의 출처 (구현 중, 최종 리뷰) | 짧은 이름만, 증거는 📎로 | REQ-001(본문에 경로와 인용 없음)과 사후 검사 판정을 그대로 지킴 | REQ-001 예외에 반증 줄 추가와 스크립트 제외 | 예외가 하나 늘고 스크립트가 규범 문장에 기댐 |
+| 증거 층 짝 검증 (구현 중) | 워커 표본을 고정 표본에 추가 | plan의 `^worker` 검사가 어떤 구현에서도 걸리지 않는 공허한 검사였음 | 검사 삭제 | REQ-012의 "worker는 보고만"이 미검증으로 남음 |
 
 ## 7. 제약조건과 가정
 
@@ -140,15 +142,40 @@ affects:
 
 ## 9. 구현 결과 및 일탈 사항
 
-> 구현 완료 후 작성
+구현은 2026-09-18에 서브에이전트 주도 개발로 마쳤다. feature/analyzer 브랜치에 커밋 열셋(1764d52 다음부터), 태스크 여덟(Task 7과 8은 한 디스패치), 태스크 리뷰 일곱(수정 라운드 하나), 최종 브랜치 리뷰 하나와 수정 파도 하나, 범위 재리뷰 하나다. 원장은 `.superpowers/sdd/grounded-output-display/progress.md`(git 무시)에 있었고 마무리 뒤 지운다.
 
-- 개발 세션 잡음 실측 (`scripts/transcript-sources.mjs`, 이 저장소를 고치는 세션 하나): `--- assistant 줄 15713, main 위반 979 (옛 태그 634, 경로:행 308, 인용 37), worker 위반 1192(보고만), 제외 줄 2006, 출처 181개 파일` — 개발 세션은 파일 언급이 정당하므로 위반 다수가 정상이고, 통과 기준은 소비 프로젝트의 브레인스토밍 한 바퀴다.
+| 커밋 | 내용 |
+|---|---|
+| cfc001a | scripts/transcript-sources.mjs와 고정 표본 테스트 |
+| 5901b0e | 워커 표본 추가 — worker 출처가 보고만 되고 종료 코드에 안 들어감을 검증 |
+| 391f89e | decision-flow 검증 규범, 두 구획 생산 규격, 근거 펼치기, 옛 모양 여덟 자리 |
+| 04f256c | grounding.md 실물 문구, 조사 워커 두 구획 반환 규격, bootstrap 한 줄 |
+| 059b009 | 스킬 템플릿 사본 자리 동기(미답변 조사, plan-stage Researcher, 스켈레톤, 대조 화면, README) |
+| 39d7d3d | ux-consistency 도메인 문서 본문 |
+| df6c01e | 잔존과 도착 검사 정리, 예외 목록 |
+| 9e9ef9a | 릴리스 1.28.0 |
+| a959340 | 실사용 확인 표와 절차 |
+| 089724b | 최종 리뷰 수정 파도 — plan-stage "전치 태그", Architect 경로, 대조 화면 절 기호, 반증 줄 출처, Minor 아홉 |
+| 31a1d25 | 9절 일탈과 파킹 문단 |
+
+검증 결과는 아래와 같다.
+
+| 검사 | 결과 |
+|---|---|
+| tests/hooks/run-all.sh | 전부 PASS (completion-nudge 9, detect-remnants 6, intake-nudge 8, statusline 3, restatements 101건, transcript-sources PASS) |
+| 옛 대괄호 모양 잔존 (skills, commands, hooks, README, CLAUDE.md) | 0건 |
+| 도착 검사 (아이콘 규범 줄, 근거 펼치기, 📎 머리줄, 고지 문구, 두 구획 이름) | 전부 도착 |
+| 고정 표본 | old-shape 종료 1 (옛 태그 2, 경로:행 2, 인용 1), new-shape 종료 0 (제외 줄 10, worker 위반 1 보고만) |
+| 버전 | 1.28.0, plugin.json과 marketplace.json 일치 |
+| 개발 세션 잡음 실측 | main 위반 979 (옛 태그 634, 경로:행 308, 인용 37), worker 1192 보고만 — 개발 세션은 파일 언급이 정당하므로 통과 기준이 아니라 잡음 비교용 |
+
+구현 중 굳은 규칙은 셋이다. 첫째, 워커 출처가 "보고만" 된다는 요구는 워커 표본(subagents/agent-*.jsonl)이 있어야 검증된다 — plan의 공허한 검사를 표본 하나로 바꿨다. 둘째, 반증 줄 `↳ ✘ 반증 — [출처]`의 출처 자리는 경로와 행 번호와 인용 없이 문서나 파일의 짧은 이름만 쓰고 증거는 📎로 펼친다 — REQ-001과 사후 검사 판정을 그대로 지키는 쪽이다. 셋째, plan-stage 판정 워커처럼 불릿 없는 로컬 정형은 ✔️ 줄 수와 증거 항목 수의 일치를 세지 않는다.
 
 스윕 결과: `LC_ALL=C git grep -nI --untracked -e $'\[\xe2\x9c\x94' -e '\[추측\]' -e '\[✘' -- skills commands hooks README.md CLAUDE.md tasks/lessons.md tests scripts docs/design`(phase 파일, _archive, evidence, 이 스크립트 자신, tests/fixtures 제외)을 저장소 전체에 돌렸다. skills, commands, hooks, README.md, CLAUDE.md, tests, complete feature 문서 중 reask-reassembly와 decision-label-linebreak는 0건이었다. 남은 줄은 전부 정당한 인용이었다 — complete feature 문서 code-name-lookup.md 122행과 126행과 130행, middle-dot-removal.md 233행은 그 기능이 다루던 옛 태그 모양을 그대로 인용한 변경 이력이고, 이 feature 자신의 설계 산출물인 grounded-output-display.md 34행(배경 서술 속 표본 인용), 73행(REQ-013이 정한 HANDOFF 제외 목록 재인용), 81행(옛 구조 설명), 110행(기각한 아이콘 후보 대조), HANDOFF.md 45행(REQ-013이 명시적으로 제외한 HANDOFF 상태 이름), plan.md 전체(태스크 지시문과 실측 로그 인용)도 같은 성격이다. tasks/lessons.md 126행과 213행은 옛 규칙 서술과 전례 인용이라 정당하다. scripts/transcript-sources.mjs 11행의 `OLD_TAG` 정규식은 화면 실물이 아니라 옛 태그가 세션 기록에 남았는지 찾는 검출 패턴 그 자체라 고치면 검사 기능이 없어지므로 예외로 남긴다. REQ-001 예외는 하나뿐이다 — decision-flow 「판정형과 메뉴형」 표의 다섯 자리 중 document-consolidation의 「2절 대조」 화면(`↳ ✔️ 10절 [날짜] 행 — …`)만 출처가 곧 고칠 위치라 위치 표기를 남기고 아이콘 모양만 바꿨다. 나머지 넷 중 판정형인 「작업 방향 확인 화면」과 「재협의 선택지」는 근거 줄의 출처가 그대로 근거일 뿐 고칠 위치를 가리키지 않아 예외가 필요 없고, 메뉴형인 「Ambiguous 단계 감지」와 재논의 대기열 노출은 애초에 근거 줄이 없어 예외 대상이 아니다.
 
 **일탈:** 최종 리뷰 국면에서 아래 자리가 스펙과 다르게 마무리됐다. decision-flow.md 355행 부근 "출처 신호가 있으면 되물음이 아니다" 문장은 test-restatements.sh의 도착 검사 문자열과 어순을 맞추도록 앞 문장을 조정했다. tests/hooks/test-restatements.sh는 `export LC_ALL=C`를 파일 전역에 적용해 4바이트 이모지 📎 매치 문제를 해결했고, 기존 한글 범위 패턴은 바이트 범위로도 같은 결과를 내 회귀가 없음을 실측했다. 세션 시작 시 상시 주입되는 한 줄은 실측 102바이트로 설계 초기 추정(약 60바이트)보다 컸지만, 주입본 전체는 6,873바이트로 session-start 문서가 적어 둔 "약 6.8KB" 범위 안에 들었다. plan-stage Researcher 화면의 둘째 증거 줄은 스펙 원문이 아니라 구현자가 기존 관용구를 따라 작문한 것이다. test-restatements.sh의 dot_residue 블록은 파일 중간으로 옮겨졌지만 내용과 실행 순서는 그대로다. Architect 프롬프트의 경로 미표기 지시와 화면 예시는 최종 리뷰에서 보완했고, 반증 줄(`↳ ✘ 반증 — [출처]`)의 출처 표기는 경로:행과 인용 없이 짧은 이름만 쓰는 것으로 최종 리뷰에서 확정했다.
 
-**파킹:** document-consolidation.md 본문의 § 표기 여섯 자리(62, 64, 70, 73, 90, 92행 — 「§2 대조」 같은 절 이름 포함)는 이 feature 범위 밖의 규범 전체 § 표기 스윕으로 후속 처리한다. ux-consistency 도메인 문서 183행과 185행의 "확인 태그" 표현, 44행의 백틱 ⚠️ 서식은 이 feature의 도메인 머지 때 함께 갱신한다. scripts/transcript-sources.mjs의 KO_LINE 패턴은 "표 3행" 같은 표 안 행 참조도 걸릴 수 있어, 소비 프로젝트 실사용 판정 때 사람이 직접 가른다.
+**파킹:** document-consolidation SKILL.md 본문의 절 기호 여섯 자리(62, 64, 70, 73, 90, 92행 — 「2절 대조」 같은 절 이름의 옛 표기 포함)는 이 feature 범위 밖의 규범 전체 절 기호 표기 스윕으로 후속 처리한다. ux-consistency 도메인 문서 183행과 185행의 "확인 태그" 표현, 44행의 백틱 ⚠️ 서식은 이 feature의 도메인 머지 때 함께 갱신한다. scripts/transcript-sources.mjs의 KO_LINE 패턴은 "표 3행" 같은 표 안 행 참조도 걸릴 수 있어, 소비 프로젝트 실사용 판정 때 사람이 직접 가른다.
 
 | 릴리스 | 확인 항목 | 판정 방법 | 결과 |
 |---|---|---|---|
@@ -167,3 +194,5 @@ affects:
 |------|-----------|-----------|------|
 | 2026-09-17 | 브레인스토밍 국면 1~4 완료, 설계 문서 초안 | 검증 규범 화면 표시 | ready-for-plan |
 | 2026-09-18 | PLAN — Feasibility ✅ 11 ⚠️ 6 🚫 0. 출처 요청을 갈래 표 대신 「근거 펼치기」 문단으로, 조사 경로 여섯 모두 범위에(새 규격 없음), REQ-005 셈 대상 ✔️만, REQ-010 판정 조건 확장, REQ-014 HIGH로, REQ-016 두 스크립트와 릴리스별 통과 기준 표 | REQ-004, 005, 006, 007, 010, 013, 014, 016 | ready-for-plan |
+| 2026-09-18 | DEVELOP — 커밋 열셋, 최종 리뷰 수정 파도 하나. 반증 줄 출처는 짧은 이름으로, 워커 표본 추가, 로컬 정형 짝 셈 면제 | skills, scripts, tests, README, ux-consistency | 완료 |
+| 2026-09-18 | 개발 완료 — 문서 통합 (진입: 훅 주입 후 라우팅). 실사용 확인(REQ-016)은 9절 표대로 사용자 수행 대기 | 전체 | 완료 |
