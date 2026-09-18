@@ -146,6 +146,17 @@ affects:
 
 스윕 결과: `LC_ALL=C git grep -nI --untracked -e $'\[\xe2\x9c\x94' -e '\[추측\]' -e '\[✘' -- skills commands hooks README.md CLAUDE.md tasks/lessons.md tests scripts docs/design`(phase 파일, _archive, evidence, 이 스크립트 자신, tests/fixtures 제외)을 저장소 전체에 돌렸다. skills, commands, hooks, README.md, CLAUDE.md, tests, complete feature 문서 중 reask-reassembly와 decision-label-linebreak는 0건이었다. 남은 줄은 전부 정당한 인용이었다 — complete feature 문서 code-name-lookup.md 122행과 126행과 130행, middle-dot-removal.md 233행은 그 기능이 다루던 옛 태그 모양을 그대로 인용한 변경 이력이고, 이 feature 자신의 설계 산출물인 grounded-output-display.md 34행(배경 서술 속 표본 인용), 73행(REQ-013이 정한 HANDOFF 제외 목록 재인용), 81행(옛 구조 설명), 110행(기각한 아이콘 후보 대조), HANDOFF.md 45행(REQ-013이 명시적으로 제외한 HANDOFF 상태 이름), plan.md 전체(태스크 지시문과 실측 로그 인용)도 같은 성격이다. tasks/lessons.md 126행과 213행은 옛 규칙 서술과 전례 인용이라 정당하다. scripts/transcript-sources.mjs 11행의 `OLD_TAG` 정규식은 화면 실물이 아니라 옛 태그가 세션 기록에 남았는지 찾는 검출 패턴 그 자체라 고치면 검사 기능이 없어지므로 예외로 남긴다. REQ-001 예외는 하나뿐이다 — decision-flow 「판정형과 메뉴형」 표의 다섯 자리 중 document-consolidation의 「2절 대조」 화면(`↳ ✔️ 10절 [날짜] 행 — …`)만 출처가 곧 고칠 위치라 위치 표기를 남기고 아이콘 모양만 바꿨다. 나머지 넷 중 판정형인 「작업 방향 확인 화면」과 「재협의 선택지」는 근거 줄의 출처가 그대로 근거일 뿐 고칠 위치를 가리키지 않아 예외가 필요 없고, 메뉴형인 「Ambiguous 단계 감지」와 재논의 대기열 노출은 애초에 근거 줄이 없어 예외 대상이 아니다.
 
+| 릴리스 | 확인 항목 | 판정 방법 | 결과 |
+|---|---|---|---|
+| 1.26.0 question-numbering | 닫힌 질문에 번호 선택지가 붙는다 | 눈 | 미완료 |
+| 1.26.1 decision-label-linebreak | 카테고리 확정부터 결정 박스까지 이름표가 제 줄을 쓴다 | 눈 | 미완료 |
+| 1.27.0 reask-reassembly | 0번이 「0.」으로 렌더, 고유 용어 옆 풀이, 의도적 되물음에 접미 `(다시 씀: …)` | 눈 | 미완료 |
+| 1.27.1 code-name-lookup | 국면 0 고지 한 줄, 원문과 풀이 병기, 번역어("충원", "배정") 0회 | 눈 | 미완료 |
+| 1.27.2 middle-dot-removal | `node scripts/transcript-dots.mjs <세션 jsonl>` 가운뎃점 0줄, 나열 줄 1 이상 | 스크립트 | 미완료 |
+| 1.28.0 grounded-output-display | `node scripts/transcript-sources.mjs <세션 jsonl>` main 위반 0, "출처 보여줘"와 줄 요지 지정("… 줄 출처") 둘 다 📎 근거 메시지로 펼쳐짐, 압축 뒤 요청 한 번은 `↳ 다시 확인 —` | 스크립트와 눈 | 미완료 |
+
+`/plugin` → dev-workflow Update → 재시작 → 세션 시작 훅에 version 1.28.0 → GW-Server에서 Backfill과 Assignment를 다루는 기능 브레인스토밍 한 바퀴(되물음 한 번, "출처 보여줘" 한 번, "[요지] 줄 출처" 한 번, 가능하면 /compact 뒤 한 번 더) → 두 스크립트를 그 세션 jsonl에 실행 → 표의 결과 열을 채운다. 실패 줄은 릴리스별 증상으로 가른다.
+
 ## 10. 변경 이력
 
 | 날짜 | 변경 내용 | 영향 범위 | 상태 |
