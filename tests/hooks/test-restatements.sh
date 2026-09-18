@@ -234,6 +234,13 @@ arrival '출처 신호가 있으면 되물음이 아니다' skills/workflow-orch
 arrival_min 2 '--- 증거 ---' skills/workflow-orchestrator/decision-flow.md
 arrival "${clip} 근거 — " skills/workflow-orchestrator/decision-flow.md
 
+# grounded-output-display 도착 검사 — 실물 문구와 주입본
+arrival "${clip} 근거 — " skills/workflow-orchestrator/references/grounding.md
+arrival '근거는 "출처 보여줘"로 펼칩니다' skills/workflow-orchestrator/references/grounding.md
+arrival '--- 화면 ---' skills/workflow-orchestrator/references/grounding.md
+arrival '출처 요청은 되물음이 아니다' skills/workflow-orchestrator/bootstrap.md
+arrival '확인 아이콘 근거' skills/workflow-orchestrator/bootstrap.md
+
 # 가운뎃점 — 잔존 0건과 도착 여섯 (middle-dot-removal 1.27.2)
 dot_residue
 arrival "가운뎃점(${dot})을 쓰지 않는다" \
