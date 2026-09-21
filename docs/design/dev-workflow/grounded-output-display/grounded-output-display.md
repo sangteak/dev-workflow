@@ -184,7 +184,7 @@ affects:
 | 1.27.0 reask-reassembly | 0번이 「0.」으로 렌더, 고유 용어 옆 풀이, 의도적 되물음에 접미 `(다시 씀: …)` | 눈 | 미완료 |
 | 1.27.1 code-name-lookup | 국면 0 고지 한 줄, 원문과 풀이 병기, 번역어("충원", "배정") 0회 | 눈 | 미완료 |
 | 1.27.2 middle-dot-removal | `node scripts/transcript-dots.mjs <세션 jsonl>` 가운뎃점 0줄, 나열 줄 1 이상 | 스크립트 | 미완료 |
-| 1.28.0 grounded-output-display | `node scripts/transcript-sources.mjs <세션 jsonl>` main 위반 0, "출처 보여줘"와 줄 요지 지정("… 줄 출처") 둘 다 📎 근거 메시지로 펼쳐짐, 압축 뒤 요청 한 번은 `↳ 다시 확인 —` | 스크립트와 눈 | 미완료 |
+| 1.28.0 grounded-output-display | `node scripts/transcript-sources.mjs <세션 jsonl>` main 위반 0, "출처 보여줘"와 줄 요지 지정("… 줄 출처") 둘 다 📎 근거 메시지로 펼쳐짐, 압축 뒤 요청 한 번은 `↳ 다시 확인 —` | 스크립트와 눈 | 실패 (2026-09-18, GW-Server PLAN 화면 캡처 셋) — ① Feasibility 판정 페르소나 발언이 `⚠️ — [✔ 출처] …`와 `[추측]` 옛 모양 그대로 ② Researcher 조사 결과 화면이 사실마다 `✔️ 확인된 사실:` 이름표를 되풀이 ③ 결정 박스 본문이 낱말 대신 아이콘을 씀("⚠️를 준 이유", "✅로 올리면"). 설치 사본(1.28.0 캐시)에 옛 모양 0건 확인 — 후속 feature에서 원인 가림 |
 
 `/plugin` → dev-workflow Update → 재시작 → 세션 시작 훅에 version 1.28.0 → GW-Server에서 Backfill과 Assignment를 다루는 기능 브레인스토밍 한 바퀴(되물음 한 번, "출처 보여줘" 한 번, "[요지] 줄 출처" 한 번, 가능하면 /compact 뒤 한 번 더) → 두 스크립트를 그 세션 jsonl에 실행 → 표의 결과 열을 채운다. 실패 줄은 릴리스별 증상으로 가른다.
 
