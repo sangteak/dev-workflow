@@ -284,4 +284,24 @@ residue "${oldchk}|\\[추측\\]|\\[⚠️ 확인 불가\\]|\\[✘" \
 arrival_min 2 '--- 증거 ---' skills/plan-stage/SKILL.md
 arrival "${chk}(높음)" skills/brainstorming/references/templates.md
 
+# prose-icon-placement (REQ-001, REQ-002, REQ-009)
+arrival '아이콘은 줄 첫머리와 이름표에서만 맨몸으로 쓴다' skills/workflow-orchestrator/decision-flow.md
+arrival '앞 화면의 모양이 아니라 이 구획의 규범을 따른다' skills/workflow-orchestrator/decision-flow.md
+arrival '확인된 사실을 뜻한다' skills/workflow-orchestrator/decision-flow.md
+arrival '불릿에는 아이콘을 붙이지 않는다' skills/plan-stage/SKILL.md
+arrival '종합 판정: ⚠️ CAUTION' skills/plan-stage/SKILL.md
+
+# prose-icon-placement 잔존 — 홀로 선 아이콘 (백틱과 괄호 병기는 뺀다)
+# transcript-sources.mjs의 BARE_ICON과 같은 다섯 아이콘을 본다 — 한 아이콘만 보면 나머지 넷의 재유입을 못 잡는다.
+# 여는 괄호는 ASCII만 뺀다: LC_ALL=C에서 전각 괄호를 부정 클래스에 넣으면 그 바이트로 끝나는 한글 음절 뒤의 위반을 놓친다.
+bareicon=$'(^|[^`(])(✔|✅|⚠|❌|🚫)(️)?[를을가이는은로으와과의도만에]'
+residue "$bareicon" \
+  skills/workflow-orchestrator/decision-flow.md \
+  skills/workflow-orchestrator/bootstrap.md \
+  skills/workflow-orchestrator/SKILL.md \
+  skills/workflow-orchestrator/references/grounding.md \
+  skills/brainstorming/SKILL.md \
+  skills/brainstorming/references/templates.md \
+  skills/plan-stage/SKILL.md
+
 exit "$rc"
