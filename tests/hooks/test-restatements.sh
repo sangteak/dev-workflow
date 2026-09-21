@@ -291,4 +291,12 @@ arrival '확인된 사실을 뜻한다' skills/workflow-orchestrator/decision-fl
 arrival '불릿에는 아이콘을 붙이지 않는다' skills/plan-stage/SKILL.md
 arrival '종합 판정: ⚠️ CAUTION' skills/plan-stage/SKILL.md
 
+# prose-icon-placement 잔존 — 홀로 선 아이콘 (백틱과 괄호 병기는 뺀다)
+bareicon=$'[^`(（]'$'\xe2\x9c\x94\xef\xb8\x8f''[를을가이는은로으와과의도만에]'
+residue "$bareicon" \
+  skills/workflow-orchestrator/decision-flow.md \
+  skills/workflow-orchestrator/references/grounding.md \
+  skills/brainstorming/SKILL.md \
+  skills/plan-stage/SKILL.md
+
 exit "$rc"
