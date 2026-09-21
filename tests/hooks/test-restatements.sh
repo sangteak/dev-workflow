@@ -284,4 +284,9 @@ residue "${oldchk}|\\[추측\\]|\\[⚠️ 확인 불가\\]|\\[✘" \
 arrival_min 2 '--- 증거 ---' skills/plan-stage/SKILL.md
 arrival "${chk}(높음)" skills/brainstorming/references/templates.md
 
+# prose-icon-placement (REQ-001, REQ-002, REQ-009)
+arrival '아이콘은 줄 첫머리와 이름표에서만 맨몸으로 쓴다' skills/workflow-orchestrator/decision-flow.md
+arrival '앞 화면의 모양이 아니라 이 구획의 규범을 따른다' skills/workflow-orchestrator/decision-flow.md
+arrival '확인된 사실을 뜻한다' skills/workflow-orchestrator/decision-flow.md
+
 exit "$rc"
