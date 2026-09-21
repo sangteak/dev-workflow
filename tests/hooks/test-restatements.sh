@@ -288,5 +288,7 @@ arrival "${chk}(높음)" skills/brainstorming/references/templates.md
 arrival '아이콘은 줄 첫머리와 이름표에서만 맨몸으로 쓴다' skills/workflow-orchestrator/decision-flow.md
 arrival '앞 화면의 모양이 아니라 이 구획의 규범을 따른다' skills/workflow-orchestrator/decision-flow.md
 arrival '확인된 사실을 뜻한다' skills/workflow-orchestrator/decision-flow.md
+arrival '불릿에는 아이콘을 붙이지 않는다' skills/plan-stage/SKILL.md
+arrival '종합 판정: ⚠️ CAUTION' skills/plan-stage/SKILL.md
 
 exit "$rc"
