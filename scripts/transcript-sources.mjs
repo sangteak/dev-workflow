@@ -16,7 +16,7 @@ const KO_LINE = /\d+행|\d+번째 줄/;                                      // 
 const QUOTE = /["“][^"”]{12,}["”]/;                         // 열두 자 이상 따옴표 인용
 const QUOTE_CTX = /https?:\/\/|↳|[\w.\/-]+\.(md|mjs|js|ts|cs|go|json|ya?ml|py|sh)/; // 인용은 같은 줄에 주소, ↳, 파일 이름이 있을 때만 출처 인용으로 센다
 const UNFOLD_HEAD = "📎 근거 — ";                  // "📎 근거 — " 고정 머리줄
-const BARE_ICON = /(?<![(`（])[✔✅⚠❌🚫]️?(?=[를을가이는은로으와과의도만에])/;  // 홀로 선 아이콘 — 낱말 병기와 백틱은 뺀다
+const BARE_ICON = /(?<![(`（])[✔✅⚠❌🚫]️?(?=[를을가이는은로으와과의도만에])/u;  // 홀로 선 아이콘 — 낱말 병기와 백틱은 뺀다. u 플래그: 🚫는 서러게이트 쌍이라 u 없으면 lookbehind가 상위 서러게이트만 보고 백틱 면제가 샌다
 const LABEL_LINE = /^\s*([✔⚠]️?)\s+\S.*:\s*$/;                                  // 이름표 줄 (콜론으로 끝남)
 const SUB_BULLET = /^\s*(?:-|\d+\.)\s*([✔⚠]️?)/;                                 // 이름표 아래 불릿에 아이콘이 다시 붙음
 const stripVS = (s) => s.replace(/️$/, "");
@@ -59,15 +59,11 @@ for (const [src, path] of sources) {
         const subBullet = SUB_BULLET.exec(line);
         if (subBullet && labelIcon !== null && stripVS(subBullet[1]) === labelIcon) repeat++;
       }
-      if (BARE_ICON.test(line)) {
-        if (src === "main") { bad.icon++; console.log(`main\ticon\t${line.slice(0, 160)}`); }
-        else workerBad++;
-      }
-
       let kind = null;
       if (OLD_TAG.test(line)) kind = "tag";
       else if (PATH_LINE.test(line) || KO_LINE.test(line)) kind = "path";
       else if (QUOTE.test(line) && QUOTE_CTX.test(line)) kind = "quote";
+      else if (BARE_ICON.test(line)) kind = "icon";
       if (!kind) continue;
       if (src === "main") { bad[kind]++; console.log(`main\t${kind}\t${line.slice(0, 160)}`); }
       else workerBad++;
