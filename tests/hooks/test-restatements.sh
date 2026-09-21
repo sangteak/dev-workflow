@@ -292,11 +292,16 @@ arrival '불릿에는 아이콘을 붙이지 않는다' skills/plan-stage/SKILL.
 arrival '종합 판정: ⚠️ CAUTION' skills/plan-stage/SKILL.md
 
 # prose-icon-placement 잔존 — 홀로 선 아이콘 (백틱과 괄호 병기는 뺀다)
-bareicon=$'[^`(（]'$'\xe2\x9c\x94\xef\xb8\x8f''[를을가이는은로으와과의도만에]'
+# transcript-sources.mjs의 BARE_ICON과 같은 다섯 아이콘을 본다 — 한 아이콘만 보면 나머지 넷의 재유입을 못 잡는다.
+# 여는 괄호는 ASCII만 뺀다: LC_ALL=C에서 전각 괄호를 부정 클래스에 넣으면 그 바이트로 끝나는 한글 음절 뒤의 위반을 놓친다.
+bareicon=$'(^|[^`(])(✔|✅|⚠|❌|🚫)(️)?[를을가이는은로으와과의도만에]'
 residue "$bareicon" \
   skills/workflow-orchestrator/decision-flow.md \
+  skills/workflow-orchestrator/bootstrap.md \
+  skills/workflow-orchestrator/SKILL.md \
   skills/workflow-orchestrator/references/grounding.md \
   skills/brainstorming/SKILL.md \
+  skills/brainstorming/references/templates.md \
   skills/plan-stage/SKILL.md
 
 exit "$rc"
