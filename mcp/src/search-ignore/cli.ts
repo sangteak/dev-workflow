@@ -184,9 +184,11 @@ export function runApply(root: string, rowNos: number[], digest: string): ApplyR
     }
   });
   if (blocked.length > 0) {
+    const names = blocked.join(", ");
+    const args = blocked.join(" ");
     throw new StopError(
       "read-only",
-      `${blocked.join(", ")}이(가) 읽기 전용입니다(Perforce 동기화 파일일 수 있음). p4 edit ${blocked.join(" ")} 뒤 다시 실행하세요. 파일은 바꾸지 않았습니다.`,
+      `${names} 파일이 읽기 전용이라 바꿀 수 없습니다. 파일은 바꾸지 않았습니다.\n\nPerforce로 받은 파일이라면:\n- p4 edit ${args} (또는 P4V에서 Check Out) 뒤 이 명령을 다시 실행하세요\n- 작업공간 옵션 allwrite를 켜 두면 받은 파일이 읽기 전용이 되지 않습니다.`,
     );
   }
   const written: string[] = [];

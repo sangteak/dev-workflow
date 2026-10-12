@@ -7797,9 +7797,15 @@ function runApply(root, rowNos, digest) {
     }
   });
   if (blocked.length > 0) {
+    const names = blocked.join(", ");
+    const args = blocked.join(" ");
     throw new StopError(
       "read-only",
-      `${blocked.join(", ")}\uC774(\uAC00) \uC77D\uAE30 \uC804\uC6A9\uC785\uB2C8\uB2E4(Perforce \uB3D9\uAE30\uD654 \uD30C\uC77C\uC77C \uC218 \uC788\uC74C). p4 edit ${blocked.join(" ")} \uB4A4 \uB2E4\uC2DC \uC2E4\uD589\uD558\uC138\uC694. \uD30C\uC77C\uC740 \uBC14\uAFB8\uC9C0 \uC54A\uC558\uC2B5\uB2C8\uB2E4.`
+      `${names} \uD30C\uC77C\uC774 \uC77D\uAE30 \uC804\uC6A9\uC774\uB77C \uBC14\uAFC0 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4. \uD30C\uC77C\uC740 \uBC14\uAFB8\uC9C0 \uC54A\uC558\uC2B5\uB2C8\uB2E4.
+
+Perforce\uB85C \uBC1B\uC740 \uD30C\uC77C\uC774\uB77C\uBA74:
+- p4 edit ${args} (\uB610\uB294 P4V\uC5D0\uC11C Check Out) \uB4A4 \uC774 \uBA85\uB839\uC744 \uB2E4\uC2DC \uC2E4\uD589\uD558\uC138\uC694
+- \uC791\uC5C5\uACF5\uAC04 \uC635\uC158 allwrite\uB97C \uCF1C \uB450\uBA74 \uBC1B\uC740 \uD30C\uC77C\uC774 \uC77D\uAE30 \uC804\uC6A9\uC774 \uB418\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.`
     );
   }
   const written = [];
