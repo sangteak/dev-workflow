@@ -14,9 +14,9 @@ test("빈 system은 exclude: []", () => {
 
 test("system 구획만 갈아 끼우고 user 부분과 주석은 그대로 (CRLF, BOM 보존)", () => {
   const base = renderInitialYaml(["Saved/"]).replace('exclude: []', 'exclude:\n    - "Temp/" # 내 메모').replace(/\n/g, "\r\n");
-  const withBom = "﻿" + base;
+  const withBom = "\uFEFF" + base;
   const out = replaceSystem(withBom, ["Binaries/"]);
-  assert.ok(out.startsWith("﻿"));
+  assert.ok(out.startsWith("\uFEFF"));
   assert.ok(!/[^\r]\n/.test(out), "LF만 남은 줄이 있으면 안 됨");
   assert.ok(out.includes("# 내 메모"));
   assert.deepStrictEqual(readYamlSource(out), { system: ["Binaries/"], user: ["Temp/"] });

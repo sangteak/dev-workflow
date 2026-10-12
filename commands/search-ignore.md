@@ -42,7 +42,7 @@ node "${CLAUDE_PLUGIN_ROOT}/mcp/dist/search-ignore.js" plan --root "<ROOT>"
 node "${CLAUDE_PLUGIN_ROOT}/mcp/dist/search-ignore.js" apply --root "<ROOT>" --rows "ROWS" --digest "DIGEST"
 ```
 
-`DIGEST`는 1단계 JSON의 `digest`. 종료 코드 2면 `message`를 그대로 보이고 끝낸다(`digest-mismatch`면 명령을 다시 부르라는 뜻).
+`DIGEST`는 1단계 JSON의 `digest`. 종료 코드 2면 `message`를 그대로 보이고 끝낸다(`digest-mismatch`면 명령을 다시 부르라는 뜻). 종료 코드가 0이나 2가 아니면 오류 출력을 그대로 보이고 끝낸다.
 
 ## 4. Grep 확인
 

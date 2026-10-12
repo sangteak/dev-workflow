@@ -23,7 +23,7 @@ test("renderIgnore: 머리 3줄, system 그대로, user는 중복 빼고 뒤에"
 });
 
 test("isOwned: BOM과 CR을 걷고 첫 줄 앞부분", () => {
-  assert.ok(isOwned("﻿" + OWNER_PREFIX + " — do not edit\r\nX/\r\n"));
+  assert.ok(isOwned("\uFEFF" + OWNER_PREFIX + " — do not edit\r\nX/\r\n"));
   assert.ok(isOwned(OWNER_PREFIX + " — v2 다른 꼬리\n"));
   assert.ok(!isOwned("Intermediate/\n"));
   assert.ok(!isOwned(""));

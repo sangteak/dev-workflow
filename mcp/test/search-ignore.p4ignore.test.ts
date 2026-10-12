@@ -6,7 +6,7 @@ import { parseP4Ignore, stripBom } from "../src/search-ignore/p4ignore";
 import { parseFolderPattern, segmentMatches } from "../src/search-ignore/match";
 
 test("폴더 줄만 고르고 주석, 빈 줄, ! 줄, 파일 줄은 뺀다 (BOM, CRLF)", () => {
-  const text = "﻿# c\r\n\r\nBinaries/\r\n*.pdb\r\n!GW/Binaries/**\r\nSaved/Autosaves/\r\nDocs/.pending/**\r\n  Intermediate/  \r\n";
+  const text = "\uFEFF# c\r\n\r\nBinaries/\r\n*.pdb\r\n!GW/Binaries/**\r\nSaved/Autosaves/\r\nDocs/.pending/**\r\n  Intermediate/  \r\n";
   const r = parseP4Ignore(text);
   assert.deepStrictEqual(r.folders.map((f) => f.raw), ["Binaries/", "Saved/Autosaves/", "Docs/.pending/**", "Intermediate/"]);
   assert.deepStrictEqual(r.unsupported, []);
@@ -45,7 +45,7 @@ test("조각 단위 * 대조", () => {
 });
 
 test("stripBom", () => {
-  assert.strictEqual(stripBom("﻿abc"), "abc");
+  assert.strictEqual(stripBom("\uFEFFabc"), "abc");
   assert.strictEqual(stripBom("abc"), "abc");
 });
 

@@ -55,8 +55,9 @@ const YAML_REL = ".claude/ignore.yaml";
 function readIf(p: string): string | null {
   try {
     return fs.readFileSync(p, "utf8");
-  } catch {
-    return null;
+  } catch (e) {
+    if ((e as NodeJS.ErrnoException).code === "ENOENT") return null;
+    throw e;
   }
 }
 
@@ -134,8 +135,13 @@ function writeAtomic(root: string, rel: string, text: string, written: string[])
   if (readIf(abs) === text) return;
   fs.mkdirSync(path.dirname(abs), { recursive: true });
   const tmp = `${abs}.tmp-${process.pid}`;
-  fs.writeFileSync(tmp, text);
-  fs.renameSync(tmp, abs);
+  try {
+    fs.writeFileSync(tmp, text);
+    fs.renameSync(tmp, abs);
+  } catch (e) {
+    fs.rmSync(tmp, { force: true });
+    throw e;
+  }
   written.push(rel);
 }
 
@@ -166,6 +172,23 @@ export function runApply(root: string, rowNos: number[], digest: string): ApplyR
   const user = p.yaml ? p.yaml.user : [];
   const yamlOut = p.yamlText === null ? renderInitialYaml(system) : replaceSystem(p.yamlText, system);
   const ignoreOut = renderIgnore(p.source, system, user);
+  const blocked = [YAML_REL, ".ignore"].filter((rel, i) => {
+    const abs = path.join(root, rel);
+    const current = readIf(abs);
+    if (current === null || current === (i === 0 ? yamlOut : ignoreOut)) return false;
+    try {
+      fs.accessSync(abs, fs.constants.W_OK);
+      return false;
+    } catch {
+      return true;
+    }
+  });
+  if (blocked.length > 0) {
+    throw new StopError(
+      "read-only",
+      `${blocked.join(", ")}이(가) 읽기 전용입니다(Perforce 동기화 파일일 수 있음). p4 edit ${blocked.join(" ")} 뒤 다시 실행하세요. 파일은 바꾸지 않았습니다.`,
+    );
+  }
   const written: string[] = [];
   writeAtomic(root, YAML_REL, yamlOut, written);
   writeAtomic(root, ".ignore", ignoreOut, written);

@@ -7654,7 +7654,7 @@ function pickProbe(root, relFolder) {
     const rel = queue.shift();
     let entries;
     try {
-      entries = fs2.readdirSync(path2.join(root, rel), { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name));
+      entries = fs2.readdirSync(path2.join(root, rel), { withFileTypes: true }).sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
     } catch {
       continue;
     }
@@ -7678,8 +7678,9 @@ var YAML_REL = ".claude/ignore.yaml";
 function readIf(p) {
   try {
     return fs3.readFileSync(p, "utf8");
-  } catch {
-    return null;
+  } catch (e) {
+    if (e.code === "ENOENT") return null;
+    throw e;
   }
 }
 function prepare(root) {
@@ -7749,8 +7750,13 @@ function writeAtomic(root, rel, text, written) {
   if (readIf(abs) === text) return;
   fs3.mkdirSync(path3.dirname(abs), { recursive: true });
   const tmp = `${abs}.tmp-${process.pid}`;
-  fs3.writeFileSync(tmp, text);
-  fs3.renameSync(tmp, abs);
+  try {
+    fs3.writeFileSync(tmp, text);
+    fs3.renameSync(tmp, abs);
+  } catch (e) {
+    fs3.rmSync(tmp, { force: true });
+    throw e;
+  }
   written.push(rel);
 }
 function probeFor(root, kind, line, folders) {
@@ -7779,6 +7785,23 @@ function runApply(root, rowNos, digest) {
   const user = p.yaml ? p.yaml.user : [];
   const yamlOut = p.yamlText === null ? renderInitialYaml(system) : replaceSystem(p.yamlText, system);
   const ignoreOut = renderIgnore(p.source, system, user);
+  const blocked = [YAML_REL, ".ignore"].filter((rel, i) => {
+    const abs = path3.join(root, rel);
+    const current = readIf(abs);
+    if (current === null || current === (i === 0 ? yamlOut : ignoreOut)) return false;
+    try {
+      fs3.accessSync(abs, fs3.constants.W_OK);
+      return false;
+    } catch {
+      return true;
+    }
+  });
+  if (blocked.length > 0) {
+    throw new StopError(
+      "read-only",
+      `${blocked.join(", ")}\uC774(\uAC00) \uC77D\uAE30 \uC804\uC6A9\uC785\uB2C8\uB2E4(Perforce \uB3D9\uAE30\uD654 \uD30C\uC77C\uC77C \uC218 \uC788\uC74C). p4 edit ${blocked.join(" ")} \uB4A4 \uB2E4\uC2DC \uC2E4\uD589\uD558\uC138\uC694. \uD30C\uC77C\uC740 \uBC14\uAFB8\uC9C0 \uC54A\uC558\uC2B5\uB2C8\uB2E4.`
+    );
+  }
   const written = [];
   writeAtomic(root, YAML_REL, yamlOut, written);
   writeAtomic(root, ".ignore", ignoreOut, written);

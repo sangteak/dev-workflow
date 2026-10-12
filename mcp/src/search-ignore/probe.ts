@@ -33,7 +33,7 @@ export function pickProbe(root: string, relFolder: string): ProbePick | null {
     const rel = queue.shift() as string;
     let entries: fs.Dirent[];
     try {
-      entries = fs.readdirSync(path.join(root, rel), { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name));
+      entries = fs.readdirSync(path.join(root, rel), { withFileTypes: true }).sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
     } catch {
       continue;
     }

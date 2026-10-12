@@ -67,7 +67,7 @@ export function renderInitialYaml(system: string[]): string {
 }
 
 export function replaceSystem(text: string, system: string[]): string {
-  const bom = text.charCodeAt(0) === 0xfeff ? "﻿" : "";
+  const bom = text.charCodeAt(0) === 0xfeff ? "\uFEFF" : "";
   const body = stripBom(text);
   const eol = body.includes("\r\n") ? "\r\n" : "\n";
   const lines = body.split(/\r?\n/);

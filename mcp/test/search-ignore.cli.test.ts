@@ -120,3 +120,33 @@ test(".rgignore가 있으면 알림", () => {
   const root = fixture("Binaries/\n", ["Binaries"], { ".rgignore": "x\n" });
   assert.ok(runPlan(root).notices.some((n) => n.includes(".rgignore")));
 });
+
+test("읽기 전용 .ignore → read-only 멈춤, 두 파일 그대로, 임시 파일 없음", () => {
+  const root = fixture("Binaries/\n", ["Binaries"]);
+  runApply(root, [1], runPlan(root).digest);
+  const yamlPath = path.join(root, ".claude/ignore.yaml");
+  const ignorePath = path.join(root, ".ignore");
+  const edited = read(root, ".claude/ignore.yaml").replace("  exclude: []", '  exclude:\n    - "Extra/"');
+  assert.notStrictEqual(edited, read(root, ".claude/ignore.yaml"));
+  fs.writeFileSync(yamlPath, edited);
+  const ignoreBefore = fs.readFileSync(ignorePath);
+  fs.chmodSync(ignorePath, 0o444);
+  try {
+    assert.throws(() => fs.accessSync(ignorePath, fs.constants.W_OK)); // 이 플랫폼이 읽기 전용을 W_OK로 알려 주는지 확인
+    assert.strictEqual(stopReason(() => runApply(root, [1], runPlan(root).digest)), "read-only");
+    assert.deepStrictEqual(fs.readFileSync(ignorePath), ignoreBefore);
+    assert.strictEqual(read(root, ".claude/ignore.yaml"), edited);
+    const leftovers = [...fs.readdirSync(root), ...fs.readdirSync(path.join(root, ".claude"))].filter((n) => n.includes(".tmp-"));
+    assert.deepStrictEqual(leftovers, []);
+  } finally {
+    fs.chmodSync(ignorePath, 0o644);
+  }
+});
+
+test(".ignore가 디렉터리면 오류로 멈추고 foreign-ignore로 넘기지 않는다", () => {
+  const root = fixture("Binaries/\n", ["Binaries", ".ignore"]);
+  assert.throws(
+    () => runPlan(root),
+    (e: unknown) => !(e instanceof StopError),
+  );
+});
