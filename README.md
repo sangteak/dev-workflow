@@ -422,7 +422,7 @@ DEVELOP 단계에서 Superpowers는 `git worktree`를 사용해 격리된 브랜
 /plugin install ouroboros@ouroboros
 ```
 
-> **선택 요건:** 도메인 머지 도구(`/dev-workflow:merge-to-domain`의 MCP 서버)는 **Node.js 18+**가 필요합니다 — 없으면 해당 기능만 비활성되며, 나머지 워크플로우는 영향이 없습니다. `/dev-workflow:setup`이 자동으로 진단합니다.
+> **선택 요건:** 도메인 머지 도구(`/dev-workflow:merge-to-domain`의 MCP 서버)와 `/dev-workflow:search-ignore`는 **Node.js 18+**가 필요합니다 — 없으면 이 둘만 비활성되며, 나머지 워크플로우는 영향이 없습니다. `/dev-workflow:setup`이 자동으로 진단합니다.
 
 ### Update
 
@@ -507,6 +507,29 @@ dev-workflow가 제공하는 슬래시 커맨드입니다. 워크플로우 자�
 ```
 
 저장 후 `/clear`로 세션을 초기화하면, 다음 입력 시 **자동으로 작업 목록이 표시됩니다.** 자동 복구가 안 될 경우 `/dev-workflow:resume`으로 직접 복구할 수 있습니다.
+
+---
+
+### `/dev-workflow:search-ignore` — Perforce 저장소의 검색 제외
+
+**언제 쓰는가:** Perforce 저장소(예: Unreal 프로젝트)에서 Claude의 Grep 검색이 `Intermediate/` 같은 빌드 산출물까지 훑어 느리거나 결과가 섞일 때
+
+**무엇을 하는가:** 세션 폴더의 `.p4ignore`(없으면 `p4ignore.txt`) 폴더 줄 가운데 디스크에 있는 것을 후보로 보여 주고, 확인받은 줄을 `.claude/ignore.yaml`에 기록한 뒤 `.ignore`를 만듭니다. 끝에 Grep으로 제외가 먹는지 확인합니다. 더 뺄 폴더는 `.claude/ignore.yaml`의 user 부분에 적고 다시 실행합니다.
+
+```
+/dev-workflow:search-ignore
+→ 후보 화면 확인 → .claude/ignore.yaml, .ignore 생성 → Grep 확인
+```
+
+**알아 둘 것:**
+- 세션은 `.p4ignore`가 있는 폴더에서 엽니다. 위쪽 폴더를 찾아 올라가지 않습니다.
+- 줄은 `.p4ignore`에서 그대로 옮깁니다. 가운데 `/`가 든 줄(`Saved/Autosaves/`)은 `.ignore`에서 세션 폴더 기준이라 그 자리만 빠집니다. 어느 깊이든 빼려면 user 부분에 `- "**/Saved/Autosaves/"`처럼 따옴표와 `**/`를 붙여 적습니다.
+- Glob 도구는 기본으로 `.ignore`를 따르지 않습니다. 적용하려면 `.claude/settings.local.json`의 `env`에 `"CLAUDE_CODE_GLOB_NO_IGNORE": "false"`를 넣고 세션을 다시 엽니다.
+- `.ignore`는 `p4 reconcile`에 새 파일로 잡히고, 터미널의 `rg`에도 적용됩니다. `.claude/ignore.yaml`은 `.claude/`를 제출에서 빼는 저장소라면 제출되지 않으므로, 팀원이 `.ignore`만 받고 이 명령을 다시 실행하면 원래 작성자의 user 줄이 빠집니다.
+- `.ignore`는 대소문자를 가립니다.
+- macOS, Linux와 WSL에서는 Claude Code의 Grep 도구가 기본 도구 목록에 없을 수 있어 효과가 다를 수 있습니다.
+- `P4IGNORE`로 다른 이름을 쓰는 저장소, 하위 폴더에 따로 있는 `.p4ignore`는 다루지 않습니다.
+- Node.js 18+가 필요합니다.
 
 ---
 

@@ -8,15 +8,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture
 
-이 프로젝트는 **문서 기반 플러그인**이다. 로직 대부분은 Markdown 스킬 문서에 정의된다 — 본문은 `skills/*/SKILL.md`, 출력 템플릿, 서브에이전트 프롬프트 등 참조 자료는 `skills/*/references/*.md`(v1.13.0 분할), 상시 규범은 `skills/workflow-orchestrator/decision-flow.md`, `bootstrap.md`. 예외로 merge-to-domain의 기계 단계(digest 추출, 머지 검증과 체크포인트)는 `mcp/`의 MCP 서버가 담당한다 (Node 18+ 필요, 부재 시 머지 기능만 비활성).
+이 프로젝트는 **문서 기반 플러그인**이다. 로직 대부분은 Markdown 스킬 문서에 정의된다 — 본문은 `skills/*/SKILL.md`, 출력 템플릿, 서브에이전트 프롬프트 등 참조 자료는 `skills/*/references/*.md`(v1.13.0 분할), 상시 규범은 `skills/workflow-orchestrator/decision-flow.md`, `bootstrap.md`. 예외로 merge-to-domain의 기계 단계(digest 추출, 머지 검증과 체크포인트)는 `mcp/`의 MCP 서버가 담당한다 (Node 18+ 필요, 부재 시 머지 기능과 search-ignore만 비활성). search-ignore 생성 스크립트도 같은 `mcp/` 빌드 설정으로 묶는다(`mcp/dist/search-ignore.js`, MCP 서버와 별개 파일).
 
 ### Core Components
 
 - **`.claude-plugin/`** — 플러그인 메타데이터 (`plugin.json`, `marketplace.json`) + `mcpServers` 등록
 - **`hooks/`** — 세션 시작 시 `workflow-orchestrator` 스킬을 자동 주입하는 bash 스크립트 + 마무리 어휘 감지 시 라우팅 지시를 주입하는 completion-nudge 훅 + **착수 어휘 감지 시 작업 방향 판정을 지시하는 intake-nudge 훅 (파일 미접근)** (공용 잔존 감지: `hooks/lib/detect-remnants`)
 - **`skills/`** — 핵심 스킬 (아래 참조)
-- **`commands/`** — 콘솔 자동완성용 독립 명령 파일 (save, resume, design-summary, setup, add-rule, merge-to-domain)
-- **`mcp/`** — dev-workflow MCP 서버 (`digest_extract`, `merge_verify`, `merge_checkpoint` — 머지 기계 단계, 번들 커밋 `mcp/dist/index.js`)
+- **`commands/`** — 콘솔 자동완성용 독립 명령 파일 (save, resume, design-summary, setup, add-rule, merge-to-domain, finish, search-ignore)
+- **`mcp/`** — dev-workflow Node 도구: MCP 서버(`digest_extract`, `merge_verify`, `merge_checkpoint` — 머지 기계 단계, 번들 커밋 `mcp/dist/index.js`)와 search-ignore 생성 스크립트(번들 커밋 `mcp/dist/search-ignore.js`)
 - **`scripts/`** — repo 개발용 릴리스 스크립트 (`bump-version`: `plugin.json`, `marketplace.json` 버전 동시 갱신과 동기 검증, `sweep`: 규범 변경 후 구 문구 잔존 검사) — 플러그인 배포 대상 아님
 - **`docs/design/`** — 설계 문서 저장소 (카테고리/기능 구조)
 
@@ -112,6 +112,7 @@ docs/design/
 | add-rule | rules-injection | {{ARGUMENTS}} | 프로젝트별 규칙을 워크플로우 스테이지에 자동 주입하는 룰 추가 |
 | merge-to-domain | merge-to-domain | {{ARGUMENTS}} | 관리자가 도메인 머지 파이프라인 호출 (카테고리명/플래그/공란 지원) |
 | finish | workflow-orchestrator (references/completion-protocol.md 직접 Read) | — | 마무리 시퀀스(Completion Protocol) 직행 실행 — 호출 자체가 완료 선언 |
+| search-ignore | — (자체 로직, 스크립트 호출) | — | Perforce 저장소에서 `.p4ignore` 폴더 줄로 `.ignore` 생성 (Node 18+) |
 
 - 자동 트리거 스킬(orchestrator, persona-resolution 등)에는 커맨드를 추가하지 않는다
 - 하드코딩 ARGUMENTS: 콘솔 자동완성 즉시 실행 시 아규먼트 입력 불가 문제 해결

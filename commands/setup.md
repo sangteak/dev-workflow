@@ -37,9 +37,9 @@ claude plugin list 2>&1
 - 출력에 `superpowers` 포함 → 설치됨
 - 출력에 `ouroboros` 포함 → 설치됨
 
-### Step 2: MCP 실행 요건 진단 (비차단)
+### Step 2: Node.js 요건 진단 (비차단)
 
-dev-workflow의 도메인 머지 도구(MCP 서버)는 **Node.js 18 이상**이 PATH에 있어야 기동된다.
+dev-workflow의 도메인 머지 도구(MCP 서버)와 /dev-workflow:search-ignore 생성 스크립트는 **Node.js 18 이상**이 PATH에 있어야 동작한다.
 Bash 도구로 확인한다:
 
 ```bash
@@ -51,13 +51,13 @@ node --version 2>&1
 **v18 이상:**
 
 ```
-✅ Node.js [버전] — 도메인 머지 도구(MCP) 사용 가능
+✅ Node.js [버전] — 도메인 머지 도구(MCP)와 search-ignore 사용 가능
 ```
 
 **명령을 찾을 수 없음 (미설치):**
 
 ```
-⚠️ Node.js 미설치 — 도메인 머지(merge-to-domain) 기능만 비활성됩니다.
+⚠️ Node.js 미설치 — 도메인 머지(merge-to-domain)와 search-ignore 명령만 비활성됩니다.
    나머지 워크플로우는 영향이 없습니다.
    설치: https://nodejs.org (LTS 권장) → 설치 후 Claude Code 재시작
 ```
@@ -65,7 +65,7 @@ node --version 2>&1
 **v18 미만:**
 
 ```
-⚠️ Node.js [버전] — 도메인 머지 도구는 18 이상이 필요합니다.
+⚠️ Node.js [버전] — 도메인 머지 도구와 search-ignore는 18 이상이 필요합니다.
    업그레이드: https://nodejs.org (LTS 권장) → 업그레이드 후 Claude Code 재시작
 ```
 
