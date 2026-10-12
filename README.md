@@ -526,6 +526,7 @@ dev-workflow가 제공하는 슬래시 커맨드입니다. 워크플로우 자�
 - 줄은 `.p4ignore`에서 그대로 옮깁니다. 가운데 `/`가 든 줄(`Saved/Autosaves/`)은 `.ignore`에서 세션 폴더 기준이라 그 자리만 빠집니다. 어느 깊이든 빼려면 user 부분에 `- "**/Saved/Autosaves/"`처럼 따옴표와 `**/`를 붙여 적습니다.
 - Glob 도구는 기본으로 `.ignore`를 따르지 않습니다. 적용하려면 `.claude/settings.local.json`의 `env`에 `"CLAUDE_CODE_GLOB_NO_IGNORE": "false"`를 넣고 세션을 다시 엽니다.
 - `.ignore`는 `p4 reconcile`에 새 파일로 잡히고, 터미널의 `rg`에도 적용됩니다. `.claude/ignore.yaml`은 `.claude/`를 제출에서 빼는 저장소라면 제출되지 않으므로, 팀원이 `.ignore`만 받고 이 명령을 다시 실행하면 원래 작성자의 user 줄이 빠집니다.
+- 제출해서 읽기 전용이 된 `.ignore`는 명령이 아무것도 바꾸지 않고 멈춘 뒤 `p4 edit`(또는 작업공간 옵션 `allwrite`)을 안내합니다.
 - `.ignore`는 대소문자를 가립니다.
 - macOS, Linux와 WSL에서는 Claude Code의 Grep 도구가 기본 도구 목록에 없을 수 있어 효과가 다를 수 있습니다.
 - `P4IGNORE`로 다른 이름을 쓰는 저장소, 하위 폴더에 따로 있는 `.p4ignore`는 다루지 않습니다.
