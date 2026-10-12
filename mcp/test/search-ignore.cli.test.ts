@@ -142,7 +142,7 @@ test("읽기 전용 .ignore → read-only 멈춤, 두 파일 그대로, 임시 �
     }
     assert.ok(caughtError !== null);
     assert.strictEqual(caughtError.reason, "read-only");
-    const expectedMsg = `.ignore 파일이 읽기 전용이라 바꿀 수 없습니다. 파일은 바꾸지 않았습니다.\n\nPerforce로 받은 파일이라면:\n- p4 edit .ignore (또는 P4V에서 Check Out) 뒤 이 명령을 다시 실행하세요\n- 작업공간 옵션 allwrite를 켜 두면 받은 파일이 읽기 전용이 되지 않습니다.`;
+    const expectedMsg = `.ignore 파일이 읽기 전용이라 바꿀 수 없습니다. 파일은 바꾸지 않았습니다.\n\nPerforce로 받은 파일이라면:\n- p4 edit .ignore (또는 P4V에서 Check Out) 뒤 이 명령을 다시 실행하세요\n- 작업공간 옵션 allwrite를 켜 두면 받은 파일이 읽기 전용이 되지 않습니다`;
     assert.strictEqual(caughtError.message, expectedMsg);
     assert.deepStrictEqual(fs.readFileSync(ignorePath), ignoreBefore);
     assert.strictEqual(read(root, ".claude/ignore.yaml"), edited);
