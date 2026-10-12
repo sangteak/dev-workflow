@@ -8,10 +8,16 @@ export interface FolderPattern {
 /** 폴더 줄이 아니면 null, 이 명령이 다루지 않는 모양이면 "unsupported". */
 export function parseFolderPattern(raw: string): FolderPattern | "unsupported" | null {
   let body: string;
-  if (raw.endsWith("/**")) body = raw.slice(0, -3);
-  else if (raw.endsWith("/")) body = raw.slice(0, -1);
-  else return null;
-  let anchored = false;
+  let endsWithGlobstar = false;
+  if (raw.endsWith("/**")) {
+    body = raw.slice(0, -3);
+    endsWithGlobstar = true;
+  } else if (raw.endsWith("/")) {
+    body = raw.slice(0, -1);
+  } else {
+    return null;
+  }
+  let anchored = endsWithGlobstar;
   if (body.startsWith("/")) {
     anchored = true;
     body = body.slice(1);

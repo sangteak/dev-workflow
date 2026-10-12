@@ -17,6 +17,7 @@ test("한 조각 줄은 앵커 없음, 가운데 / 또는 앞 / 줄은 앵커", 
   assert.deepStrictEqual(parseFolderPattern("Plugins/*/Binaries/"), { raw: "Plugins/*/Binaries/", segments: ["Plugins", "*", "Binaries"], anchored: true });
   assert.deepStrictEqual(parseFolderPattern("/Temp/"), { raw: "/Temp/", segments: ["Temp"], anchored: true });
   assert.deepStrictEqual(parseFolderPattern("Docs/.pending/**"), { raw: "Docs/.pending/**", segments: ["Docs", ".pending"], anchored: true });
+  assert.deepStrictEqual(parseFolderPattern("Saved/**"), { raw: "Saved/**", segments: ["Saved"], anchored: true });
   assert.strictEqual(parseFolderPattern("*.pdb"), null);
 });
 
