@@ -28,3 +28,9 @@ test("포함 표시: 체크된 한 조각 줄에 모든 경로가 걸리면", ()
   assert.strictEqual(rows[4].includedBy, null);
   assert.strictEqual(rows[0].includedBy, null);
 });
+
+test("여러 조각 산출물 줄: 덮개가 없으면 미리 체크, includedBy는 null", () => {
+  const rows = buildRows([pm("Plugins/*/Binaries/", ["Plugins/A/Binaries"])], null);
+  assert.strictEqual(rows[0].preselected, true);
+  assert.strictEqual(rows[0].includedBy, null);
+});

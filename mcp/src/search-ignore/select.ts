@@ -26,19 +26,41 @@ export function buildRows(matches: PatternMatch[], previousSystem: string[] | nu
     matchCount: m.paths.length,
     preselected:
       previousSystem === null
-        ? m.pattern.segments.length === 1 && m.paths.some((p) => ARTIFACT_NAMES.includes(lastSegment(p).toLowerCase()))
+        ? m.paths.some((p) => ARTIFACT_NAMES.includes(lastSegment(p).toLowerCase()))
         : previousSystem.includes(m.pattern.raw),
     includedBy: null,
   }));
-  const coveringRows = present
-    .map((m, i) => ({ m, row: rows[i] }))
-    .filter((x) => x.row.preselected && !x.m.pattern.anchored);
-  present.forEach((m, i) => {
-    if (rows[i].preselected) return;
-    const cover = coveringRows.find((c) =>
-      m.paths.every((p) => p.split("/").some((seg) => segmentMatches(c.m.pattern.segments[0], seg, false))),
-    );
-    if (cover) rows[i].includedBy = cover.row.line;
-  });
+
+  if (previousSystem === null) {
+    // On first run: find covers (preselected, non-anchored, single-segment) and mark covered rows as not preselected
+    const coveringRows = present
+      .map((m, i) => ({ m, row: rows[i] }))
+      .filter((x) => x.row.preselected && !x.m.pattern.anchored && x.m.pattern.segments.length === 1);
+    present.forEach((m, i) => {
+      // Skip rows that are themselves covers
+      const isOwnCover = rows[i].preselected && !m.pattern.anchored && m.pattern.segments.length === 1;
+      if (isOwnCover) return;
+      const cover = coveringRows.find((c) =>
+        m.paths.every((p) => p.split("/").some((seg) => segmentMatches(c.m.pattern.segments[0], seg, false))),
+      );
+      if (cover) {
+        rows[i].includedBy = cover.row.line;
+        rows[i].preselected = false;
+      }
+    });
+  } else {
+    // On rerun: only mark includedBy for non-preselected rows
+    const coveringRows = present
+      .map((m, i) => ({ m, row: rows[i] }))
+      .filter((x) => x.row.preselected && !x.m.pattern.anchored && x.m.pattern.segments.length === 1);
+    present.forEach((m, i) => {
+      if (rows[i].preselected) return;
+      const cover = coveringRows.find((c) =>
+        m.paths.every((p) => p.split("/").some((seg) => segmentMatches(c.m.pattern.segments[0], seg, false))),
+      );
+      if (cover) rows[i].includedBy = cover.row.line;
+    });
+  }
+
   return rows;
 }
