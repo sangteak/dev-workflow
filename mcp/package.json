@@ -7,7 +7,7 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "npm run typecheck && esbuild src/index.ts --bundle --platform=node --target=node18 --format=cjs --outfile=dist/index.js && esbuild src/search-ignore.ts --bundle --platform=node --target=node18 --format=cjs --outfile=dist/search-ignore.js",
-    "pretest": "esbuild test/digest.test.ts test/verify.test.ts test/checkpoint.test.ts test/search-ignore.p4ignore.test.ts test/search-ignore.scan.test.ts test/search-ignore.select.test.ts --bundle --platform=node --target=node18 --format=cjs --outdir=test-dist",
+    "pretest": "esbuild test/digest.test.ts test/verify.test.ts test/checkpoint.test.ts test/search-ignore.p4ignore.test.ts test/search-ignore.scan.test.ts test/search-ignore.select.test.ts test/search-ignore.yaml.test.ts --bundle --platform=node --target=node18 --format=cjs --outdir=test-dist",
     "test": "node --test \"test-dist/*.test.js\""
   },
   "dependencies": {
